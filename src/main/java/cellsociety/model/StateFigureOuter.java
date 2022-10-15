@@ -1,5 +1,9 @@
 package cellsociety.model;
 
-public interface StateFigureOuter {
+import cellsociety.State;
 
+import java.util.List;
+
+public interface StateFigureOuter {
+    State figureOutNextState(int cellRowIndex, int cellColIndex, List<List<CellModel>> cells);
 }
