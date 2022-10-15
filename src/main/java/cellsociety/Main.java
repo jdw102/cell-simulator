@@ -1,10 +1,12 @@
 package cellsociety;
 
+import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ResourceBundle;
+
+import cellsociety.view.DisplayView;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -26,23 +28,33 @@ public class Main extends Application {
     private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_CSV_EXTENSION);
     // internal configuration file
     public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
+    public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
+    public static final String DEFAULT_LANGUAGE = "English";
+    public static final String TITLE = "CellSociety";
 
     /**
      * @see Application#start(Stage)
      */
     @Override
     public void start (Stage primaryStage) {
-        try {
-            File dataFile = FILE_CHOOSER.showOpenDialog(primaryStage);
-            if (dataFile != null) {
-                int sum = sumCSVData(new FileReader(dataFile));
-                showMessage(AlertType.INFORMATION, "" + sum);
-            }
-        }
-        catch (IOException e) {
-            // should never happen since user selected the file
-            showMessage(AlertType.ERROR, "Invalid Data File Given");
-        }
+        DisplayView view = new DisplayView(DEFAULT_LANGUAGE);
+        // give the window a title
+        primaryStage.setTitle(TITLE);
+         //add our user interface components to Frame and show it
+        primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height, primaryStage));
+        primaryStage.show();
+//        try {
+//            File dataFile = FILE_CHOOSER.showOpenDialog(primaryStage);
+//            if (dataFile != null) {
+//                int sum = sumCSVData(new FileReader(dataFile));
+//                showMessage(AlertType.INFORMATION, "" + sum);
+//            }
+//        }
+//        catch (IOException e) {
+//            // should never happen since user selected the file
+//            showMessage(AlertType.ERROR, "Invalid Data File Given");
+//        }
+
     }
 
     /**

@@ -1,0 +1,28 @@
+.button {
+    -fx-min-width: 45;
+    -fx-min-height: 35;
+}
+.grid-inputs-container{
+    -fx-padding: 5;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color: lightgray;
+}
+.sim-inputs-container{
+    -fx-padding: 5;
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+    -fx-background-color: lightgray;
+}
+.combo-box{
+    -fx-min-width: 45;
+    -fx-min-height: 35;
+}
+.cell-grid-pane{
+    -fx-alignment: center;
+}
+.cell-pane{
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-color: lightgray;
+}
