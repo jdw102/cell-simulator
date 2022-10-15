@@ -19,22 +19,28 @@ public class DisplayView {
     private static final String STYLESHEET = "default.css";
     public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
     private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
+    private static final String DEFAULT_COLOR_OPTIONS = "CellColors";
     private ResourceBundle myResources;
+    private ResourceBundle colorOptions;
     private GridInputs gridInputs;
     private ViewUtils viewUtils;
     private HBox simInputsBox;
     private GridView cellGrid;
     private final double HEIGHT_BUFFER = 170;
     private final double WIDTH_BUFFER = 50;
+    private InfoText infoText;
+    private InfoPopUp infoPopUp;
 
     public DisplayView(String language){
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         viewUtils = new ViewUtils(myResources);
         gridInputs = new GridInputs();
         simInputsBox = makeSimInputsBox();
+        colorOptions = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_COLOR_OPTIONS);
+        infoText = new InfoText("Test Title", "Jerry Worthy", "Blah blah blah");
     }
     public Scene makeScene(int width, int height, Stage stage){
-        cellGrid = new GridView(10, 10, width - WIDTH_BUFFER, height - HEIGHT_BUFFER );
+        cellGrid = new GridView(10, 10, width - WIDTH_BUFFER, height - HEIGHT_BUFFER, colorOptions);
         stage.heightProperty().addListener((obs, oldval, newVal) -> cellGrid.resizeGrid(stage.getWidth() - WIDTH_BUFFER, stage.getHeight() - HEIGHT_BUFFER));
         stage.widthProperty().addListener((obs, oldval, newVal) -> cellGrid.resizeGrid(stage.getWidth() - WIDTH_BUFFER, stage.getHeight() - HEIGHT_BUFFER));
         BorderPane root = new BorderPane();
@@ -43,6 +49,7 @@ public class DisplayView {
         root.setTop(simInputsBox);
         Scene scene = new Scene(root, width, height);
         scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+        infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"), DEFAULT_RESOURCE_FOLDER + STYLESHEET);
         return scene;
     }
     public HBox makeSimInputsBox(){
@@ -51,7 +58,7 @@ public class DisplayView {
         c.setValue("GameOfLife");
         Button saveButton = makeButton("SaveButton", event -> System.out.println("Save"));
         Button importButton = makeButton("ImportButton", event -> System.out.println("Import"));
-        Button infoButton = makeButton("InfoButton", event -> System.out.println("Info"));
+        Button infoButton = makeButton("InfoButton", event -> infoPopUp.open());
         HBox b = new HBox(saveButton, importButton, infoButton, c);
         b.getStyleClass().add("sim-inputs-container");
         return b;

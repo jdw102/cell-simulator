@@ -2,13 +2,8 @@ package cellsociety;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -55,12 +50,30 @@ public class ViewUtils {
      * @param handler - The action on enter.
      * @return Created text field.
      */
-    public static TextField makeTextField(String property, String defaultValue, EventHandler<ActionEvent> handler) {
+    public static TextField makeTextField(String property, String defaultValue) {
         TextField textField = new TextField(property);
         textField.setText(defaultValue);
-        textField.setOnAction(handler);
         textField.setId(property);
         return textField;
+    }
+    public static TextArea makeTextArea(String property, String defaultValue) {
+        TextArea textArea = new TextArea(property);
+        textArea.setText(defaultValue);
+        textArea.setId(property);
+        return textArea;
+    }
+    public static Label makeLabel(String property){
+        Label l = new Label(myResources.getString(property));
+        l.setId(property);
+        return l;
+    }
+    public static ButtonType makeButtonType(String property, ButtonBar.ButtonData type){
+        ButtonType b = new ButtonType(myResources.getString(property), type);
+        return b;
+    }
+    public static void attachTooltip(String property, Node node){
+        Tooltip t = new Tooltip(myResources.getString(property));
+        Tooltip.install(node, t);
     }
 
 }

@@ -26,3 +26,29 @@
     -fx-border-width: 1;
     -fx-border-color: lightgray;
 }
+.info-header{
+    -fx-font-size: 20;
+}
+.info-header-container{
+    -fx-padding: 5;
+    -fx-alignment: center;
+    -fx-spacing: 50;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-color: darkgray;
+    -fx-background-color: lightgray;
+    -fx-border-radius: 5;
+}
+.info-text-field{
+    -fx-max-width: 200;
+    -fx-alignment: center;
+}
+.info-text-area{
+    -fx-max-width: 300;
+    -fx-max-height: 300;
+}
+.info-grid-pane{
+    -fx-aligment: center;
+    -fx-spacing: 10;
+    -fx-max-width: 100;
+}

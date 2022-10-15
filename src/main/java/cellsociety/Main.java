@@ -29,6 +29,7 @@ public class Main extends Application {
     // internal configuration file
     public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
     public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
+    public static final Dimension MIN_SIZE = new Dimension(300, 300);
     public static final String DEFAULT_LANGUAGE = "English";
     public static final String TITLE = "CellSociety";
 
@@ -42,6 +43,9 @@ public class Main extends Application {
         primaryStage.setTitle(TITLE);
          //add our user interface components to Frame and show it
         primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height, primaryStage));
+        primaryStage.setMinHeight(MIN_SIZE.height);
+        primaryStage.setMinWidth(MIN_SIZE.width);
+
         primaryStage.show();
 //        try {
 //            File dataFile = FILE_CHOOSER.showOpenDialog(primaryStage);

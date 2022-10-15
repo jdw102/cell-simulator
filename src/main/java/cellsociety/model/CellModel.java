@@ -91,6 +91,7 @@ public class CellModel implements Observable {
   private void alertMyObservers() {
     for (Observer observer : myObservers) {
       // do some action
+
     }
   }
 }
