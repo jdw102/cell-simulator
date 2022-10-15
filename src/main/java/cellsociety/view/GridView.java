@@ -1,14 +1,18 @@
 package cellsociety.view;
 
+import cellsociety.model.GridModel;
+import javafx.scene.Node;
 import javafx.scene.control.Cell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
 public class GridView {
     private GridPane grid;
     private CellView[][] cells;
     private int numRows;
     private int numCols;
+    private GridModel model;
     public GridView(int rows, int cols, double width, double height){
         setDimensions(rows, cols);
         grid = new GridPane();
@@ -23,9 +27,9 @@ public class GridView {
             for (int j = 0; j < numCols; j++){
                 CellView newCell = new CellView(rectWidth, rectHeight);
                 cells[i][j] = newCell;
-                GridPane.setRowIndex(newCell.getCell(), i);
-                GridPane.setColumnIndex(newCell.getCell(), j);
-                grid.getChildren().addAll(newCell.getCell());
+                GridPane.setRowIndex(newCell.getCellPane(), i);
+                GridPane.setColumnIndex(newCell.getCellPane(), j);
+                grid.getChildren().addAll(newCell.getCellPane());
             }
         }
     }
@@ -33,8 +37,14 @@ public class GridView {
         return grid;
     }
     public void resizeGrid(double width, double height){
-        grid.getChildren().removeAll(grid.getChildren());
-        createCells(width, height);
+        double rectHeight = height / numRows;
+        double rectWidth = width / numCols;
+        for (CellView[] row: cells){
+            for (CellView c: row){
+                c.getRectangle().setWidth(rectWidth);
+                c.getRectangle().setHeight(rectHeight);
+            }
+        }
     }
     public void setDimensions(int rows, int cols){
         numCols = cols;
