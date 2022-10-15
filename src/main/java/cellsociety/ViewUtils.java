@@ -75,5 +75,12 @@ public class ViewUtils {
         Tooltip t = new Tooltip(myResources.getString(property));
         Tooltip.install(node, t);
     }
+    public static void changeButtonGraphic(String newProperty, Button b){
+        b.setGraphic(null);
+        ImageView i = new ImageView(new Image(myResources.getString(newProperty)));
+        i.setFitWidth(ICON_SIZE);
+        i.setFitHeight(ICON_SIZE);
+        b.setGraphic(i);
+    }
 
 }

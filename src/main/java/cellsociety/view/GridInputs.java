@@ -5,10 +5,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
+
+import java.util.ResourceBundle;
 
 import static cellsociety.ViewUtils.attachTooltip;
 import static cellsociety.ViewUtils.makeButton;
@@ -18,18 +22,20 @@ public class GridInputs {
     private final double MAX_SPEED = 4.0;
     private final double MIN_SPEED = 0.5;
     private final double DEFAULT_SPEED = 1.0;
+    private  ResourceBundle myResources;
+    private PlayButton playButton;
 
-    public GridInputs(){
+    public GridInputs(ResourceBundle resources){
+        myResources = resources;
         Button backwardButton = makeButton("BackwardButton", event -> System.out.println("Backward"));
-        Button playButton = makeButton("PlayButton", event -> System.out.println("Play"));
+        playButton = new PlayButton();
         Button forwardButton = makeButton("ForwardButton", event -> System.out.println("Forward"));
         attachTooltip("BackwardButtonTooltip", backwardButton);
-        attachTooltip("PlayButtonTooltip", playButton);
         attachTooltip("ForwardButtonTooltip", forwardButton);
         VBox sliderBox = makeSliderBox();
         Region padderRegion = new Region();
         padderRegion.prefWidthProperty().bind(sliderBox.widthProperty());
-        container = new HBox(padderRegion, backwardButton, playButton, forwardButton, sliderBox);
+        container = new HBox(padderRegion, backwardButton, playButton.getButton(), forwardButton, sliderBox);
         container.getStyleClass().add("grid-inputs-container");
     }
     public HBox getContainer(){

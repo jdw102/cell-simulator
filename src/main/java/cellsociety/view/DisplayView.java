@@ -47,7 +47,7 @@ public class DisplayView {
         STAGE = stage;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         viewUtils = new ViewUtils(myResources);
-        gridInputs = new GridInputs();
+        gridInputs = new GridInputs(myResources);
         simInputsBox = makeSimInputsBox();
         colorOptions = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_COLOR_OPTIONS);
         infoText = new InfoText("Test Title", "Jerry Worthy", "Blah blah blah");
