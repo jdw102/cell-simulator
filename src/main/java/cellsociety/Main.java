@@ -2,6 +2,7 @@ package cellsociety;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ResourceBundle;
@@ -38,11 +39,11 @@ public class Main extends Application {
      */
     @Override
     public void start (Stage primaryStage) {
-        DisplayView view = new DisplayView(DEFAULT_LANGUAGE);
+        DisplayView view = new DisplayView(DEFAULT_LANGUAGE, FILE_CHOOSER, primaryStage);
         // give the window a title
         primaryStage.setTitle(TITLE);
          //add our user interface components to Frame and show it
-        primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height, primaryStage));
+        primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
         primaryStage.setMinHeight(MIN_SIZE.height);
         primaryStage.setMinWidth(MIN_SIZE.width);
 

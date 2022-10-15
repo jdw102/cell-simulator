@@ -22,6 +22,7 @@ public class InfoPopUp {
     private ButtonType cancelInfoButton;
     private Button editInfoButton;
     private InfoText infoText;
+    private final int SPACING = 5;
 
     public InfoPopUp(InfoText text, String title, String styleSheet){
         infoText = text;
@@ -80,9 +81,13 @@ public class InfoPopUp {
         Label titleLabel = makeLabel("TitleLabel");
         Label authorLabel = makeLabel("AuthorLabel");
         Label descriptionLabel = makeLabel("DescriptionLabel");
+        titleLabel.getStyleClass().add("info-text-label");
+        authorLabel.getStyleClass().add("info-text-label");
+        descriptionLabel.getStyleClass().add("info-text-label");
 
         VBox box = new VBox(topBox, titleLabel, titleField, authorLabel, authorField, descriptionLabel, descriptionField);
         box.setAlignment(Pos.CENTER);
+        box.setSpacing(SPACING);
         return box;
     }
     private void toggleFields(boolean b){
@@ -94,6 +99,9 @@ public class InfoPopUp {
         infoText.setTitle(titleField.getText());
         infoText.setAuthor(authorField.getText());
         infoText.setDescription(descriptionField.getText());
+    }
+    public void changeInfoText(InfoText text){
+        infoText = text;
     }
 }
 
