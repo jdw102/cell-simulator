@@ -73,4 +73,8 @@ public class GridInputs {
         box.setAlignment(Pos.CENTER);
         return box;
     }
+//    private void step(){
+//        Controller.updateState();
+//    }
+
 }

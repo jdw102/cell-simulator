@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -45,6 +46,8 @@ public class DisplayView {
     private InfoPopUp infoPopUp;
     private final FileChooser FILE_CHOOSER;
     private final Stage STAGE;
+    private final int DEFAULT_ROWS = 10;
+    private final int DEFAULT_COLS = 10;
 
     /**
      * Create a new view.
@@ -69,7 +72,7 @@ public class DisplayView {
      * @return the scene
      */
     public Scene makeScene(int width, int height){
-        cellGrid = new GridView(10, 10, width - WIDTH_BUFFER, height - HEIGHT_BUFFER, colorOptions);
+        cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
         STAGE.heightProperty().addListener((obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER, STAGE.getHeight() - HEIGHT_BUFFER));
         STAGE.widthProperty().addListener((obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER, STAGE.getHeight() - HEIGHT_BUFFER));
         BorderPane root = new BorderPane();
@@ -88,8 +91,9 @@ public class DisplayView {
      */
     private HBox makeSimInputsBox(){
         ComboBox<String> c = new ComboBox<>();
-        c.getItems().add(myResources.getString("GAME_OF_LIFE"));
-        c.setValue(myResources.getString("GAME_OF_LIFE"));
+        String[] gameTypes = myResources.getString("GameTypes").split(",");
+        c.getItems().addAll(gameTypes);
+        c.setValue(gameTypes[0]);
         attachTooltip("SimulationTypeTooltip", c);
         Button saveButton = makeButton("SaveButton", event -> System.out.println("Save"));
         Button importButton = makeButton("ImportButton", event -> openFile());

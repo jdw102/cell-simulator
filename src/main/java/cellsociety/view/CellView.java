@@ -16,29 +16,26 @@ public class CellView implements Observer {
   private Rectangle rectangle;
   private final int BORDER_SIZE = 1;
   private CellModel model;
-  private ResourceBundle colorOptions;
-  /**
-   * Creates a new instance of the CellView
-   * @param width the width of cell
-   * @param height the height of the cell
-   * @param colors the resource bundle containing the colors for each state of the cell
-   */
-  public CellView(double width, double height, ResourceBundle colors){
-    colorOptions = colors;
-    rectangle = new Rectangle(width - BORDER_SIZE, height - BORDER_SIZE);
-    rectangle.setFill(Color.WHITE);
-//    rectangle.setFill((Paint) colorOptions.getObject(model.getName().name()));
+  private ResourceBundle colorBundle;
+
+  public CellView(){
+    rectangle = new Rectangle();
     cellPane = new Pane(rectangle);
     cellPane.getStyleClass().add("cell-pane");
   }
   @Override
   public void update() {
-    rectangle.setFill((Paint) colorOptions.getObject(model.getName().name()));
+//    rectangle.setFill((Paint) colorOptions.getObject(model.getName().name()));
   }
   public Pane getCellPane(){
     return cellPane;
   }
   public Rectangle getRectangle(){
     return rectangle;
+  }
+  public void setDimensions(int width, int height){
+    rectangle.setWidth(width);
+    rectangle.setHeight(height);
+
   }
 }

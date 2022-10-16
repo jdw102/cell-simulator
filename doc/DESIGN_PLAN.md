@@ -74,36 +74,37 @@ or made from [a tool that generates UML from existing code](http://staruml.io/).
 Justification for classes and methods given in the design.
 
 #### Design Issue #1
-
+Deciding whether we should have model and view at individual cell level.
  * Design #1 Tradeoffs
    * Description
-   
+   One big view one big model.
    * Pros
  
    * Cons
 
  * Design #2 Tradeoffs
    * Description
-   
+   Bunch of tiny views bunch of tiny models.
    * Pros
  
    * Cons
  
  * Justification for choice
-
+Chose the individual cell models and views to better utilize the observer and observable interfaces.
 
 #### Design Issue #2
-
+What should define the difference between different simulations.
  * Design #1 Tradeoffs
-   * Description
-   
+   * Description 
+     * Have a different model for each one.
    * Pros
  
    * Cons
+     * 
 
  * Design #2 Tradeoffs
    * Description
-   
+     * Have a separate state handler class.
    * Pros
  
    * Cons
@@ -115,7 +116,7 @@ Justification for classes and methods given in the design.
 
  * Implementation #1
    * Description
-   
+      
    * Classes possibly affected
  
    * Methods possibly affected
@@ -172,14 +173,13 @@ Justification for classes and methods given in the design.
 
 ## User Interface
 
-Here is our amazing UI:
+Initial Design Idea: 
 
-![This is cool, too bad you can't see it](images/29-sketched-ui-wireframe.jpg "An alternate design")
+![This was our initial idea for the UI, but we found that the simulation information did not need to take up so much space](images/altdesign.png "Alternative UI Design")
 
-taken from [Brilliant Examples of Sketched UI Wireframes and Mock-Ups](https://onextrapixel.com/40-brilliant-examples-of-sketched-ui-wireframes-and-mock-ups/).
+Final Design Idea:
 
-
-
+![This final design will utilize a pop up dialog window to show extra information about the simulation](images/finaldesign.png "The final design of our UI")
 
 ## Team Responsibilities
 
@@ -191,7 +191,7 @@ taken from [Brilliant Examples of Sketched UI Wireframes and Mock-Ups](https://o
  * Team Member #3
 
  * Team Member #4
-
+Jerry Worthy - UI/Views
 
 #### Secondary Responsibilities
  * Team Member #1
@@ -201,7 +201,7 @@ taken from [Brilliant Examples of Sketched UI Wireframes and Mock-Ups](https://o
  * Team Member #3
 
  * Team Member #4
-
+ Jerry Worthy - Design
 
 #### Schedule Plan
 
