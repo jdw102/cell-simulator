@@ -1,10 +1,18 @@
 package cellsociety.view;
 
+/**
+ * A view class that contains the title, author, and description of the simulation
+ */
 public class InfoText {
     private String title;
     private String author;
     private String description;
-
+    /**
+     * Creates a new instance of the simulation information.
+     * @param t the title
+     * @param a the author
+     * @param d the description
+     */
     public InfoText(String t, String a, String d){
         title = t;
         author = a;

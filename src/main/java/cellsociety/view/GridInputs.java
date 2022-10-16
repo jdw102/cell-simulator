@@ -16,17 +16,19 @@ import java.util.ResourceBundle;
 
 import static cellsociety.ViewUtils.attachTooltip;
 import static cellsociety.ViewUtils.makeButton;
-
+/**
+ * A class that contains all the inputs that control the grid views animation.
+ */
 public class GridInputs {
     private HBox container;
     private final double MAX_SPEED = 4.0;
     private final double MIN_SPEED = 0.5;
     private final double DEFAULT_SPEED = 1.0;
-    private  ResourceBundle myResources;
     private PlayButton playButton;
-
-    public GridInputs(ResourceBundle resources){
-        myResources = resources;
+    /**
+     * Create a new grid inputs container.
+     */
+    public GridInputs(){
         Button backwardButton = makeButton("BackwardButton", event -> System.out.println("Backward"));
         playButton = new PlayButton();
         Button forwardButton = makeButton("ForwardButton", event -> System.out.println("Forward"));
@@ -38,9 +40,16 @@ public class GridInputs {
         container = new HBox(padderRegion, backwardButton, playButton.getButton(), forwardButton, sliderBox);
         container.getStyleClass().add("grid-inputs-container");
     }
+    /**
+     * @return HBox containing all the components
+     */
     public HBox getContainer(){
         return container;
     }
+    /**
+     * @param speedLabel the TextField that acts as the label
+     * @return the slider that adjusts teh animation speed
+     */
     private Slider makeSpeedSlider(TextField speedLabel){
         Slider s = new Slider(MIN_SPEED, MAX_SPEED, DEFAULT_SPEED);
         s.valueProperty().addListener((obs, oldval, newVal) -> {
@@ -51,6 +60,9 @@ public class GridInputs {
         attachTooltip("SpeedSliderTooltip", s);
         return s;
     }
+    /**
+     * @return VBox containing the slider and label
+     */
     private VBox makeSliderBox(){
         TextField speedLabel = new TextField("x" + Double.toString(DEFAULT_SPEED));
         speedLabel.setDisable(true);

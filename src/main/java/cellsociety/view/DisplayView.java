@@ -24,6 +24,10 @@ import java.util.ResourceBundle;
 import static cellsociety.ViewUtils.attachTooltip;
 import static cellsociety.ViewUtils.makeButton;
 
+
+/**
+ * A class that contains all the view and UI components.
+ */
 public class DisplayView {
     private static final String STYLESHEET = "default.css";
     public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
@@ -42,16 +46,28 @@ public class DisplayView {
     private final FileChooser FILE_CHOOSER;
     private final Stage STAGE;
 
+    /**
+     * Create a new view.
+     * @param language the language displayed by the components
+     * @param fileChooser the file chooser
+     * @param stage the stage displaying the scene
+     */
     public DisplayView(String language, FileChooser fileChooser, Stage stage){
         FILE_CHOOSER = fileChooser;
         STAGE = stage;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         viewUtils = new ViewUtils(myResources);
-        gridInputs = new GridInputs(myResources);
+        gridInputs = new GridInputs();
         simInputsBox = makeSimInputsBox();
         colorOptions = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_COLOR_OPTIONS);
         infoText = new InfoText("Test Title", "Jerry Worthy", "Blah blah blah");
     }
+    /**
+     * Create the scene to display the view components.
+     * @param width the width of the scene
+     * @param height the height of the scene
+     * @return the scene
+     */
     public Scene makeScene(int width, int height){
         cellGrid = new GridView(10, 10, width - WIDTH_BUFFER, height - HEIGHT_BUFFER, colorOptions);
         STAGE.heightProperty().addListener((obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER, STAGE.getHeight() - HEIGHT_BUFFER));
@@ -65,6 +81,11 @@ public class DisplayView {
         infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"), DEFAULT_RESOURCE_FOLDER + STYLESHEET);
         return scene;
     }
+    /**
+     * Creates the inputs relating to the loading and saving of simulations,
+     * contained within an HBox.
+     * @return the HBox containing the inputs
+     */
     private HBox makeSimInputsBox(){
         ComboBox<String> c = new ComboBox<>();
         c.getItems().add(myResources.getString("GAME_OF_LIFE"));
