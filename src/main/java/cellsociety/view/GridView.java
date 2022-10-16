@@ -54,18 +54,20 @@ public class GridView {
      * A method to resize each pane in the grid pane to fit the new window dimensions.
      */
     public void resizeGrid(double width, double height){
-        gridWidth = width;
-        gridHeight = height;
-        double rectHeight = height / numRows;
-        double rectWidth = width / numCols;
-        for (CellView[] row: cells){
-            for (CellView c: row){
-                c.getRectangle().setWidth(rectWidth);
-                c.getRectangle().setHeight(rectHeight);
+        if (cells != null) {
+            gridWidth = width;
+            gridHeight = height;
+            double rectHeight = height / numRows;
+            double rectWidth = width / numCols;
+            for (CellView[] row: cells){
+                for (CellView c: row){
+                    c.getRectangle().setWidth(rectWidth);
+                    c.getRectangle().setHeight(rectHeight);
+                }
             }
+            cellHeight = rectHeight;
+            cellWidth = rectWidth;
         }
-        cellHeight = rectHeight;
-        cellWidth = rectWidth;
     }
     /**
      * A method to change the number of rows and columns of the grid.
