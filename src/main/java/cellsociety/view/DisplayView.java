@@ -105,7 +105,7 @@ public class DisplayView {
 
     private ComboBox<String> makeTypeSelector() {
         ComboBox<String> c = new ComboBox<>();
-        File colorDirectory = new File("C:\\Users\\User\\IdeaProjects\\cellsociety_team06\\src\\main\\resources\\cellsociety\\simcolors");
+        File colorDirectory = new File(getClass().getResource(DEFAULT_RESOURCE_FOLDER + "simcolors").getPath());
         String[] colorFiles = colorDirectory.list();
         if (colorFiles != null) {
             for (String f : colorFiles) {
