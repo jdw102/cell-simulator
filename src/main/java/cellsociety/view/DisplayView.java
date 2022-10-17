@@ -125,6 +125,8 @@ public class DisplayView {
    */
   private ComboBox<String> makeTypeSelector() {
     ComboBox<String> c = new ComboBox<>();
+    c.getStyleClass().add("sim-selector");
+    c.setId("SimSelector");
     File colorDirectory = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "simcolors").getPath());
     String[] colorFiles = colorDirectory.list();

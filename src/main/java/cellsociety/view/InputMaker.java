@@ -49,6 +49,7 @@ public class InputMaker {
     } else {
       result.setText(label);
     }
+    result.setId(property);
     result.setOnAction(handler);
     return result;
   }
