@@ -99,6 +99,7 @@ public class DisplayView {
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
+      //controller.setupSimulation(dataFile);
       showMessage(Alert.AlertType.INFORMATION, "");
     }
   }

@@ -38,8 +38,8 @@ public class CellView implements Observer {
   }
 
   public void setDimensions(double width, double height) {
-    rectangle.setWidth(width);
-    rectangle.setHeight(height);
+    rectangle.setWidth(width - BORDER_SIZE);
+    rectangle.setHeight(height - BORDER_SIZE);
   }
 
   public void setColorBundle(ResourceBundle colors) {

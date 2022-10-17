@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 
 /**
@@ -10,15 +11,25 @@ public class PlayButton {
   private final Button button;
   private final InputMaker inputMaker;
   private boolean playState;
+  private Timeline animation;
 
-  public PlayButton(InputMaker utils) {
+  public PlayButton(InputMaker utils, Timeline animation) {
+    this.animation = animation;
     inputMaker = utils;
     playState = true;
     button = inputMaker.makeButton("PlayButton", event -> togglePlay());
   }
 
+  /**
+   * Sets the function of the button to either play or pause.
+   */
   private void togglePlay() {
-    setPlay(!playState);
+    if (playState) {
+      play();
+    } else {
+      pause();
+    }
+    playState = !playState;
   }
 
   private void changeGraphic(String img, String tooltip) {
@@ -30,17 +41,13 @@ public class PlayButton {
     return button;
   }
 
-  /**
-   * Sets the function of the button to either play or pause.
-   *
-   * @param b a boolean that if true triggers play and if false triggers pause
-   */
-  public void setPlay(boolean b) {
-    playState = b;
-    if (playState) {
-      changeGraphic("PlayButton", "PlayButtonTooltip");
-    } else {
-      changeGraphic("PauseButton", "PauseButtonTooltip");
-    }
+  private void play() {
+    animation.play();
+    changeGraphic("PauseButton", "PauseButtonTooltip");
+  }
+
+  private void pause() {
+    animation.pause();
+    changeGraphic("PlayButton", "PlayButtonTooltip");
   }
 }
