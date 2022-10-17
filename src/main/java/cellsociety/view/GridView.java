@@ -57,7 +57,8 @@ public class GridView {
   }
 
   /**
-   * A method to change the number of rows and columns of the grid.
+   * A method to change the number of rows and columns of the grid, calculate the width and height
+   * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
     cellWidth = gridWidth / rows;
@@ -67,6 +68,10 @@ public class GridView {
     cells = new CellView[rows][cols];
   }
 
+  /**
+   * Adds a cell view to the corresponding position in the grid pane, sets its dimensions, sets its
+   * color resource bundle, and adds it to the array of cells.
+   */
   public void addCell(CellView cellView, int i, int j) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setColorBundle(colorBundle);
@@ -74,6 +79,11 @@ public class GridView {
     grid.add(cellView.getCellPane(), i, j);
   }
 
+  /**
+   * Sets the color resource bundle that will be passed to each cell view.
+   *
+   * @param type the type of simulation used to retrieve the correct property file
+   */
   public void setSimType(String type) {
     colorBundle = ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type);
   }

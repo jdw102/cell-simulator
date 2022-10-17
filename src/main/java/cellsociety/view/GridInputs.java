@@ -23,11 +23,16 @@ public class GridInputs {
   private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
+  private final Button forwardButton;
+  private final Button backwardButton;
   private final InputMaker inputMaker;
   private Timeline animation;
 
+
   /**
    * Create a new grid inputs container.
+   *
+   * @param utils the input maker that contains methods to create inputs
    */
   public GridInputs(InputMaker utils) {
     animation = new Timeline(Timeline.INDEFINITE);
@@ -35,11 +40,11 @@ public class GridInputs {
         .add(new KeyFrame(Duration.seconds(SECOND_DELAY), e -> stepForward()));
     animation.setRate(DEFAULT_SPEED);
     inputMaker = utils;
-    Button backwardButton = inputMaker.makeButton("BackwardButton",
+    backwardButton = inputMaker.makeButton("BackwardButton",
         event -> stepBackward());
-    playButton = new PlayButton(utils, animation);
-    Button forwardButton = inputMaker.makeButton("ForwardButton",
+    forwardButton = inputMaker.makeButton("ForwardButton",
         event -> stepForward());
+    playButton = new PlayButton(utils, animation, this);
     inputMaker.attachTooltip("BackwardButtonTooltip", backwardButton);
     inputMaker.attachTooltip("ForwardButtonTooltip", forwardButton);
     VBox sliderBox = makeSliderBox();
@@ -48,7 +53,6 @@ public class GridInputs {
     container = new HBox(padderRegion, backwardButton, playButton.getButton(), forwardButton,
         sliderBox);
     container.getStyleClass().add("grid-inputs-container");
-
   }
 
   /**
@@ -88,14 +92,30 @@ public class GridInputs {
     return box;
   }
 
+  /**
+   * Jump forward one frame by calling the update state method in the controller.
+   */
   private void stepForward() {
     //Controller.updateState();
   }
 
+  /**
+   * Jumps the animation back by one frame.
+   */
   private void stepBackward() {
     Duration time = animation.getCurrentTime().add(Duration.seconds(SECOND_DELAY).negate());
     if (time.toMillis() > 0) {
       animation.jumpTo(time);
     }
+  }
+
+  /**
+   * Disables or enables the backward and forward buttons.
+   *
+   * @param disable if true disables, if false enables
+   */
+  public void disableStepButtons(Boolean disable) {
+    backwardButton.setDisable(disable);
+    forwardButton.setDisable(disable);
   }
 }

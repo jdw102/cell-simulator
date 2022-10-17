@@ -96,6 +96,9 @@ public class DisplayView {
     return b;
   }
 
+  /**
+   * Opens a file and passes the file to the controller for simulation setup.
+   */
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
@@ -104,11 +107,22 @@ public class DisplayView {
     }
   }
 
+  /**
+   * Displays alert message to user.
+   *
+   * @param type    the alert type
+   * @param message the message to display
+   */
   // display given message to user using the given type of Alert dialog box
   private void showMessage(Alert.AlertType type, String message) {
     new Alert(type, message).showAndWait();
   }
 
+  /**
+   * Creates combobox to select simulation type.
+   *
+   * @return the combo box
+   */
   private ComboBox<String> makeTypeSelector() {
     ComboBox<String> c = new ComboBox<>();
     File colorDirectory = new File(

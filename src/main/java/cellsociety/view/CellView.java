@@ -18,6 +18,9 @@ public class CellView implements Observer {
   private CellModel model;
   private ResourceBundle colorBundle;
 
+  /**
+   * Create a new instance of a cell view.
+   */
   public CellView() {
     rectangle = new Rectangle();
     cellPane = new Pane(rectangle);
@@ -37,11 +40,17 @@ public class CellView implements Observer {
     return rectangle;
   }
 
+  /**
+   * Sets the dimensions of the rectangle held within in the cell.
+   */
   public void setDimensions(double width, double height) {
     rectangle.setWidth(width - BORDER_SIZE);
     rectangle.setHeight(height - BORDER_SIZE);
   }
 
+  /**
+   * Sets the resource bundle to the appropriate one.
+   */
   public void setColorBundle(ResourceBundle colors) {
     colorBundle = colors;
   }

@@ -120,7 +120,10 @@ public class InputMaker {
     b.setGraphic(i);
   }
 
-  // set some sensible defaults when the FileChooser is created
+  /**
+   * @param extensionAccepted the file allowed extension
+   * @return file chooser
+   */
   public FileChooser makeChooser(String extensionAccepted) {
     FileChooser result = new FileChooser();
     result.setTitle("Open Data File");
