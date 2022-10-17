@@ -1,15 +1,16 @@
 package cellsociety.controller;
 
-public enum RequiredSimKeys {
+public enum SimFileKeys {
   TYPE("Type"),
   TITLE("Title"),
   AUTHOR("Author"),
   DESCRIPTION("Description"),
-  INITIALSTATES("InitialStates");
+  INITIALSTATES("InitialStates"),
+  STATECOLORS("StateColors");
 
   private String simFileKeyName;
 
-  RequiredSimKeys(String simFileKeyName) {
+  SimFileKeys(String simFileKeyName) {
     this.simFileKeyName = simFileKeyName;
   }
 
