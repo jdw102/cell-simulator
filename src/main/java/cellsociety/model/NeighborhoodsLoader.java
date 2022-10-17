@@ -17,6 +17,10 @@ public class NeighborhoodsLoader {
   public NeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
     myCellSpawner = cellSpawner;
     myDistance = distance;
+
+    setNumRows();
+    setNumCols();
+
     loadNeighborhoods();
   }
 
@@ -24,56 +28,23 @@ public class NeighborhoodsLoader {
 
   }
 
-  public CellSpawner getNeighborhood(int row, int col) {
-    return null;
+  public Neighborhood getNeighborhood(int row, int col) {
+    int flattenedIdx = getFlattenedIdx(row, col);
+    return myNeighborhoods[flattenedIdx];
   }
 
-  //returns coordinates of adjacent cells
+  public Neighborhood getNeighborhood(int flattenedIdx) {
+    return myNeighborhoods[flattenedIdx];
+  }
+
+  private int getFlattenedIdx(int row, int col) {
+    return row*myNumCols + col;
+  }
+
+  //Hard coded just for now w/ d = 1, will improve to calculate all neighbors for any given distance
   private int[][] calcAdjacencyList(int row, int col) {
-    List<Integer> adjacents;
-    return null;
-  }
-
-  private int[][] getVerticalAdjacents(int row, int col) {
-    List<int[]> verticalAdjacents = new ArrayList<>();
-    for(int i = 1; i <= myDistance; i++) {
-      int[] coord_above = new int[]{row, col + i};
-      int[] coord_below = new int[]{row, col - i};
-      verticalAdjacents.add(coord_above);
-      verticalAdjacents.add(coord_below);
-    }
-
-    return (int[][]) verticalAdjacents.toArray();
-  }
-
-  private int[][] getHorizontalAdjacents(int row, int col) {
-    List<int[]> verticalAdjacents = new ArrayList<>();
-
-    for(int i = 1; i <= myDistance; i++) {
-      int[] coord_right = new int[]{row + 1, col};
-      int[] coord_left = new int[]{row - 1, col};
-      verticalAdjacents.add(coord_left);
-      verticalAdjacents.add(coord_right);
-    }
-    return (int[][]) verticalAdjacents.toArray();
-
-  }
-
-  private int[][] getDiagonalAdjacents(int row, int col) {
-    List<int[]> verticalAdjacents = new ArrayList<>();
-
-    for(int i = 1; i <= myDistance; i++) {
-      int[] coord_top_right = new int[]{row + 1, col + 1};
-      int[] coord_top_left = new int[] {row - 1, col + 1};
-      int[] coord_bottom_left = new int[]{row - 1, col - 1};
-      int[] coord_bottom_right = new int[]{row - 1, col - 1};
-
-      verticalAdjacents.add(coord_top_left);
-      verticalAdjacents.add(coord_top_right);
-      verticalAdjacents.add(coord_bottom_left);
-      verticalAdjacents.add(coord_bottom_right);
-    }
-    return (int[][]) verticalAdjacents.toArray();
+    return new int[][]{{row, col + 1}, {row + 1, col}, {row + 1, col + 1}, {row - 1, col}, {row, col -1},
+        {row - 1, col - 1}, {row + 1, col - 1}, {row -1, col + 1}};
   }
 
   private boolean cellExists(int row, int col) {
@@ -88,8 +59,8 @@ public class NeighborhoodsLoader {
   private CellModel[] getNeighbors(int row, int col) {
     ArrayList<CellModel> retCells = new ArrayList<>();
 
-    int[][] adjacencies = calcAdjacencyList(row, col);
-    for(int[] coord: adjacencies) {
+    int[][] adjacents = calcAdjacencyList(row, col);
+    for(int[] coord: adjacents) {
       int curr_row = coord[0];
       int curr_col = coord[1];
 
@@ -104,13 +75,10 @@ public class NeighborhoodsLoader {
   private void loadNeighborhoods() {
     ArrayList<Neighborhood> neighborhoodTracker = new ArrayList<>();
 
-    int numRows = myCellSpawner.getNumRows();
-    int numCols = myCellSpawner.getNumCols();
-
     List<Neighborhood> retNeighborhoods = new ArrayList<>();
 
-    for(int row = 0; row < numRows; row++) {
-      for(int col = 0; col < numCols; col++) {
+    for(int row = 0; row < myNumRows; row++) {
+      for(int col = 0; col < myNumCols; col++) {
 
         CellModel currCell = myCellSpawner.getCell(row, col);
         CellModel[] neighbors = getNeighbors(row, col);
@@ -123,16 +91,16 @@ public class NeighborhoodsLoader {
     myNeighborhoods = (Neighborhood[]) retNeighborhoods.toArray();
   }
 
-  public int getNumCols(List<List<CellModel>> cells) {
-    try{
-      return cells.get(0).size();
-    } catch (Exception e) {
-      return 0;
-    }
+
+  private void setNumRows() {
+    myNumRows = myCellSpawner.getNumRows();
+  }
+  private void setNumCols() {
+    myNumRows = myCellSpawner.getNumCols();
   }
 
-//  public Neighborhood getNeighborhood(int row, int col) {
-//    return
-//  }
+  public int getNumNeighborhoods() {
+    return myNeighborhoods.length;
+  }
 
 }
