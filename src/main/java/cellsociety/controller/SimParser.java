@@ -7,11 +7,22 @@ import java.util.Properties;
 
 public class SimParser {
 
+  public static final String SIM_FILE_TYPE = "sim";
   private Properties properties;
 
   public SimParser(File simFile) throws IOException { // catch this in controller and tell view
     properties = null;
+    // Check if it is a .sim file
+    isFileTypeSim(simFile);
     readSimFile(simFile);
+  }
+
+  private void isFileTypeSim(File simFile) {
+    String[] fileName = simFile.getName().split(".");
+    String providedFileType = fileName[fileName.length-1];
+    if (! providedFileType.equals(SIM_FILE_TYPE)) { // was not provided a .sim file, so throw exception
+      throw new WrongFileTypeException(SIM_FILE_TYPE, providedFileType);
+    }
   }
 
   /**
@@ -35,10 +46,10 @@ public class SimParser {
    * @return GameInfo Record
    */
   public GameDisplayInfo getGameDisplayInfo() {
-    String type = properties.getProperty(RequiredSimKeys.TYPE.getSimFileKeyName());
-    String title = properties.getProperty(RequiredSimKeys.TITLE.getSimFileKeyName());
-    String author = properties.getProperty(RequiredSimKeys.AUTHOR.getSimFileKeyName());
-    String description = properties.getProperty(RequiredSimKeys.DESCRIPTION.getSimFileKeyName());
+    String type = properties.getProperty(SimFileKeys.TYPE.getSimFileKeyName());
+    String title = properties.getProperty(SimFileKeys.TITLE.getSimFileKeyName());
+    String author = properties.getProperty(SimFileKeys.AUTHOR.getSimFileKeyName());
+    String description = properties.getProperty(SimFileKeys.DESCRIPTION.getSimFileKeyName());
     return new GameDisplayInfo(type, title, author, description);
   }
 
@@ -49,7 +60,7 @@ public class SimParser {
    */
   public File getInitStateCsv() {
     String initStatesCsvName = properties.getProperty(
-        RequiredSimKeys.INITIALSTATES.getSimFileKeyName());
+        SimFileKeys.INITIALSTATES.getSimFileKeyName());
     return new File(initStatesCsvName);
   }
 }
