@@ -44,15 +44,19 @@ public class InfoPopUp {
         dialog.getDialogPane().setContent(box);
     }
 
+    /**
+     * Creates the call back that is triggered when the dialog is closed.
+     * If save is clicked, the InfoText record is updated.
+     * Else nothing is saved, either way the fields are disabled.
+     */
     private Callback<ButtonType, InfoText> createDialogCallback() {
         Callback<ButtonType, InfoText> cb = new Callback<ButtonType, InfoText>() {
             @Override
             public InfoText call(ButtonType param) {
                 if (param.getButtonData() == ButtonBar.ButtonData.APPLY) {
                     updateText();
-                } else if (param.getButtonData() == ButtonBar.ButtonData.CANCEL_CLOSE) {
-                    toggleFields(true);
                 }
+                toggleFields(true);
                 return null;
             }
         };
