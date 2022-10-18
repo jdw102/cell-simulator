@@ -11,7 +11,7 @@ class SimParserTest {
   public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
 
   @Test
-  void SimFileParserReadsAllRequiredFieldsTest() throws IOException {
+  void SimFileParserReadsAllRequiredFieldsTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.sim").getPath());
@@ -30,7 +30,7 @@ class SimParserTest {
   }
 
   @Test
-  void SimFileParserGetInitStateCsvTest() throws IOException {
+  void SimFileParserGetInitStateCsvTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.sim").getPath());
