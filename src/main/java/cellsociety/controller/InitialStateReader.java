@@ -11,16 +11,15 @@ import java.lang.reflect.InvocationTargetException;
 
 public class InitialStateReader extends FileParser {
 
+  public static final String CSV_FILE_TYPE = "csv";
   private static final int NUM_ROWS_INDEX = 1;
   private static final int NUM_COLS_INDEX = 0;
-  public static final String CSV_FILE_TYPE = "csv";
-
   private int myNumRows;
 
   private int myNumCols;
-  private File myFile;
-  private int[][] statesAsInts;
-  private StateHandler myStateHandler;
+  private final File myFile;
+  private final int[][] statesAsInts;
+  private final StateHandler myStateHandler;
 
   public InitialStateReader(StateHandler stateHandler, File f)
       throws CsvValidationException, IOException, WrongFileTypeException {

@@ -1,15 +1,12 @@
 package cellsociety.model;
 
 import cellsociety.State;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.scene.control.Cell;
 
 public class Neighborhood {
 
 
-  private CellModel centerCell;
-  private CellModel[] myNeighboringCells;
+  private final CellModel centerCell;
+  private final CellModel[] myNeighboringCells;
 
   public Neighborhood(CellModel center, CellModel[] neighbors) {
     centerCell = center;
@@ -18,8 +15,8 @@ public class Neighborhood {
 
   public int count(State targetState) {
     int retCounter = 0;
-    for(CellModel cellModel: myNeighboringCells) {
-      if(sameState(targetState, cellModel.getCurrentState())) {
+    for (CellModel cellModel : myNeighboringCells) {
+      if (sameState(targetState, cellModel.getCurrentState())) {
         retCounter += 1;
       }
     }

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Controller {
 
   public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
-  private DisplayView displayView;
+  private final DisplayView displayView;
   private GridModel gridModel;
 
   //  private StateHandler stateHandler;
@@ -29,6 +29,7 @@ public class Controller {
 
   /**
    * Called by view on sim file upload
+   *
    * @param simFile
    */
   public void setupSimulation(File simFile) {
@@ -44,7 +45,8 @@ public class Controller {
       StateHandler stateHandler = stateHandlerLoader.getStateHandler();
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
-      NeighborhoodsLoader neighborhoodsLoader = new NeighborhoodsLoader(cellSpawner, DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
+      NeighborhoodsLoader neighborhoodsLoader = new NeighborhoodsLoader(cellSpawner,
+          DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
       gridModel = new GridModel(neighborhoodsLoader, stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException e) {
       displayView.showMessage(e);

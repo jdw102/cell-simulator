@@ -29,9 +29,9 @@ public class DisplayView {
   private final Stage STAGE;
   private final FileChooser FILE_CHOOSER;
   private final String DATA_FILE_SIM_EXTENSION = "*.sim";
-  private GridInputs gridInputs;
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
+  private GridInputs gridInputs;
   private InfoText infoText;
   private GridView cellGrid;
   private InfoPopUp infoPopUp;

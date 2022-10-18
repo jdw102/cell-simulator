@@ -28,7 +28,7 @@ public class GridInputs {
   private final Button backwardButton;
   private final InputFactory inputFactory;
   private final Timeline animation;
-  private Controller controller;
+  private final Controller controller;
 
 
   /**

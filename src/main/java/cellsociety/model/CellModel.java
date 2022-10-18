@@ -3,7 +3,6 @@ package cellsociety.model;
 import cellsociety.Observable;
 import cellsociety.Observer;
 import cellsociety.State;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,7 +14,7 @@ public class CellModel implements Observable {
 
   private State myCurrentState;
   private State myNextState;
-  private Collection<Observer> myObservers;
+  private final Collection<Observer> myObservers;
 
   /**
    * Get a new CellModel
@@ -53,6 +52,15 @@ public class CellModel implements Observable {
   }
 
   /**
+   * Get current state of this cell
+   *
+   * @return myCurrentState
+   */
+  public State getCurrentState() {
+    return myCurrentState;
+  }
+
+  /**
    * Set current state of this cell. Alerts observers that this cell's state has changed
    *
    * @param state this cell's new current state
@@ -60,24 +68,6 @@ public class CellModel implements Observable {
   public void setCurrentState(State state) {
     myCurrentState = state;
     notifyObservers();
-  }
-
-  /**
-   * Set next state of this cell
-   *
-   * @param state this cell's next state
-   */
-  public void setNextState(State state) {
-    myNextState = state;
-  }
-
-  /**
-   * Get current state of this cell
-   *
-   * @return myCurrentState
-   */
-  public State getCurrentState() {
-    return myCurrentState;
   }
 
   /**
@@ -94,6 +84,15 @@ public class CellModel implements Observable {
    */
   public State getNextState() {
     return myNextState;
+  }
+
+  /**
+   * Set next state of this cell
+   *
+   * @param state this cell's next state
+   */
+  public void setNextState(State state) {
+    myNextState = state;
   }
 
   @Override

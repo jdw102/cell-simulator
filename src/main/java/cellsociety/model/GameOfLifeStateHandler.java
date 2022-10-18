@@ -1,12 +1,10 @@
 package cellsociety.model;
 
 import cellsociety.State;
-
 import cellsociety.cellStates.Alive;
 import cellsociety.cellStates.Dead;
 import cellsociety.cellStates.GameOfLifeCellState;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GameOfLifeStateHandler implements StateHandler {
@@ -19,6 +17,7 @@ public class GameOfLifeStateHandler implements StateHandler {
     stateOfValue.put(0, Alive.class);
     stateOfValue.put(1, Dead.class);
   }
+
   @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
     int liveNeighbors = currNeighborhood.count(new Alive());
