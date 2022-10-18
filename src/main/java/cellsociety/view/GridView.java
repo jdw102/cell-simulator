@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
  */
 public class GridView {
 
-  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.simcolors";
+  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.simcolors.";
   private final GridPane grid;
   private CellView[][] cells;
   private int numRows;
