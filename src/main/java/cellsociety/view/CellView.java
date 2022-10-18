@@ -30,7 +30,7 @@ public class CellView implements Observer {
 
   @Override
   public void update() {
-    rectangle.setFill((Paint) colorBundle.getObject(model.getMyCurrentState().toString()));
+    rectangle.setFill((Paint) colorBundle.getObject(model.getCurrentState().toString()));
   }
 
   public Pane getCellPane() {
