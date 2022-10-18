@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class GridModel {
     List<List<CellModel>> myCells;
+//    Collection<Neighborhood> myNeighborhoods;
+    // GridModel gridModel = new GridModel(neighborhoodsSpawner, stateHandler);
+
     StateFigureOuter myStateFigureOuter;
 
     /**
@@ -23,10 +26,15 @@ public class GridModel {
         myStateFigureOuter = stateFigureOuter;
     }
 
+//    public GridModel(NeighborhoodSpawner neighborhoodSpawner, StateHandler stateHandler) {
+//        neighborhoods = neighborhoodSpawner.spawnNeighborhoods();
+//        myStateHandler = stateHandler;
+//    }
+
     /**
      * Determine the next state of the grid.
      */
-    public void iterateCellStates() {
+    public void updateState() {
         determineNextStates();
         setCurrentStatesToNextStates();
     }
@@ -35,7 +43,7 @@ public class GridModel {
         for (int i = 0; i < myCells.size(); i++) {
             for (int k = 0; k < myCells.get(i).size(); k++) {
                 CellModel currentCell = myCells.get(i).get(k);
-                currentCell.setMyNextState(myStateFigureOuter.figureOutNextState(i, k, myCells));
+                currentCell.setNextState(myStateFigureOuter.figureOutNextState(i, k, myCells));
             }
         }
     }
@@ -43,7 +51,7 @@ public class GridModel {
     private void setCurrentStatesToNextStates() {
         for (List<CellModel> myCell : myCells) {
             for (CellModel currentCell : myCell) {
-                currentCell.setMyCurrentState(currentCell.getMyNextState());
+                currentCell.setCurrentState(currentCell.getNextState());
             }
         }
     }
