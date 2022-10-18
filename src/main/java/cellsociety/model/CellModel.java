@@ -61,6 +61,15 @@ public class CellModel implements Observable {
   }
 
   /**
+   * Set next state of this cell
+   *
+   * @param state this cell's next state
+   */
+  public void setNextState(State state) {
+    myNextState = state;
+  }
+
+  /**
    * Get current state of this cell
    *
    * @return myCurrentState
@@ -83,15 +92,6 @@ public class CellModel implements Observable {
    */
   public State getNextState() {
     return myNextState;
-  }
-
-  /**
-   * Set next state of this cell
-   *
-   * @param state this cell's next state
-   */
-  public void setNextState(State state) {
-    myNextState = state;
   }
 
   @Override
