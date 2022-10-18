@@ -11,31 +11,30 @@ import java.util.Map;
 
 public class GameOfLifeStateHandler implements StateHandler {
 
-    Map<Integer, Class> stateOfValue;
+  Map<Integer, Class> stateOfValue;
 
-    public GameOfLifeStateHandler() {
-        stateOfValue = new HashMap<>();
+  public GameOfLifeStateHandler() {
+    stateOfValue = new HashMap<>();
 
-        stateOfValue.put(0, Alive.class);
-        stateOfValue.put(1, Dead.class);
+    stateOfValue.put(0, Alive.class);
+    stateOfValue.put(1, Dead.class);
+  }
+
+  @Override
+  public State figureOutNextState(Neighborhood currNeighborhood) {
+    int liveNeighbors = currNeighborhood.count(new Alive());
+    if ((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2)
+        || liveNeighbors == 3) {
+      return new Alive();
+    } else {
+      return new Dead();
     }
 
-    @Override
-    public State figureOutNextState(Neighborhood currNeighborhood) {
-        int liveNeighbors = currNeighborhood.count(new Alive());
+  }
 
-
-        if((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2) || liveNeighbors == 3) {
-            return new Alive();
-        } else {
-            return new Dead();
-        }
-
-    }
-
-    @Override
-    public Class getMapping(int stateValue) {
-        return stateOfValue.get(stateValue);
-    }
+  @Override
+  public Class getMapping(int stateValue) {
+    return stateOfValue.get(stateValue);
+  }
 
 }
