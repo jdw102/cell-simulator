@@ -45,7 +45,7 @@ public class CellSpawner {
     myCellModels[row][col] = new CellModel(cellState); // need init state
     myCellViews[row][col] = new CellView();
     myCellModels[row][col].addObserver(myCellViews[row][col]);
-//    myGridView.add(myCellViews, row, col); // need add method in mygridview
+    myGridView.addCell(myCellViews[row][col], row, col); // need add method in mygridview
   }
 
   public CellModel getCell(int row, int col) {
