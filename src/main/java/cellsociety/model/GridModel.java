@@ -2,29 +2,27 @@ package cellsociety.model;
 
 import cellsociety.State;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Maintains a 2D List of CellModels
  */
 public class GridModel {
-
   List<List<CellModel>> myCells;
 //    Collection<Neighborhood> myNeighborhoods;
   // GridModel gridModel = new GridModel(neighborhoodsSpawner, stateHandler);
 
-  StateFigureOuter myStateFigureOuter;
+  StateHandler myStateHandler;
 
   /**
    * Creates the GridModel
    *
    * @param cellStateGrid    2D List of initial states the cells will contain
-   * @param stateFigureOuter the StateFigureOuter that determines the states of cells each time
+   * @param stateHandler the StateFigureOuter that determines the states of cells each time
    *                         GridModel determines the next state of the cells in the grid
    */
-  public GridModel(List<List<State>> cellStateGrid, StateFigureOuter stateFigureOuter) {
-    myStateFigureOuter = stateFigureOuter;
+  public GridModel(List<List<State>> cellStateGrid, StateHandler stateHandler) {
+    myStateHandler = stateHandler;
   }
 
 //    public GridModel(NeighborhoodSpawner neighborhoodSpawner, StateHandler stateHandler) {
@@ -44,7 +42,7 @@ public class GridModel {
     for (int i = 0; i < myCells.size(); i++) {
       for (int k = 0; k < myCells.get(i).size(); k++) {
         CellModel currentCell = myCells.get(i).get(k);
-        currentCell.setNextState(myStateFigureOuter.figureOutNextState(i, k, myCells));
+        currentCell.setNextState(myStateHandler.figureOutNextState(i, k, myCells));
       }
     }
   }
