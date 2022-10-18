@@ -1,17 +1,17 @@
 package cellsociety;
 
 import cellsociety.view.DisplayView;
+import java.awt.Dimension;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.util.ResourceBundle;
 
 
 /**
  * Feel free to completely change this code or delete it entirely.
  */
 public class Main extends Application {
+
   // kind of data files to look for
   public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);

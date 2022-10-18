@@ -1,65 +1,77 @@
 .button {
-    -fx-min-width: 45;
-    -fx-min-height: 35;
+  -fx-min-width: 45;
+  -fx-min-height: 35;
 }
-.grid-inputs-container{
-    -fx-padding: 5;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color: lightgray;
+
+.grid-inputs-container {
+  -fx-padding: 5;
+  -fx-spacing: 20;
+  -fx-alignment: center;
+  -fx-background-color: lightgray;
 }
-.sim-inputs-container{
-    -fx-padding: 5;
-    -fx-spacing: 10;
-    -fx-alignment: center-right;
-    -fx-background-color: lightgray;
+
+.sim-inputs-container {
+  -fx-padding: 5;
+  -fx-spacing: 10;
+  -fx-alignment: center-right;
+  -fx-background-color: lightgray;
 }
-.combo-box{
-    -fx-min-width: 45;
-    -fx-min-height: 35;
+
+.sim-selector {
+  -fx-min-width: 45;
+  -fx-min-height: 35;
 }
-.cell-grid-pane{
-    -fx-alignment: center;
+
+.cell-grid-pane {
+  -fx-alignment: center;
 }
-.cell-pane{
-    -fx-border-style: solid;
-    -fx-border-width: 1;
-    -fx-border-color: lightgray;
+
+.cell-pane {
+  -fx-border-style: solid;
+  -fx-border-width: 1;
+  -fx-border-color: lightgray;
 }
-.info-header{
-    -fx-font-size: 20;
+
+.info-header {
+  -fx-font-size: 20;
 }
-.info-header-container{
-    -fx-padding: 5;
-    -fx-alignment: center;
-    -fx-spacing: 50;
-    -fx-border-width: 1;
-    -fx-border-style: solid;
-    -fx-border-color: darkgray;
-    -fx-background-color: lightgray;
-    -fx-border-radius: 5;
+
+.info-header-container {
+  -fx-padding: 5;
+  -fx-alignment: center;
+  -fx-spacing: 50;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-color: darkgray;
+  -fx-background-color: lightgray;
+  -fx-border-radius: 5;
 }
-.info-text-label{
-    -fx-font-size: 15;
+
+.info-text-label {
+  -fx-font-size: 15;
 }
-.info-text-field{
-    -fx-max-width: 200;
-    -fx-alignment: center;
-    -fx-font-size: 15;
+
+.info-text-field {
+  -fx-max-width: 200;
+  -fx-alignment: center;
+  -fx-font-size: 15;
 }
-.info-text-area{
-    -fx-max-width: 300;
-    -fx-max-height: 300;
-    -fx-font-size: 15;
+
+.info-text-area {
+  -fx-max-width: 300;
+  -fx-max-height: 300;
+  -fx-font-size: 15;
 }
-.info-grid-pane{
-    -fx-aligment: center;
-    -fx-spacing: 10;
-    -fx-max-width: 100;
+
+.info-grid-pane {
+  -fx-aligment: center;
+  -fx-spacing: 10;
+  -fx-max-width: 100;
 }
+
 .speed-text-field:disabled {
-    -fx-background-color: #F0F0F0;
-    -fx-max-width: 45;
-    -fx-opacity: 1.0;
-    -fx-alignment: center;
+  -fx-background-color: #F0F0F0;
+  -fx-max-width: 45;
+  -fx-opacity: 1.0;
+  -fx-alignment: center;
 }

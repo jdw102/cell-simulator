@@ -15,10 +15,14 @@ public class CellView implements Observer {
   private final int BORDER_SIZE = 1;
   private final Pane cellPane;
   private final Rectangle rectangle;
-  private CellModel model;
+  private final CellModel model;
   private ResourceBundle colorBundle;
 
-  public CellView() {
+  /**
+   * Create a new instance of a cell view.
+   */
+  public CellView(CellModel cellModel) {
+    model = cellModel;
     rectangle = new Rectangle();
     cellPane = new Pane(rectangle);
     cellPane.getStyleClass().add("cell-pane");
@@ -26,7 +30,7 @@ public class CellView implements Observer {
 
   @Override
   public void update() {
-    rectangle.setFill((Paint) colorBundle.getObject(model.getName().name()));
+    rectangle.setFill((Paint) colorBundle.getObject(model.getMyCurrentState().toString()));
   }
 
   public Pane getCellPane() {
@@ -37,11 +41,17 @@ public class CellView implements Observer {
     return rectangle;
   }
 
+  /**
+   * Sets the dimensions of the rectangle held within in the cell.
+   */
   public void setDimensions(double width, double height) {
-    rectangle.setWidth(width);
-    rectangle.setHeight(height);
+    rectangle.setWidth(width - BORDER_SIZE);
+    rectangle.setHeight(height - BORDER_SIZE);
   }
 
+  /**
+   * Sets the resource bundle to the appropriate one.
+   */
   public void setColorBundle(ResourceBundle colors) {
     colorBundle = colors;
   }

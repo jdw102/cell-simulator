@@ -20,14 +20,14 @@ import javax.imageio.ImageIO;
 /**
  * A utils class that contains general methods to create certain UI components.
  */
-public class InputMaker {
+public class InputFactory {
 
   // default to start in the data folder to make it easy on the user to find
   private final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   private final double ICON_SIZE = 30;
   private final ResourceBundle myResources;
 
-  public InputMaker(ResourceBundle resources) {
+  public InputFactory(ResourceBundle resources) {
     this.myResources = resources;
   }
 
@@ -49,6 +49,7 @@ public class InputMaker {
     } else {
       result.setText(label);
     }
+    result.setId(property);
     result.setOnAction(handler);
     return result;
   }
@@ -120,14 +121,17 @@ public class InputMaker {
     b.setGraphic(i);
   }
 
-  // set some sensible defaults when the FileChooser is created
+  /**
+   * @param extensionAccepted the file allowed extension
+   * @return file chooser
+   */
   public FileChooser makeChooser(String extensionAccepted) {
     FileChooser result = new FileChooser();
     result.setTitle("Open Data File");
     // pick a reasonable place to start searching for files
     result.setInitialDirectory(new File(DATA_FILE_FOLDER));
     result.getExtensionFilters()
-        .setAll(new FileChooser.ExtensionFilter("CSV Files", extensionAccepted));
+        .setAll(new FileChooser.ExtensionFilter("sim Files", extensionAccepted));
     return result;
   }
 }
