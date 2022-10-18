@@ -4,7 +4,7 @@ import cellsociety.Observable;
 import cellsociety.Observer;
 import cellsociety.State;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Contains the current state and next state of cells. Alerts list of Observers
@@ -13,17 +13,16 @@ import java.util.List;
 public class CellModel implements Observable {
   private State myCurrentState;
   private State myNextState;
-  private Enum myCellType;
-  private List<Observer> myObservers;
+  private Collection<Observer> myObservers;
 
   /**
    * Get a new CellModel
    * @param startingState the starting state of this CellModel.
    */
-  public CellModel(State startingState) {
+  public CellModel(State startingState) throws NullStartingStateException {
+    if (startingState == null) throw new NullStartingStateException();
     myCurrentState = startingState;
     myNextState = startingState;
-    myCellType = startingState.getSimulationType();
   }
 
   /**
@@ -51,30 +50,38 @@ public class CellModel implements Observable {
    * @return Enum
    */
   public Enum getName() {
-    return myCellType;
+    return myCurrentState.getSimulationType();
   }
 
   /**
    * Set current state of this cell. Alerts observers that this cell's state has changed
    * @param state this cell's new current state
    */
-  public void setMyCurrentState(State state) {
+  public void setCurrentState(State state) {
     myCurrentState = state;
-    alertMyObservers();
+    notifyObservers();
   }
 
   /**
    * Get current state of this cell
    * @return myCurrentState
    */
-  public State getMyCurrentState() {
+  public State getCurrentState() {
     return myCurrentState;
+  }
+
+  /**
+   * Get the Enum representing this cell's current state
+   * @return myCurrentState
+   */
+  public Enum getCurrentStateEnum() {
+    return myCurrentState.getStateEnum();
   }
 
   /**
    * Get the next state of this cell
    */
-  public State getMyNextState() {
+  public State getNextState() {
     return myNextState;
   }
 
@@ -82,15 +89,14 @@ public class CellModel implements Observable {
    * Set next state of this cell
    * @param state this cell's next state
    */
-  public void setMyNextState(State state) {
+  public void setNextState(State state) {
     myNextState = state;
   }
 
-  // TODO: Should we put this method in the Observable interface?
-  // TODO: Finish writing this method
-  private void alertMyObservers() {
+  @Override
+  public void notifyObservers() {
     for (Observer observer : myObservers) {
-      // do some action
+      observer.update();
     }
   }
 }
