@@ -38,5 +38,13 @@ public class Neighborhood {
     return (centerCell.getClass()).equals(stateType.getClass());
   }
 
+  public void updateCellState() {
+    centerCell.setMyCurrentState(centerCell.getMyNextState());
+  }
+
+  public void updateCellNextState(State state) {
+    centerCell.setMyNextState(state);
+  }
+
 
 }
