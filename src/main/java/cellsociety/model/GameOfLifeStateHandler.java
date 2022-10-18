@@ -19,7 +19,6 @@ public class GameOfLifeStateHandler implements StateHandler {
     stateOfValue.put(0, Alive.class);
     stateOfValue.put(1, Dead.class);
   }
-
   @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
     int liveNeighbors = currNeighborhood.count(new Alive());

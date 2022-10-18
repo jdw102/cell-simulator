@@ -31,19 +31,19 @@ public class Neighborhood {
   }
 
   private boolean sameState(State state1, State state2) {
-    return (state1.getState()).equals(state2.getState());
+    return (state1.getStateEnum()).equals(state2.getStateEnum());
   }
 
   public boolean isState(State stateType) {
-    return (centerCell.getMyCurrentState().getState()).equals(stateType.getState());
+    return (centerCell.getCurrentState().getStateEnum()).equals(stateType.getStateEnum());
   }
 
   public void updateCellState() {
-    centerCell.setMyCurrentState(centerCell.getMyNextState());
+    centerCell.setCurrentState(centerCell.getNextState());
   }
 
   public void updateCellNextState(State state) {
-    centerCell.setMyNextState(state);
+    centerCell.setNextState(state);
   }
 
 
