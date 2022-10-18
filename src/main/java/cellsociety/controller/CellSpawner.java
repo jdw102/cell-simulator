@@ -42,10 +42,10 @@ public class CellSpawner {
 
   private void initializeCell(int row, int col) {
     State cellState = getState(row, col);
-    myCellModels[row][col] = new CellModel(cellState); // need init state
-    myCellViews[row][col] = new CellView();
+    myCellModels[row][col] = new CellModel(cellState);
+    myCellViews[row][col] = new CellView(myCellModels[row][col]); // will resolve when merged
     myCellModels[row][col].addObserver(myCellViews[row][col]);
-    myGridView.addCell(myCellViews[row][col], row, col); // need add method in mygridview
+    myGridView.addCell(myCellViews[row][col], row, col);
   }
 
   public CellModel getCell(int row, int col) {
