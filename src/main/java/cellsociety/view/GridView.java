@@ -61,8 +61,8 @@ public class GridView {
    * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
-    cellWidth = gridWidth / rows;
-    cellHeight = gridHeight / cols;
+    cellWidth = gridWidth / cols;
+    cellHeight = gridHeight / rows;
     numCols = cols;
     numRows = rows;
     cells = new CellView[rows][cols];
@@ -76,7 +76,7 @@ public class GridView {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setColorBundle(colorBundle);
     cells[i][j] = cellView;
-    grid.add(cellView.getCellPane(), i, j);
+    grid.add(cellView.getCellPane(), j, i);
   }
 
   /**

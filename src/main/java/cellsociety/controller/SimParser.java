@@ -9,9 +9,11 @@ public class SimParser extends FileParser {
 
   public static final String SIM_FILE_TYPE = "sim";
   private Properties properties;
+  private String pathToFiles;
 
   public SimParser(File simFile) throws IOException, WrongFileTypeException { // catch this in controller and tell view
     properties = null;
+    pathToFiles = new File(simFile.getParent()).getParent();
     // Check if it is a .sim file
     isFileTypeCorrect(simFile, SIM_FILE_TYPE);
     readSimFile(simFile);
@@ -53,6 +55,6 @@ public class SimParser extends FileParser {
   public File getInitStateCsv() {
     String initStatesCsvName = properties.getProperty(
         SimFileKeys.INITIALSTATES.getSimFileKeyName());
-    return new File(initStatesCsvName);
+    return new File(pathToFiles, initStatesCsvName);
   }
 }

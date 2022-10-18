@@ -65,18 +65,17 @@ public class NeighborhoodsLoader {
       int curr_col = coord[1];
 
       if (cellExists(curr_row, curr_col)) {
-        retCells.add(myCellSpawner.getCell(row, col));
+        retCells.add(myCellSpawner.getCell(curr_row, curr_col));
       }
     }
 
-    return (CellModel[]) retCells.toArray();
+    return retCells.toArray(new CellModel[0]);
   }
 
   private void loadNeighborhoods() {
     ArrayList<Neighborhood> neighborhoodTracker = new ArrayList<>();
 
-    List<Neighborhood> retNeighborhoods = new ArrayList<>();
-
+//    List<Neighborhood> retNeighborhoods = new ArrayList<>();
     for (int row = 0; row < myNumRows; row++) {
       for (int col = 0; col < myNumCols; col++) {
 
@@ -88,7 +87,7 @@ public class NeighborhoodsLoader {
       }
     }
 
-    myNeighborhoods = (Neighborhood[]) retNeighborhoods.toArray();
+    myNeighborhoods = neighborhoodTracker.toArray(new Neighborhood[0]);
   }
 
 
