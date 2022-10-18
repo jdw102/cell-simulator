@@ -96,7 +96,7 @@ public class NeighborhoodsLoader {
     myNumRows = myCellSpawner.getNumRows();
   }
   private void setNumCols() {
-    myNumRows = myCellSpawner.getNumCols();
+    myNumCols = myCellSpawner.getNumCols();
   }
 
   public int getNumNeighborhoods() {
