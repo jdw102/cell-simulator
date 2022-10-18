@@ -17,16 +17,6 @@ public class GameOfLifeStateHandler implements StateHandler {
     }
 
     @Override
-    public State figureOutNextState(int cellRowIndex, int cellColIndex, List<List<CellModel>> cells) {
-        return null;
-    }
-
-    @Override
-    public State figureOutNextState(State currentState, State[] neighboringStates) {
-        return null;
-    }
-
-    @Override
     public State figureOutNextState(Neighborhood currNeighborhood) {
         int liveNeighbors = currNeighborhood.count(new Alive());
 
