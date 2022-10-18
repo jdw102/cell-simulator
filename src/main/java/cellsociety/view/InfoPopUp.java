@@ -20,7 +20,7 @@ public class InfoPopUp {
 
   private final Dialog<InfoText> dialog;
   private final int SPACING = 5;
-  private final InputMaker inputMaker;
+  private final InputFactory inputFactory;
   private TextField titleField;
   private TextField authorField;
   private TextArea descriptionField;
@@ -36,8 +36,8 @@ public class InfoPopUp {
    * @param title      the title of the pop-up dialog
    * @param styleSheet the CSS styling of the pop-up
    */
-  public InfoPopUp(InfoText text, String title, String styleSheet, InputMaker utils) {
-    inputMaker = utils;
+  public InfoPopUp(InfoText text, String title, String styleSheet, InputFactory utils) {
+    inputFactory = utils;
     infoText = text;
     dialog = new Dialog<>();
     dialog.getDialogPane().getStylesheets()
@@ -48,6 +48,7 @@ public class InfoPopUp {
     VBox box = makeVBox();
     dialog.setResultConverter(createDialogCallback());
     dialog.getDialogPane().setContent(box);
+    dialog.getDialogPane().setId("InfoPane");
   }
 
   /**
@@ -72,10 +73,10 @@ public class InfoPopUp {
    * Creates the three button inputs.
    */
   private void makeButtons() {
-    saveInfoButton = inputMaker.makeButtonType("SaveInfoButton", ButtonBar.ButtonData.APPLY);
-    cancelInfoButton = inputMaker.makeButtonType("CancelInfoButton",
+    saveInfoButton = inputFactory.makeButtonType("SaveInfoButton", ButtonBar.ButtonData.APPLY);
+    cancelInfoButton = inputFactory.makeButtonType("CancelInfoButton",
         ButtonBar.ButtonData.CANCEL_CLOSE);
-    editInfoButton = inputMaker.makeButton("EditInfoButton", event -> toggleFields(false));
+    editInfoButton = inputFactory.makeButton("EditInfoButton", event -> toggleFields(false));
     dialog.getDialogPane().getButtonTypes().addAll(saveInfoButton, cancelInfoButton);
   }
 
@@ -83,12 +84,12 @@ public class InfoPopUp {
    * Creates the two text fields and one text area.
    */
   private void makeFields(InfoText text) {
-    titleField = inputMaker.makeTextField("AuthorTextField", text.getTitle());
-    authorField = inputMaker.makeTextField("AuthorTextField", text.getTitle());
-    descriptionField = inputMaker.makeTextArea("AuthorTextField", text.getTitle());
-    inputMaker.attachTooltip("TitleLabel", titleField);
-    inputMaker.attachTooltip("AuthorLabel", authorField);
-    inputMaker.attachTooltip("DescriptionLabel", descriptionField);
+    titleField = inputFactory.makeTextField("TitleTextField", text.getTitle());
+    authorField = inputFactory.makeTextField("AuthorTextField", text.getAuthor());
+    descriptionField = inputFactory.makeTextArea("DescriptionTextField", text.getDescription());
+    inputFactory.attachTooltip("TitleLabel", titleField);
+    inputFactory.attachTooltip("AuthorLabel", authorField);
+    inputFactory.attachTooltip("DescriptionLabel", descriptionField);
     titleField.getStyleClass().add("info-text-field");
     authorField.getStyleClass().add("info-text-field");
     descriptionField.getStyleClass().add("info-text-area");
@@ -111,16 +112,16 @@ public class InfoPopUp {
    * @return VBox containing all the components
    */
   private VBox makeVBox() {
-    Label topLabel = inputMaker.makeLabel("InfoPopUpHeader");
+    Label topLabel = inputFactory.makeLabel("InfoPopUpHeader");
     topLabel.getStyleClass().add("info-header");
     Region padderRegion = new Region();
     padderRegion.prefWidthProperty().bind(editInfoButton.widthProperty());
     HBox topBox = new HBox(padderRegion, topLabel, editInfoButton);
     topBox.getStyleClass().add("info-header-container");
 
-    Label titleLabel = inputMaker.makeLabel("TitleLabel");
-    Label authorLabel = inputMaker.makeLabel("AuthorLabel");
-    Label descriptionLabel = inputMaker.makeLabel("DescriptionLabel");
+    Label titleLabel = inputFactory.makeLabel("TitleLabel");
+    Label authorLabel = inputFactory.makeLabel("AuthorLabel");
+    Label descriptionLabel = inputFactory.makeLabel("DescriptionLabel");
     titleLabel.getStyleClass().add("info-text-label");
     authorLabel.getStyleClass().add("info-text-label");
     descriptionLabel.getStyleClass().add("info-text-label");

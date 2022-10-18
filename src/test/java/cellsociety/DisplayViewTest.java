@@ -7,8 +7,12 @@ import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,7 +51,6 @@ public class DisplayViewTest extends DukeApplicationTest {
       "SpreadingFire"
   })
   void testSimSelector(String simType) {
-
     ComboBox<String> simSelector = lookup("#SimSelector").query();
     String expected = simType;
     select(simSelector, expected);
@@ -77,4 +80,90 @@ public class DisplayViewTest extends DukeApplicationTest {
     assertEquals(expected.getUrl(), ((ImageView) playButton.getGraphic()).getImage().getUrl());
   }
 
+  @ParameterizedTest
+  @CsvSource({
+      "0.5",
+      "1.0",
+      "1.5",
+      "2.0",
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+  })
+  void testSpeedSlider(String val) {
+    double expected = Double.parseDouble(val);
+    Slider s = lookup("#SpeedSlider").query();
+    setValue(s, expected);
+    sleep(500);
+    assertEquals(expected, s.getValue());
+  }
+
+  @Test
+  void testNoSpeedSliderValue() {
+    double d = 5.0;
+    double expected = 4.0;
+    Slider s = lookup("#SpeedSlider").query();
+    setValue(s, d);
+    sleep(500);
+    assertEquals(expected, s.getValue());
+  }
+
+  @Test
+  void testInfoTitleEdit() {
+    String expected = "test";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextField titleField = lookup("#TitleTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
+        .write(expected);
+    sleep(500);
+    assertEquals(expected, titleField.getText());
+  }
+
+  @Test
+  void testInfoAuthorEdit() {
+    String expected = "test";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextField titleField = lookup("#AuthorTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
+        .write(expected);
+    sleep(500);
+    assertEquals(expected, titleField.getText());
+  }
+
+  @Test
+  void testInfoDescriptionEdit() {
+    String expected = "test";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextArea titleField = lookup("#DescriptionTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
+        .write(expected);
+    sleep(500);
+    assertEquals(expected, titleField.getText());
+  }
+//  @Test
+//  void testInfoSave() {
+//    String expected = "test";
+//    Button infoButton = lookup("#InfoButton").query();
+//    clickOn(infoButton);
+//    TextArea titleField = lookup("#DescriptionTextField").query();
+//    Button editButton = lookup("#EditInfoButton").query();
+//    clickOn(editButton);
+//    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
+//        .write(expected);
+//    DialogPane dp = lookup("#InfoPane").query();
+//    Node saveButton = dp.lookupButton(ButtonType.APPLY);
+//    clickOn(saveButton);
+//    sleep(500);
+//    assertEquals(expected, titleField.getText());
+//  }
 }

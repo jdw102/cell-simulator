@@ -25,8 +25,8 @@ public class GridInputs {
   private final PlayButton playButton;
   private final Button forwardButton;
   private final Button backwardButton;
-  private final InputMaker inputMaker;
-  private Timeline animation;
+  private final InputFactory inputFactory;
+  private final Timeline animation;
 
 
   /**
@@ -34,19 +34,19 @@ public class GridInputs {
    *
    * @param utils the input maker that contains methods to create inputs
    */
-  public GridInputs(InputMaker utils) {
+  public GridInputs(InputFactory utils) {
     animation = new Timeline(Timeline.INDEFINITE);
     animation.getKeyFrames()
         .add(new KeyFrame(Duration.seconds(SECOND_DELAY), e -> stepForward()));
     animation.setRate(DEFAULT_SPEED);
-    inputMaker = utils;
-    backwardButton = inputMaker.makeButton("BackwardButton",
+    inputFactory = utils;
+    backwardButton = inputFactory.makeButton("BackwardButton",
         event -> stepBackward());
-    forwardButton = inputMaker.makeButton("ForwardButton",
+    forwardButton = inputFactory.makeButton("ForwardButton",
         event -> stepForward());
     playButton = new PlayButton(utils, animation, this);
-    inputMaker.attachTooltip("BackwardButtonTooltip", backwardButton);
-    inputMaker.attachTooltip("ForwardButtonTooltip", forwardButton);
+    inputFactory.attachTooltip("BackwardButtonTooltip", backwardButton);
+    inputFactory.attachTooltip("ForwardButtonTooltip", forwardButton);
     VBox sliderBox = makeSliderBox();
     Region padderRegion = new Region();
     padderRegion.prefWidthProperty().bind(sliderBox.widthProperty());
@@ -74,7 +74,7 @@ public class GridInputs {
       animation.setRate(s.getValue());
     });
     s.setId("SpeedSlider");
-    inputMaker.attachTooltip("SpeedSliderTooltip", s);
+    inputFactory.attachTooltip("SpeedSliderTooltip", s);
     return s;
   }
 
@@ -97,6 +97,7 @@ public class GridInputs {
    */
   private void stepForward() {
     //Controller.updateState();
+
   }
 
   /**

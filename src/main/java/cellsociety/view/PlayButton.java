@@ -9,9 +9,9 @@ import javafx.scene.control.Button;
 public class PlayButton {
 
   private final Button button;
-  private final InputMaker inputMaker;
+  private final InputFactory inputFactory;
+  private final Timeline animation;
   private boolean playState;
-  private Timeline animation;
 
   /**
    * Creates new play button.
@@ -19,11 +19,11 @@ public class PlayButton {
    * @param utils     the input maker
    * @param animation the animation that will be played and paused
    */
-  public PlayButton(InputMaker utils, Timeline animation, GridInputs inputs) {
+  public PlayButton(InputFactory utils, Timeline animation, GridInputs inputs) {
     this.animation = animation;
-    inputMaker = utils;
+    inputFactory = utils;
     playState = true;
-    button = inputMaker.makeButton("PlayButton", event -> togglePlay(inputs));
+    button = inputFactory.makeButton("PlayButton", event -> togglePlay(inputs));
   }
 
   /**
@@ -47,8 +47,8 @@ public class PlayButton {
    * @param tooltip the new tooltip label id string
    */
   private void changeGraphic(String img, String tooltip) {
-    inputMaker.changeButtonGraphic(img, button);
-    inputMaker.attachTooltip(tooltip, button);
+    inputFactory.changeButtonGraphic(img, button);
+    inputFactory.attachTooltip(tooltip, button);
   }
 
   public Button getButton() {

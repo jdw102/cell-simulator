@@ -1,9 +1,11 @@
 package cellsociety.view;
 
+import cellsociety.controller.GameDisplayInfo;
 import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -25,11 +27,11 @@ public class DisplayView {
   private final double WIDTH_BUFFER = 50;
   private final Stage STAGE;
   private final FileChooser FILE_CHOOSER;
-  private final String DATA_FILE_CSV_EXTENSION = "*.csv";
+  private final String DATA_FILE_SIM_EXTENSION = "*.sim";
   private final GridInputs gridInputs;
-  private final InputMaker inputMaker;
+  private final InputFactory inputFactory;
   private final HBox simInputsBox;
-  private final InfoText infoText;
+  private InfoText infoText;
   private GridView cellGrid;
   private InfoPopUp infoPopUp;
 
@@ -42,11 +44,11 @@ public class DisplayView {
   public DisplayView(String language, Stage stage) {
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-    inputMaker = new InputMaker(myResources);
-    gridInputs = new GridInputs(inputMaker);
+    inputFactory = new InputFactory(myResources);
+    gridInputs = new GridInputs(inputFactory);
     simInputsBox = makeSimInputsBox();
-    infoText = new InfoText("Test Title", "Jerry Worthy", "Blah blah blah");
-    FILE_CHOOSER = inputMaker.makeChooser(DATA_FILE_CSV_EXTENSION);
+    FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
+    System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
 
   /**
@@ -71,8 +73,6 @@ public class DisplayView {
     Scene scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
-        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputMaker);
     return scene;
   }
 
@@ -84,13 +84,13 @@ public class DisplayView {
    */
   private HBox makeSimInputsBox() {
     ComboBox<String> c = makeTypeSelector();
-    inputMaker.attachTooltip("SimulationTypeTooltip", c);
-    Button saveButton = inputMaker.makeButton("SaveButton", event -> System.out.println("Save"));
-    Button importButton = inputMaker.makeButton("ImportButton", event -> openFile());
-    Button infoButton = inputMaker.makeButton("InfoButton", event -> infoPopUp.open());
-    inputMaker.attachTooltip("SaveButtonTooltip", saveButton);
-    inputMaker.attachTooltip("ImportButtonTooltip", importButton);
-    inputMaker.attachTooltip("InfoButtonTooltip", infoButton);
+    inputFactory.attachTooltip("SimulationTypeTooltip", c);
+    Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
+    Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
+    Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
+    inputFactory.attachTooltip("SaveButtonTooltip", saveButton);
+    inputFactory.attachTooltip("ImportButtonTooltip", importButton);
+    inputFactory.attachTooltip("InfoButtonTooltip", infoButton);
     HBox b = new HBox(saveButton, importButton, infoButton, c);
     b.getStyleClass().add("sim-inputs-container");
     return b;
@@ -103,19 +103,17 @@ public class DisplayView {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
       //controller.setupSimulation(dataFile);
-      showMessage(Alert.AlertType.INFORMATION, "");
     }
   }
 
   /**
    * Displays alert message to user.
    *
-   * @param type    the alert type
-   * @param message the message to display
+   * @param exception the exception
    */
   // display given message to user using the given type of Alert dialog box
-  private void showMessage(Alert.AlertType type, String message) {
-    new Alert(type, message).showAndWait();
+  public void showMessage(Exception exception) {
+    new Alert(AlertType.ERROR, exception.getMessage()).showAndWait();
   }
 
   /**
@@ -138,5 +136,16 @@ public class DisplayView {
       c.setValue(c.getItems().get(0));
     }
     return c;
+  }
+
+  public GridView getGridView() {
+    return cellGrid;
+  }
+
+  public void setInfoText(GameDisplayInfo text) {
+    infoText = new InfoText(text.title(), text.author(), text.description());
+    cellGrid.setSimType(text.type());
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
   }
 }

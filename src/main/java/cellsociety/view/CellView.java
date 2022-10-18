@@ -15,13 +15,14 @@ public class CellView implements Observer {
   private final int BORDER_SIZE = 1;
   private final Pane cellPane;
   private final Rectangle rectangle;
-  private CellModel model;
+  private final CellModel model;
   private ResourceBundle colorBundle;
 
   /**
    * Create a new instance of a cell view.
    */
-  public CellView() {
+  public CellView(CellModel cellModel) {
+    model = cellModel;
     rectangle = new Rectangle();
     cellPane = new Pane(rectangle);
     cellPane.getStyleClass().add("cell-pane");
@@ -29,7 +30,7 @@ public class CellView implements Observer {
 
   @Override
   public void update() {
-    rectangle.setFill((Paint) colorBundle.getObject(model.getName().name()));
+    rectangle.setFill((Paint) colorBundle.getObject(model.getMyCurrentState().toString()));
   }
 
   public Pane getCellPane() {
