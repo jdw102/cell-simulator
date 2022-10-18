@@ -31,11 +31,11 @@ public class Neighborhood {
   }
 
   private boolean sameState(State state1, State state2) {
-    return (state1.getClass()).equals(state2.getClass());
+    return (state1.getState()).equals(state2.getState());
   }
 
   public boolean isState(State stateType) {
-    return (centerCell.getClass()).equals(stateType.getClass());
+    return (centerCell.getMyCurrentState().getState()).equals(stateType.getState());
   }
 
   public void updateCellState() {

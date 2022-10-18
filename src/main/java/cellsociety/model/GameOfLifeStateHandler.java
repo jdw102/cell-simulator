@@ -4,16 +4,17 @@ import cellsociety.State;
 
 import cellsociety.cellStates.Alive;
 import cellsociety.cellStates.Dead;
+import cellsociety.cellStates.GameOfLifeCellState;
 import java.util.List;
 import java.util.Map;
 
 public class GameOfLifeStateHandler implements StateHandler {
 
-    Map<Integer, State> stateOfValue;
+    Map<Integer, Enum> stateOfValue;
 
     public GameOfLifeStateHandler() {
-        stateOfValue.put(0, new Dead());
-        stateOfValue.put(1, new Alive());
+        stateOfValue.put(0, GameOfLifeCellState.DEAD);
+        stateOfValue.put(1, GameOfLifeCellState.ALIVE);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class GameOfLifeStateHandler implements StateHandler {
     }
 
     @Override
-    public State getMapping(int stateValue) {
+    public Enum getMapping(int stateValue) {
         return stateOfValue.get(stateValue);
     }
 
