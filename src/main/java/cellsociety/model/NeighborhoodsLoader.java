@@ -38,13 +38,13 @@ public class NeighborhoodsLoader {
   }
 
   private int getFlattenedIdx(int row, int col) {
-    return row*myNumCols + col;
+    return row * myNumCols + col;
   }
 
   //Hard coded just for now w/ d = 1, will improve to calculate all neighbors for any given distance
   private int[][] calcAdjacencyList(int row, int col) {
-    return new int[][]{{row, col + 1}, {row + 1, col}, {row + 1, col + 1}, {row - 1, col}, {row, col -1},
-        {row - 1, col - 1}, {row + 1, col - 1}, {row -1, col + 1}};
+    return new int[][]{{row, col + 1}, {row + 1, col}, {row + 1, col + 1}, {row - 1, col},
+        {row, col - 1}, {row - 1, col - 1}, {row + 1, col - 1}, {row - 1, col + 1}};
   }
 
   private boolean cellExists(int row, int col) {
@@ -60,7 +60,7 @@ public class NeighborhoodsLoader {
     ArrayList<CellModel> retCells = new ArrayList<>();
 
     int[][] adjacents = calcAdjacencyList(row, col);
-    for(int[] coord: adjacents) {
+    for (int[] coord : adjacents) {
       int curr_row = coord[0];
       int curr_col = coord[1];
 
@@ -77,8 +77,8 @@ public class NeighborhoodsLoader {
 
     List<Neighborhood> retNeighborhoods = new ArrayList<>();
 
-    for(int row = 0; row < myNumRows; row++) {
-      for(int col = 0; col < myNumCols; col++) {
+    for (int row = 0; row < myNumRows; row++) {
+      for (int col = 0; col < myNumCols; col++) {
 
         CellModel currCell = myCellSpawner.getCell(row, col);
         CellModel[] neighbors = getNeighbors(row, col);
@@ -95,6 +95,7 @@ public class NeighborhoodsLoader {
   private void setNumRows() {
     myNumRows = myCellSpawner.getNumRows();
   }
+
   private void setNumCols() {
     myNumCols = myCellSpawner.getNumCols();
   }

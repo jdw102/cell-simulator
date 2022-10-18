@@ -20,7 +20,8 @@ public class InitialStateReader {
   private int[][] statesAsInts;
   private StateHandler myStateHandler;
 
-  public InitialStateReader(StateHandler stateHandler, File f) throws CsvValidationException, IOException {
+  public InitialStateReader(StateHandler stateHandler, File f)
+      throws CsvValidationException, IOException {
     myFile = f;
     statesAsInts = parse();
 
@@ -39,8 +40,8 @@ public class InitialStateReader {
 
     String[] nextLine;
     int row = 0;
-    while((nextLine = myCSVReader.readNext()) != null) {
-      for(int col = 0; col < myNumCols; col++) {
+    while ((nextLine = myCSVReader.readNext()) != null) {
+      for (int col = 0; col < myNumCols; col++) {
 
         validateCell(nextLine, col);
 
@@ -56,10 +57,10 @@ public class InitialStateReader {
   }
 
   private void validateCell(String[] line, int index) {
-    try{
+    try {
       Integer.parseInt(line[index]);
 
-    } catch(Exception e) {
+    } catch (Exception e) {
       //if index out of bounds, suggests incorrect num cols
       //if could not parse int then incorrect file format
     }
@@ -78,8 +79,9 @@ public class InitialStateReader {
 
     String[] firstLine = null;
 
-    try {firstLine = myCSVReader.readNext();
-    } catch(Exception e) {
+    try {
+      firstLine = myCSVReader.readNext();
+    } catch (Exception e) {
       System.out.println(e.getMessage());
     }
 
@@ -88,12 +90,12 @@ public class InitialStateReader {
 
     try {
       numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
-    } catch(Exception e) {
+    } catch (Exception e) {
       /// num rows not given
     }
     try {
       numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
-    } catch(Exception e) {
+    } catch (Exception e) {
       /// num cols not given
     }
 

@@ -11,7 +11,7 @@ public class Neighborhood {
   private CellModel centerCell;
   private CellModel[] myNeighboringCells;
 
-  public Neighborhood(CellModel center, CellModel[] neighbors){
+  public Neighborhood(CellModel center, CellModel[] neighbors) {
     centerCell = center;
     myNeighboringCells = neighbors;
   }

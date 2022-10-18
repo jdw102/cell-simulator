@@ -5,13 +5,14 @@ import cellsociety.State;
 import java.util.List;
 
 public interface StateHandler {
-    @Deprecated
-    State figureOutNextState(int cellRowIndex, int cellColIndex, List<List<CellModel>> cells);
 
-    @Deprecated
-    State figureOutNextState(State currentState, State[] neighboringStates);
+  @Deprecated
+  State figureOutNextState(int cellRowIndex, int cellColIndex, List<List<CellModel>> cells);
 
-    State figureOutNextState(Neighborhood currNeighborhood);
+  @Deprecated
+  State figureOutNextState(State currentState, State[] neighboringStates);
 
-    State getMapping(int stateValue);
+  State figureOutNextState(Neighborhood currNeighborhood);
+
+  State getMapping(int stateValue);
 }

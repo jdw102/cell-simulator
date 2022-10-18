@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class GridModel {
     List<List<CellModel>> myCells;
-    StateFigureOuter myStateFigureOuter;
+    StateHandler myStateFigureOuter;
 
     /**
      * Creates the GridModel
@@ -18,7 +18,7 @@ public class GridModel {
      * @param stateFigureOuter the StateFigureOuter that determines the states of cells each time
      *                         GridModel determines the next state of the cells in the grid
      */
-    public GridModel(List<List<State>> cellStateGrid, StateFigureOuter stateFigureOuter) {
+    public GridModel(List<List<State>> cellStateGrid, StateHandler stateFigureOuter) {
         loadMyCells(cellStateGrid);
         myStateFigureOuter = stateFigureOuter;
     }

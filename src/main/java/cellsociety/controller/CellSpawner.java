@@ -1,4 +1,5 @@
 package cellsociety.controller;
+
 import cellsociety.State;
 import cellsociety.model.CellModel;
 import cellsociety.view.CellView;
@@ -30,8 +31,8 @@ public class CellSpawner {
 
   public void initializeGrid() {
 
-    for(int row = 0; row < myNumRows; row++) {
-      for(int col = 0; col < myNumCols; col++) {
+    for (int row = 0; row < myNumRows; row++) {
+      for (int col = 0; col < myNumCols; col++) {
 
         initializeCell(row, col);
 

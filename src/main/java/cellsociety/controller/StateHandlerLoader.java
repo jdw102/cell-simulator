@@ -4,7 +4,9 @@ import cellsociety.model.GameOfLifeStateHandler;
 import cellsociety.model.StateHandler;
 
 public class StateHandlerLoader {
+
   private String mySimType;
+
   public StateHandlerLoader(String simType) {
     mySimType = simType.toLowerCase();
   }
