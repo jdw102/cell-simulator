@@ -4,5 +4,4 @@ public interface State {
 
   Enum getStateEnum();
 
-  Enum getSimulationType();
 }

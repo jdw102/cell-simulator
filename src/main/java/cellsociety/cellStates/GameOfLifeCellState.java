@@ -29,7 +29,7 @@ public enum GameOfLifeCellState implements State {
    * @return null
    */
   @Override
-  public <T extends Enum<T>> T getState() {
+  public Enum getStateEnum() {
     return null;
   }
 

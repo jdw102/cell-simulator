@@ -5,16 +5,11 @@ import cellsociety.State;
 public class Alive implements State {
 
   public Alive() {
-
   }
 
   @Override
-  public <T extends Enum<T>> T getState() {
-    return null;
+  public Enum getStateEnum() {
+    return GameOfLifeCellState.ALIVE;
   }
 
-  @Override
-  public Enum getSimulationType() {
-    return null;
-  }
 }

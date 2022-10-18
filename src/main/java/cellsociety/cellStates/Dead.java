@@ -8,13 +8,7 @@ public class Dead implements State {
 
   }
 
-  @Override
-  public <T extends Enum<T>> T getState() {
-    return null;
-  }
-
-  @Override
-  public Enum getSimulationType() {
-    return null;
+  public Enum getStateEnum() {
+    return GameOfLifeCellState.DEAD;
   }
 }
