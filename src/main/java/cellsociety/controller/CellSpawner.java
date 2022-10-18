@@ -34,6 +34,7 @@ public class CellSpawner {
     initializeGrid();
   }
 
+
   /**
    * Method to iterate over each cell
    */
@@ -49,7 +50,9 @@ public class CellSpawner {
   }
 
   /**
-   * Method to set the initial states of each cell. Links individual cell models to their cell views.
+   * Method to set the initial states of each cell. Links individual cell models to their cell
+   * views.
+   *
    * @param row the x value in the [x][y] coordinate of the data structure
    * @param col the y value in the [x][y] coordinate of the data structure
    */
@@ -64,6 +67,7 @@ public class CellSpawner {
 
   /**
    * Method to allow outside classes to access a particular cell model
+   *
    * @param row the x value in the [x][y] coordinate of the data structure
    * @param col the y value in the [x][y] coordinate of the data structure
    */
@@ -87,8 +91,9 @@ public class CellSpawner {
 
   /**
    * Method to obtain the state of the cell model/view grid. Uses abstraction through
-   * InitialStateReader to translate the state value, e.g. 0 or 1, to the state's enum, e.g.
-   * DEAD or ALIVE.
+   * InitialStateReader to translate the state value, e.g. 0 or 1, to the state's enum, e.g. DEAD or
+   * ALIVE.
+   *
    * @param row the x value in the [x][y] coordinate of the data structure
    * @param col the y value in the [x][y] coordinate of the data structure
    */
