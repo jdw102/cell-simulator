@@ -5,23 +5,27 @@ import cellsociety.State;
 import cellsociety.cellStates.Alive;
 import cellsociety.cellStates.Dead;
 import cellsociety.cellStates.GameOfLifeCellState;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GameOfLifeStateHandler implements StateHandler {
 
-    Map<Integer, Enum> stateOfValue;
+    Map<Integer, Class> stateOfValue;
 
     public GameOfLifeStateHandler() {
-        stateOfValue.put(0, GameOfLifeCellState.DEAD);
-        stateOfValue.put(1, GameOfLifeCellState.ALIVE);
+        stateOfValue = new HashMap<>();
+
+        stateOfValue.put(0, Alive.class);
+        stateOfValue.put(1, Dead.class);
     }
 
     @Override
     public State figureOutNextState(Neighborhood currNeighborhood) {
         int liveNeighbors = currNeighborhood.count(new Alive());
 
-        if((currNeighborhood.isState(new Alive()) && liveNeighbors == 2) || liveNeighbors == 3) {
+
+        if((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2) || liveNeighbors == 3) {
             return new Alive();
         } else {
             return new Dead();
@@ -30,7 +34,7 @@ public class GameOfLifeStateHandler implements StateHandler {
     }
 
     @Override
-    public Enum getMapping(int stateValue) {
+    public Class getMapping(int stateValue) {
         return stateOfValue.get(stateValue);
     }
 

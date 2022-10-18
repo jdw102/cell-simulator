@@ -61,7 +61,7 @@ public class CellSpawner {
   }
 
   private State getState(int row, int col) {
-    return myInitialStateReader.getState(row, col);
+    return myInitialStateReader.createStateInstance(row, col);
   }
 
   private void setNumRows() {

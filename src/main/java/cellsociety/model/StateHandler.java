@@ -8,5 +8,5 @@ public interface StateHandler {
 
   State figureOutNextState(Neighborhood currNeighborhood);
 
-  Enum getMapping(int stateValue);
+  Class getMapping(int stateValue);
 }

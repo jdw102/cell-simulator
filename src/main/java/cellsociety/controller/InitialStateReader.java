@@ -7,6 +7,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class InitialStateReader {
 
@@ -103,9 +104,19 @@ public class InitialStateReader {
     myNumCols = numCols;
   }
 
-  public State getState(int row, int col) {
+  public State createStateInstance(int row, int col) {
     int valOfState = statesAsInts[row][col];
-    return myStateHandler.getMapping(valOfState);
+    try {
+      return (State) myStateHandler.getMapping(valOfState).getDeclaredConstructor().newInstance();
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException(e);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public int getStateValue(int row, int col) {
