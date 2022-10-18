@@ -5,7 +5,7 @@ import cellsociety.State;
 /**
  * Contains States for the GameOfLife
  */
-public enum GameOfLifeCellState implements State {
+public enum GameOfLifeCellState {
   DEAD,
   ALIVE;
 
@@ -16,9 +16,5 @@ public enum GameOfLifeCellState implements State {
    *
    * @return null
    */
-  @Override
-  public Enum getStateEnum() {
-    return null;
-  }
 
 }
