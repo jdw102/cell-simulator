@@ -8,7 +8,7 @@ public enum SimFileKeys {
   INITIALSTATES("InitialStates"),
   STATECOLORS("StateColors");
 
-  private String simFileKeyName;
+  private final String simFileKeyName;
 
   SimFileKeys(String simFileKeyName) {
     this.simFileKeyName = simFileKeyName;

@@ -6,7 +6,7 @@ package cellsociety.cellStates;
  */
 public enum GameOfLifeCellState {
   DEAD,
-  ALIVE;
+  ALIVE
 
 
 }

@@ -2,12 +2,11 @@ package cellsociety.model;
 
 import cellsociety.State;
 
-import java.util.List;
-
 /**
  * Maintains a 2D List of CellModels
  */
 public class GridModel {
+
   NeighborhoodsLoader myNeighborhoodsLoader;
   StateHandler myStateHandler;
 
@@ -15,8 +14,8 @@ public class GridModel {
    * Creates the GridModel
    *
    * @param neighborhoodsLoader the NeighborhoodsLoader that loads and contains the neighborhoods
-   * @param stateHandler the StateFigureOuter that determines the states of cells each time
-   *                         GridModel determines the next state of the cells in the grid
+   * @param stateHandler        the StateFigureOuter that determines the states of cells each time
+   *                            GridModel determines the next state of the cells in the grid
    */
   public GridModel(NeighborhoodsLoader neighborhoodsLoader, StateHandler stateHandler) {
     myNeighborhoodsLoader = neighborhoodsLoader;

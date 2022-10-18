@@ -2,17 +2,15 @@ package cellsociety.model;
 
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
-import java.util.List;
-import javafx.scene.control.Cell;
 
 public class NeighborhoodsLoader {
 
-  private int myDistance;
+  private final int myDistance;
   private int myNumRows;
   private int myNumCols;
   private Neighborhood[] myNeighborhoods;
 
-  private CellSpawner myCellSpawner;
+  private final CellSpawner myCellSpawner;
 
   public NeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
     myCellSpawner = cellSpawner;

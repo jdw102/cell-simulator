@@ -7,14 +7,14 @@ import cellsociety.view.GridView;
 
 public class CellSpawner {
 
-  private CellModel[][] myCellModels;
-  private CellView[][] myCellViews;
+  private final CellModel[][] myCellModels;
+  private final CellView[][] myCellViews;
   private int myNumRows;
   private int myNumCols;
 
-  private GridView myGridView;
+  private final GridView myGridView;
 
-  private InitialStateReader myInitialStateReader;
+  private final InitialStateReader myInitialStateReader;
 
   public CellSpawner(GridView gridView, InitialStateReader initialStateReader) {
     myInitialStateReader = initialStateReader;

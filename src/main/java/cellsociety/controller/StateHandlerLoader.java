@@ -5,7 +5,7 @@ import cellsociety.model.StateHandler;
 
 public class StateHandlerLoader {
 
-  private String mySimType;
+  private final String mySimType;
 
   public StateHandlerLoader(String simType) {
     mySimType = simType.toLowerCase();
