@@ -2,6 +2,7 @@ package cellsociety.model;
 
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
+import javafx.scene.control.Cell;
 
 public class NeighborhoodsLoader {
 
@@ -39,11 +40,24 @@ public class NeighborhoodsLoader {
     return row * myNumCols + col;
   }
 
-  //Hard coded just for now w/ d = 1, will improve to calculate all neighbors for any given distance
-  private int[][] calcAdjacencyList(int row, int col) {
-    return new int[][]{{row, col + 1}, {row + 1, col}, {row + 1, col + 1}, {row - 1, col},
-        {row, col - 1}, {row - 1, col - 1}, {row + 1, col - 1}, {row - 1, col + 1}};
+
+  private boolean validNeighbor(int x1, int y1, int x2, int y2) {
+    return (cellExists(x2, y2) && !tooFarHorizontally(x1, x2) && !tooFarVertically(y1, y2)
+        && !sameCoord(x1, y1, x2, y2));
   }
+
+  private boolean sameCoord(int x1, int y1, int x2, int y2) {
+    return (x1 == x2 && y1 == y2);
+  }
+
+  private boolean tooFarHorizontally(int x1, int x2) {
+    return (x1 - x2 > myDistance || x2 - x1 > myDistance);
+  }
+
+  private boolean tooFarVertically(int y1, int y2) {
+    return (y1 - y2 > myDistance || y2 - y1 > myDistance);
+  }
+
 
   private boolean cellExists(int row, int col) {
     try {
@@ -54,19 +68,19 @@ public class NeighborhoodsLoader {
     }
   }
 
+
   private CellModel[] getNeighbors(int row, int col) {
     ArrayList<CellModel> retCells = new ArrayList<>();
 
-    int[][] adjacents = calcAdjacencyList(row, col);
-    for (int[] coord : adjacents) {
-      int curr_row = coord[0];
-      int curr_col = coord[1];
+    for (int curr_row = 0; curr_row < myNumRows; curr_row++) {
+      for (int curr_col = 0; curr_col < myNumCols; curr_col++) {
 
-      if (cellExists(curr_row, curr_col)) {
-        retCells.add(myCellSpawner.getCell(curr_row, curr_col));
+        if (validNeighbor(row, col, curr_row, curr_col)) {
+          retCells.add(myCellSpawner.getCell(curr_row, curr_col));
+        }
+
       }
     }
-
     return retCells.toArray(new CellModel[0]);
   }
 
