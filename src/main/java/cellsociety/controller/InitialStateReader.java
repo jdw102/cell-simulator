@@ -9,10 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-public class InitialStateReader {
+public class InitialStateReader extends FileParser {
 
-  private static final int NUM_ROWS_INDEX = 0;
-  private static final int NUM_COLS_INDEX = 1;
+  private static final int NUM_ROWS_INDEX = 1;
+  private static final int NUM_COLS_INDEX = 0;
+  public static final String CSV_FILE_TYPE = "csv";
 
   private int myNumRows;
 
@@ -22,7 +23,8 @@ public class InitialStateReader {
   private StateHandler myStateHandler;
 
   public InitialStateReader(StateHandler stateHandler, File f)
-      throws CsvValidationException, IOException {
+      throws CsvValidationException, IOException, WrongFileTypeException {
+    isFileTypeCorrect(f, CSV_FILE_TYPE);
     myFile = f;
     statesAsInts = parse();
 

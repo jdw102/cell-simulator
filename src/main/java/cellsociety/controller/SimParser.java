@@ -5,24 +5,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class SimParser {
+public class SimParser extends FileParser {
 
   public static final String SIM_FILE_TYPE = "sim";
   private Properties properties;
+  private String pathToFiles;
 
-  public SimParser(File simFile) throws IOException { // catch this in controller and tell view
+  public SimParser(File simFile) throws IOException, WrongFileTypeException { // catch this in controller and tell view
     properties = null;
+    pathToFiles = new File(simFile.getParent()).getParent();
     // Check if it is a .sim file
-    isFileTypeSim(simFile);
+    isFileTypeCorrect(simFile, SIM_FILE_TYPE);
     readSimFile(simFile);
-  }
-
-  private void isFileTypeSim(File simFile) {
-    String[] fileName = simFile.getName().split(".");
-    String providedFileType = fileName[fileName.length-1];
-    if (! providedFileType.equals(SIM_FILE_TYPE)) { // was not provided a .sim file, so throw exception
-      throw new WrongFileTypeException(SIM_FILE_TYPE, providedFileType);
-    }
   }
 
   /**
@@ -61,6 +55,6 @@ public class SimParser {
   public File getInitStateCsv() {
     String initStatesCsvName = properties.getProperty(
         SimFileKeys.INITIALSTATES.getSimFileKeyName());
-    return new File(initStatesCsvName);
+    return new File(pathToFiles, initStatesCsvName);
   }
 }

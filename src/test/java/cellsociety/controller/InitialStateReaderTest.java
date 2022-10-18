@@ -17,7 +17,7 @@ class InitialStateReaderTest {
 
   InitialStateReader initialStateReaderTester = new InitialStateReader(stateHandlerTester, initTestFile);
 
-  InitialStateReaderTest() throws CsvValidationException, IOException {
+  InitialStateReaderTest() throws CsvValidationException, IOException, WrongFileTypeException {
   }
 
   @Test

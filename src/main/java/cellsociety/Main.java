@@ -1,5 +1,6 @@
 package cellsociety;
 
+import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
@@ -25,6 +26,8 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    Controller controller = new Controller(view);
+    view.setController(controller);
     // give the window a title
     primaryStage.setTitle(TITLE);
     //add our user interface components to Frame and show it

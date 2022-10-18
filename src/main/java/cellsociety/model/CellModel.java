@@ -4,6 +4,7 @@ import cellsociety.Observable;
 import cellsociety.Observer;
 import cellsociety.State;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -25,6 +26,7 @@ public class CellModel implements Observable {
     if (startingState == null) {
       throw new NullStartingStateException();
     }
+    myObservers = new ArrayList<>();
     myCurrentState = startingState;
     myNextState = startingState;
   }

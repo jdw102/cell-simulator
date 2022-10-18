@@ -27,6 +27,7 @@ public class CellSpawner {
     myCellViews = new CellView[myNumRows][myNumCols];
 
     myGridView.setDimensions(myNumRows, myNumCols);
+    initializeGrid();
   }
 
   public void initializeGrid() {
@@ -44,8 +45,9 @@ public class CellSpawner {
     State cellState = getState(row, col);
     myCellModels[row][col] = new CellModel(cellState);
     myCellViews[row][col] = new CellView(myCellModels[row][col]); // will resolve when merged
-    myCellModels[row][col].addObserver(myCellViews[row][col]);
     myGridView.addCell(myCellViews[row][col], row, col);
+    myCellModels[row][col].addObserver(myCellViews[row][col]);
+    myCellModels[row][col].setCurrentState(cellState);
   }
 
   public CellModel getCell(int row, int col) {
@@ -57,7 +59,7 @@ public class CellSpawner {
   }
 
   public int getNumCols() {
-    return myNumRows;
+    return myNumCols;
   }
 
   private State getState(int row, int col) {

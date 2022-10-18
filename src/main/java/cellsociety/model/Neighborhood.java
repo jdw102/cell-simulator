@@ -18,11 +18,11 @@ public class Neighborhood {
 
   public int count(State targetState) {
     int retCounter = 0;
-//    for(State currState: myNeighboringStates) {
-//      if(sameState(targetState, currState)) {
-//        retCounter += 1;
-//      }
-//    }
+    for(CellModel cellModel: myNeighboringCells) {
+      if(sameState(targetState, cellModel.getCurrentState())) {
+        retCounter += 1;
+      }
+    }
     return retCounter;
   }
 

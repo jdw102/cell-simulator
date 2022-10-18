@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.controller.Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -19,7 +20,7 @@ public class GridInputs {
   private final double MAX_SPEED = 4.0;
   private final double MIN_SPEED = 0.5;
   private final double DEFAULT_SPEED = 1.0;
-  private final int FRAMES_PER_SECOND = 60;
+  private final int FRAMES_PER_SECOND = 1;
   private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
@@ -27,15 +28,19 @@ public class GridInputs {
   private final Button backwardButton;
   private final InputFactory inputFactory;
   private final Timeline animation;
+  private Controller controller;
 
 
   /**
    * Create a new grid inputs container.
    *
-   * @param utils the input maker that contains methods to create inputs
+   * @param utils      the input maker that contains methods to create inputs
+   * @param controller
    */
-  public GridInputs(InputFactory utils) {
-    animation = new Timeline(Timeline.INDEFINITE);
+  public GridInputs(InputFactory utils, Controller controller) {
+    this.controller = controller;
+    animation = new Timeline();
+    animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames()
         .add(new KeyFrame(Duration.seconds(SECOND_DELAY), e -> stepForward()));
     animation.setRate(DEFAULT_SPEED);
@@ -96,8 +101,8 @@ public class GridInputs {
    * Jump forward one frame by calling the update state method in the controller.
    */
   private void stepForward() {
-    //Controller.updateState();
-
+    System.out.println("Step forward");
+    controller.updateState();
   }
 
   /**
