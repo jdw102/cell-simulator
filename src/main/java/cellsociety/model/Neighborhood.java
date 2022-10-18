@@ -34,5 +34,9 @@ public class Neighborhood {
     return (state1.getClass()).equals(state2.getClass());
   }
 
+  public boolean isState(State stateType) {
+    return (centerCell.getClass()).equals(stateType.getClass());
+  }
+
 
 }

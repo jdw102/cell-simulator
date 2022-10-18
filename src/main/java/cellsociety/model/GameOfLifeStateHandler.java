@@ -27,8 +27,20 @@ public class GameOfLifeStateHandler implements StateHandler {
     }
 
     @Override
+    public State figureOutNextState(Neighborhood currNeighborhood) {
+        int liveNeighbors = currNeighborhood.count(new Alive());
+
+        if((currNeighborhood.isState(new Alive()) && liveNeighbors == 2) || liveNeighbors == 3) {
+            return new Alive();
+        } else {
+            return new Dead();
+        }
+
+    }
+
+    @Override
     public State getMapping(int stateValue) {
-        return null;
+        return stateOfValue.get(stateValue);
     }
 
 }
