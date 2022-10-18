@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.controller.Controller;
 import cellsociety.controller.GameDisplayInfo;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -28,12 +29,13 @@ public class DisplayView {
   private final Stage STAGE;
   private final FileChooser FILE_CHOOSER;
   private final String DATA_FILE_SIM_EXTENSION = "*.sim";
-  private final GridInputs gridInputs;
+  private GridInputs gridInputs;
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
   private InfoText infoText;
   private GridView cellGrid;
   private InfoPopUp infoPopUp;
+  private Controller controller;
 
   /**
    * Create a new view.
@@ -45,10 +47,14 @@ public class DisplayView {
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     inputFactory = new InputFactory(myResources);
-    gridInputs = new GridInputs(inputFactory);
     simInputsBox = makeSimInputsBox();
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
+  }
+
+  public void setController(Controller controller) {
+    this.controller = controller;
+    gridInputs = new GridInputs(inputFactory, controller);
   }
 
   /**
@@ -102,7 +108,7 @@ public class DisplayView {
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
-      //controller.setupSimulation(dataFile);
+      controller.setupSimulation(dataFile);
     }
   }
 
