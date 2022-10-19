@@ -108,6 +108,7 @@ public class DisplayView {
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
+      cellGrid.clearGrid();
       controller.setupSimulation(dataFile);
     }
   }

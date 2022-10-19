@@ -43,16 +43,14 @@ public class GridView {
     if (cells != null) {
       gridWidth = width;
       gridHeight = height;
-      double rectHeight = height / numRows;
-      double rectWidth = width / numCols;
+      cellWidth = gridWidth / numCols;
+      cellHeight = gridHeight / numRows;
+      ;
       for (CellView[] row : cells) {
         for (CellView c : row) {
-          c.getRectangle().setWidth(rectWidth);
-          c.getRectangle().setHeight(rectHeight);
+          c.setDimensions(cellWidth, cellHeight);
         }
       }
-      cellHeight = rectHeight;
-      cellWidth = rectWidth;
     }
   }
 
@@ -86,5 +84,9 @@ public class GridView {
    */
   public void setSimType(String type) {
     colorBundle = ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type);
+  }
+
+  public void clearGrid() {
+    grid.getChildren().removeAll(grid.getChildren());
   }
 }
