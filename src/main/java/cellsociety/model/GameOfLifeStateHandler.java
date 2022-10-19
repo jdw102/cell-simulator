@@ -14,8 +14,8 @@ public class GameOfLifeStateHandler implements StateHandler {
   public GameOfLifeStateHandler() {
     stateOfValue = new HashMap<>();
 
-    stateOfValue.put(0, Alive.class);
-    stateOfValue.put(1, Dead.class);
+    stateOfValue.put(1, Alive.class);
+    stateOfValue.put(0, Dead.class);
   }
 
   @Override
