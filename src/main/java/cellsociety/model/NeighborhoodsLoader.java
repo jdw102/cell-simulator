@@ -2,7 +2,6 @@ package cellsociety.model;
 
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
-import javafx.scene.control.Cell;
 
 public class NeighborhoodsLoader {
 
