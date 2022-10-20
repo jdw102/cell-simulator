@@ -1,5 +1,5 @@
-Type=GameOfLife
+Type=Percolation
 Title=Blank Simulation
 Author=Enter Name
 Description=A blank simulation... Feel free to change!
-InitialStates=game_of_life/blank.csv
+InitialStates=percolation/blank.csv

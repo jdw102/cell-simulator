@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -16,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,10 +34,11 @@ public class DisplayViewTest extends DukeApplicationTest {
   public static final String TITLE = "CellSociety";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   private ResourceBundle myResources;
+  private DisplayView view;
 
   @Override
   public void start(Stage primaryStage) {
-    DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
     Controller controller = new Controller(view);
     view.setController(controller);
     // give the window a title
@@ -44,6 +48,7 @@ public class DisplayViewTest extends DukeApplicationTest {
     primaryStage.setMinHeight(MIN_SIZE.height);
     primaryStage.setMinWidth(MIN_SIZE.width);
     primaryStage.show();
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
   }
 
   @ParameterizedTest
@@ -176,7 +181,7 @@ public class DisplayViewTest extends DukeApplicationTest {
 
   @Test
   void testInfoCancel() {
-    String expected = "";
+    String expected = "A blank simulation... Feel free to change!";
     Button infoButton = lookup("#InfoButton").query();
     clickOn(infoButton);
     TextArea description = lookup("#DescriptionTextField").query();
@@ -191,5 +196,21 @@ public class DisplayViewTest extends DukeApplicationTest {
     clickOn(infoButton);
     sleep(500);
     assertEquals(expected, description.getText());
+  }
+
+  @Test
+  void testSimulationReset() {
+    File f = new File(
+        "C:\\Users\\User\\IdeaProjects\\cellsociety_team06\\data\\game_of_life\\glider.sim");
+    runAsJFXAction(() -> view.setupSimulation(f));
+    sleep(1000);
+    Button forwardButton = lookup("#ForwardButton").query();
+    Button resetButton = lookup("#ResetButton").query();
+    clickOn(forwardButton);
+    clickOn(resetButton);
+    sleep(500);
+    Rectangle cell = lookup("#CellView[2][1]").query();
+    Paint expected = Paint.valueOf("#00FF00");
+    assertEquals(expected, cell.getFill());
   }
 }

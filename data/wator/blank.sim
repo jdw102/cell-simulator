@@ -1,5 +1,5 @@
-Type=GameOfLife
+Type=PredatorPrey
 Title=Blank Simulation
 Author=Enter Name
 Description=A blank simulation... Feel free to change!
-InitialStates=game_of_life/blank.csv
+InitialStates=wator/blank.csv

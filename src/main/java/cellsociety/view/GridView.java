@@ -73,6 +73,8 @@ public class GridView {
   public void addCell(CellView cellView, int i, int j) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setColorBundle(colorBundle);
+    cellView.getRectangle()
+        .setId("CellView" + "[" + Integer.toString(i) + "]" + "[" + Integer.toString(j) + "]");
     cells[i][j] = cellView;
     grid.add(cellView.getCellPane(), j, i);
   }

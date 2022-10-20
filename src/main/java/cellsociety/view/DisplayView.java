@@ -44,6 +44,8 @@ public class DisplayView {
   private ComboBox<String> typeSelector;
   private ResourceBundle simulationKeys;
   private String DEFAULT_SIM = "GameOfLife";
+  private String currentSimType;
+  private File currentSimFile;
 
   /**
    * Create a new view.
@@ -52,6 +54,7 @@ public class DisplayView {
    * @param stage    the stage displaying the scene
    */
   public DisplayView(String language, Stage stage) {
+    currentSimType = DEFAULT_SIM;
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     simulationKeys = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SIMULATION_KEYS_FILE);
@@ -61,6 +64,7 @@ public class DisplayView {
         DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
     simInputsBox = makeSimInputsBox();
     simDefaults = makeDefaultFileMap();
+    currentSimFile = simDefaults.get(currentSimType);
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
@@ -92,7 +96,7 @@ public class DisplayView {
     Scene scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-    controller.setupSimulation(simDefaults.get(DEFAULT_SIM));
+    controller.setupSimulation(simDefaults.get(currentSimType));
     return scene;
   }
 
@@ -108,10 +112,12 @@ public class DisplayView {
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
+    Button resetButton = inputFactory.makeButton("ResetButton", event -> resetSimulation());
     inputFactory.attachTooltip("SaveButtonTooltip", saveButton);
     inputFactory.attachTooltip("ImportButtonTooltip", importButton);
     inputFactory.attachTooltip("InfoButtonTooltip", infoButton);
-    HBox b = new HBox(saveButton, importButton, infoButton, typeSelector);
+    inputFactory.attachTooltip("ResetButtonTooltip", resetButton);
+    HBox b = new HBox(saveButton, importButton, infoButton, typeSelector, resetButton);
     b.getStyleClass().add("sim-inputs-container");
     return b;
   }
@@ -122,8 +128,7 @@ public class DisplayView {
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
-      cellGrid.clearGrid();
-      controller.setupSimulation(dataFile);
+      setupSimulation(dataFile);
     }
   }
 
@@ -156,6 +161,11 @@ public class DisplayView {
       }
       c.setValue(c.getItems().get(0));
     }
+    c.setOnAction(event -> {
+      currentSimType = c.getValue();
+      currentSimFile = simDefaults.get(currentSimType);
+      controller.setupSimulation(currentSimFile);
+    });
     return c;
   }
 
@@ -164,10 +174,11 @@ public class DisplayView {
   }
 
   public void setInfoText(GameDisplayInfo text) {
+    currentSimType = text.type();
     infoText.setTitle(text.title());
     infoText.setAuthor(text.author());
     infoText.setDescription(text.description());
-    cellGrid.setSimType(text.type());
+    cellGrid.setSimType(currentSimType);
     infoPopUp.changeInfoText(infoText);
   }
 
@@ -180,5 +191,16 @@ public class DisplayView {
       map.put(s, f);
     }
     return map;
+  }
+
+  private void resetSimulation() {
+    cellGrid.clearGrid();
+    controller.setupSimulation(currentSimFile);
+  }
+
+  public void setupSimulation(File f) {
+    currentSimFile = f;
+    cellGrid.clearGrid();
+    controller.setupSimulation(currentSimFile);
   }
 }
