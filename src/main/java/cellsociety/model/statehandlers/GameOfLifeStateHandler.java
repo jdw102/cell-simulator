@@ -1,9 +1,11 @@
-package cellsociety.model;
+package cellsociety.model.statehandlers;
 
 import cellsociety.State;
 import cellsociety.cellStates.Alive;
 import cellsociety.cellStates.Dead;
 import cellsociety.cellStates.GameOfLifeCellState;
+import cellsociety.model.Neighborhood;
+import cellsociety.model.StateHandler;
 import java.util.HashMap;
 import java.util.Map;
 

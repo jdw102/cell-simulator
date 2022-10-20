@@ -1,7 +1,5 @@
 package cellsociety.controller;
 
-import cellsociety.State;
-import cellsociety.model.GameOfLifeStateHandler;
 import cellsociety.model.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
@@ -11,7 +9,7 @@ public class StateHandlerLoader {
 
   private static final String STATE_HANDLER_SUFFIX = "StateHandler";
 
-  private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.";
+  private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.statehandlers.";
 
   public StateHandlerLoader(String simType) {
     mySimType = simType;
