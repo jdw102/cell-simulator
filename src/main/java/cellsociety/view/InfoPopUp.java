@@ -2,7 +2,6 @@ package cellsociety.view;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -59,7 +58,7 @@ public class InfoPopUp {
     Callback<ButtonType, InfoText> cb = new Callback<ButtonType, InfoText>() {
       @Override
       public InfoText call(ButtonType param) {
-        if (param.getButtonData() == ButtonBar.ButtonData.APPLY) {
+        if (param == ButtonType.OK) {
           updateText();
         }
         toggleFields(true);
@@ -73,11 +72,8 @@ public class InfoPopUp {
    * Creates the three button inputs.
    */
   private void makeButtons() {
-    saveInfoButton = inputFactory.makeButtonType("SaveInfoButton", ButtonBar.ButtonData.APPLY);
-    cancelInfoButton = inputFactory.makeButtonType("CancelInfoButton",
-        ButtonBar.ButtonData.CANCEL_CLOSE);
     editInfoButton = inputFactory.makeButton("EditInfoButton", event -> toggleFields(false));
-    dialog.getDialogPane().getButtonTypes().addAll(saveInfoButton, cancelInfoButton);
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
   }
 
   /**

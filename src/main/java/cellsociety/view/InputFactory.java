@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -86,16 +84,6 @@ public class InputFactory {
     Label l = new Label(myResources.getString(property));
     l.setId(property);
     return l;
-  }
-
-  /**
-   * @param property the id of button
-   * @param type     the type of button
-   * @return button type
-   */
-  public ButtonType makeButtonType(String property, ButtonBar.ButtonData type) {
-    ButtonType b = new ButtonType(myResources.getString(property), type);
-    return b;
   }
 
   /**

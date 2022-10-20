@@ -2,11 +2,14 @@ package cellsociety;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,6 +35,8 @@ public class DisplayViewTest extends DukeApplicationTest {
   @Override
   public void start(Stage primaryStage) {
     DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    Controller controller = new Controller(view);
+    view.setController(controller);
     // give the window a title
     primaryStage.setTitle(TITLE);
     //add our user interface components to Frame and show it
@@ -39,7 +44,6 @@ public class DisplayViewTest extends DukeApplicationTest {
     primaryStage.setMinHeight(MIN_SIZE.height);
     primaryStage.setMinWidth(MIN_SIZE.width);
     primaryStage.show();
-    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
   }
 
   @ParameterizedTest
@@ -150,20 +154,42 @@ public class DisplayViewTest extends DukeApplicationTest {
     sleep(500);
     assertEquals(expected, titleField.getText());
   }
-//  @Test
-//  void testInfoSave() {
-//    String expected = "test";
-//    Button infoButton = lookup("#InfoButton").query();
-//    clickOn(infoButton);
-//    TextArea titleField = lookup("#DescriptionTextField").query();
-//    Button editButton = lookup("#EditInfoButton").query();
-//    clickOn(editButton);
-//    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
-//        .write(expected);
-//    DialogPane dp = lookup("#InfoPane").query();
-//    Node saveButton = dp.lookupButton(ButtonType.APPLY);
-//    clickOn(saveButton);
-//    sleep(500);
-//    assertEquals(expected, titleField.getText());
-//  }
+
+  @Test
+  void testInfoSave() {
+    String expected = "test";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextArea description = lookup("#DescriptionTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(description).clickOn(description).clickOn(description).press(KeyCode.BACK_SPACE)
+        .write(expected);
+    DialogPane dp = lookup("#InfoPane").query();
+    Button saveButton = (Button) dp.lookupButton(ButtonType.OK);
+    clickOn(saveButton);
+    sleep(500);
+    clickOn(infoButton);
+    sleep(500);
+    assertEquals(expected, description.getText());
+  }
+
+  @Test
+  void testInfoCancel() {
+    String expected = "";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextArea description = lookup("#DescriptionTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(description).clickOn(description).clickOn(description).press(KeyCode.BACK_SPACE)
+        .write("test");
+    DialogPane dp = lookup("#InfoPane").query();
+    Button cancelButton = (Button) dp.lookupButton(ButtonType.CANCEL);
+    clickOn(cancelButton);
+    sleep(500);
+    clickOn(infoButton);
+    sleep(500);
+    assertEquals(expected, description.getText());
+  }
 }

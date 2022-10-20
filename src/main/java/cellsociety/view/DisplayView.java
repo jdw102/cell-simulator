@@ -46,7 +46,10 @@ public class DisplayView {
   public DisplayView(String language, Stage stage) {
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    infoText = new InfoText("", "", "");
     inputFactory = new InputFactory(myResources);
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
     simInputsBox = makeSimInputsBox();
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
@@ -150,9 +153,10 @@ public class DisplayView {
   }
 
   public void setInfoText(GameDisplayInfo text) {
-    infoText = new InfoText(text.title(), text.author(), text.description());
+    infoText.setTitle(text.title());
+    infoText.setAuthor(text.author());
+    infoText.setDescription(text.description());
     cellGrid.setSimType(text.type());
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
-        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
+    infoPopUp.changeInfoText(infoText);
   }
 }

@@ -20,7 +20,7 @@ public class GridInputs {
   private final double MAX_SPEED = 4.0;
   private final double MIN_SPEED = 0.5;
   private final double DEFAULT_SPEED = 1.0;
-  private final int FRAMES_PER_SECOND = 1;
+  private final int FRAMES_PER_SECOND = 5;
   private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
