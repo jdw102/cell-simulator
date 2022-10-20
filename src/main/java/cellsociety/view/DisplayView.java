@@ -3,6 +3,8 @@ package cellsociety.view;
 import cellsociety.controller.Controller;
 import cellsociety.controller.GameDisplayInfo;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,11 +33,17 @@ public class DisplayView {
   private final String DATA_FILE_SIM_EXTENSION = "*.sim";
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
+  private final String SIMULATION_KEYS_FILE = "SimulationKeys";
+  private final String DEFAULT_FILE_PATH = "blank.sim";
   private GridInputs gridInputs;
   private InfoText infoText;
   private GridView cellGrid;
   private InfoPopUp infoPopUp;
   private Controller controller;
+  private Map<String, File> simDefaults;
+  private ComboBox<String> typeSelector;
+  private ResourceBundle simulationKeys;
+  private String DEFAULT_SIM = "GameOfLife";
 
   /**
    * Create a new view.
@@ -46,11 +54,13 @@ public class DisplayView {
   public DisplayView(String language, Stage stage) {
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    simulationKeys = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SIMULATION_KEYS_FILE);
     infoText = new InfoText("", "", "");
     inputFactory = new InputFactory(myResources);
     infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
         DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
     simInputsBox = makeSimInputsBox();
+    simDefaults = makeDefaultFileMap();
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
@@ -82,6 +92,7 @@ public class DisplayView {
     Scene scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+    controller.setupSimulation(simDefaults.get(DEFAULT_SIM));
     return scene;
   }
 
@@ -92,15 +103,15 @@ public class DisplayView {
    * @return the HBox containing the inputs
    */
   private HBox makeSimInputsBox() {
-    ComboBox<String> c = makeTypeSelector();
-    inputFactory.attachTooltip("SimulationTypeTooltip", c);
+    typeSelector = makeTypeSelector();
+    inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
     inputFactory.attachTooltip("SaveButtonTooltip", saveButton);
     inputFactory.attachTooltip("ImportButtonTooltip", importButton);
     inputFactory.attachTooltip("InfoButtonTooltip", infoButton);
-    HBox b = new HBox(saveButton, importButton, infoButton, c);
+    HBox b = new HBox(saveButton, importButton, infoButton, typeSelector);
     b.getStyleClass().add("sim-inputs-container");
     return b;
   }
@@ -158,5 +169,16 @@ public class DisplayView {
     infoText.setDescription(text.description());
     cellGrid.setSimType(text.type());
     infoPopUp.changeInfoText(infoText);
+  }
+
+  private Map<String, File> makeDefaultFileMap() {
+    Map<String, File> map = new HashMap<>();
+    for (String s : typeSelector.getItems()) {
+      File f = new File(
+          "C:\\Users\\User\\IdeaProjects\\cellsociety_team06\\data\\" + simulationKeys.getString(
+              s) + "\\" + DEFAULT_FILE_PATH);
+      map.put(s, f);
+    }
+    return map;
   }
 }
