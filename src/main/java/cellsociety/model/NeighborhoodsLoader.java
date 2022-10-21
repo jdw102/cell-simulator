@@ -25,7 +25,6 @@ public class NeighborhoodsLoader {
   private void initializeCells() {
 
   }
-
   public Neighborhood getNeighborhood(int row, int col) {
     int flattenedIdx = getFlattenedIdx(row, col);
     return myNeighborhoods[flattenedIdx];
@@ -50,10 +49,12 @@ public class NeighborhoodsLoader {
   }
 
   private boolean tooFarHorizontally(int x1, int x2) {
+//    if(warpHorizontal) return ((x1 - x2) % (myNumCols + 1) > myDistance ||(x2 - x1) % (myNumCols + 1) > myDistance);
     return (x1 - x2 > myDistance || x2 - x1 > myDistance);
   }
 
   private boolean tooFarVertically(int y1, int y2) {
+    //    if(warpVertical) return ((y1 - y2) % (myNumRows + 1) > myDistance ||(y2 - y1) % (myNumRows + 1) > myDistance);
     return (y1 - y2 > myDistance || y2 - y1 > myDistance);
   }
 
