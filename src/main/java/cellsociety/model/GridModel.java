@@ -31,6 +31,12 @@ public class GridModel {
     setCurrentStatesToNextStates();
   }
 
+  public void changeCellState(int x, int y) {
+    Neighborhood n = myNeighborhoodsLoader.getNeighborhood(x, y);
+    State newState = myStateHandler.toggleState(n);
+    n.updateCellState(newState);
+  }
+
   private void determineNextStates() {
     for (int i = 0; i < myNeighborhoodsLoader.getNumNeighborhoods(); i++) {
       State newState = myStateHandler.figureOutNextState(myNeighborhoodsLoader.getNeighborhood(i));
