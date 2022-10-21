@@ -31,6 +31,12 @@ public class GameOfLifeStateHandler implements StateHandler {
 
   }
 
+  // TODO: Implement this method
+  @Override
+  public State getToggledState(Neighborhood currNeighborhood) {
+    return null;
+  }
+
   @Override
   public Class getMapping(int stateValue) {
     return stateOfValue.get(stateValue);

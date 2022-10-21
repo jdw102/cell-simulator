@@ -31,10 +31,18 @@ public class GridModel {
     setCurrentStatesToNextStates();
   }
 
+  /**
+   * For the cell whose x and y coordinates match params x and y, toggle its
+   * state to the next state that it should be based on a list of possible states.
+   * For example, if a cell's state is B, then calling this method on that cell
+   * should result in the state becoming C, assuming the list of possible states
+   * is [A, B, C].
+   * @param x the cell's x coordinate
+   * @param y the cell's y coordinate
+   */
   public void changeCellState(int x, int y) {
     Neighborhood n = myNeighborhoodsLoader.getNeighborhood(x, y);
-    State newState = myStateHandler.toggleState(n);
-    n.updateCellState(newState);
+    n.updateCellState(myStateHandler.getToggledState(n));
   }
 
   private void determineNextStates() {
