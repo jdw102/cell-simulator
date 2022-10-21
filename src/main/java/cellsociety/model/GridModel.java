@@ -1,6 +1,7 @@
 package cellsociety.model;
 
 import cellsociety.State;
+import cellsociety.model.statehandlers.StateHandler;
 
 /**
  * Maintains a 2D List of CellModels

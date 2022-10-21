@@ -1,7 +1,7 @@
 package cellsociety.controller;
 
 import cellsociety.State;
-import cellsociety.model.StateHandler;
+import cellsociety.model.statehandlers.StateHandler;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
