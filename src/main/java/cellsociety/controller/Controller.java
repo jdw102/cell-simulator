@@ -2,7 +2,7 @@ package cellsociety.controller;
 
 import cellsociety.model.GridModel;
 import cellsociety.model.NeighborhoodsLoader;
-import cellsociety.model.StateHandler;
+import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
