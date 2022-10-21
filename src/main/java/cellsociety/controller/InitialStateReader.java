@@ -49,8 +49,8 @@ public class InitialStateReader extends FileParser {
 
         int current_val = Integer.parseInt(nextLine[col]);
 
-        outputArray[row][col] = current_val;
         validateState(current_val);
+        outputArray[row][col] = current_val;
 
       }
       row += 1;
