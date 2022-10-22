@@ -52,6 +52,10 @@ public class InputFactory {
     return result;
   }
 
+  public void changeButtonTypeLabel(String property, Node button) {
+    ((Button) button).setText(myResources.getString(property));
+  }
+
   /**
    * @param property     the id of the text field
    * @param defaultValue the default text

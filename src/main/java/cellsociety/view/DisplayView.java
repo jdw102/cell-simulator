@@ -46,6 +46,7 @@ public class DisplayView {
   private String DEFAULT_SIM = "GameOfLife";
   private String currentSimType;
   private File currentSimFile;
+  private ColorPopUp colorPopUp;
 
   /**
    * Create a new view.
@@ -83,6 +84,9 @@ public class DisplayView {
    */
   public Scene makeScene(int width, int height) {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
+    cellGrid.setSimType(currentSimType);
+    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + STYLESHEET, cellGrid, inputFactory);
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
@@ -96,7 +100,7 @@ public class DisplayView {
     Scene scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-    controller.setupSimulation(simDefaults.get(currentSimType));
+    setupSimulation(currentSimFile);
     return scene;
   }
 
@@ -112,12 +116,17 @@ public class DisplayView {
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
-    Button resetButton = inputFactory.makeButton("ResetButton", event -> resetSimulation());
+    Button resetButton = inputFactory.makeButton("ResetButton",
+        event -> setupSimulation(currentSimFile));
+    Button changeColorButton = inputFactory.makeButton("ChangeColorButton",
+        event -> colorPopUp.open());
     inputFactory.attachTooltip("SaveButtonTooltip", saveButton);
     inputFactory.attachTooltip("ImportButtonTooltip", importButton);
     inputFactory.attachTooltip("InfoButtonTooltip", infoButton);
     inputFactory.attachTooltip("ResetButtonTooltip", resetButton);
-    HBox b = new HBox(saveButton, importButton, infoButton, typeSelector, resetButton);
+    inputFactory.attachTooltip("ChangeColorButtonTooltip", changeColorButton);
+    HBox b = new HBox(changeColorButton, saveButton, importButton, infoButton, typeSelector,
+        resetButton);
     b.getStyleClass().add("sim-inputs-container");
     return b;
   }
@@ -164,7 +173,7 @@ public class DisplayView {
     c.setOnAction(event -> {
       currentSimType = c.getValue();
       currentSimFile = simDefaults.get(currentSimType);
-      controller.setupSimulation(currentSimFile);
+      setupSimulation(currentSimFile);
     });
     return c;
   }
@@ -174,11 +183,14 @@ public class DisplayView {
   }
 
   public void setInfoText(GameDisplayInfo text) {
-    currentSimType = text.type();
+    if (!currentSimType.equals(text.type())) {
+      cellGrid.setSimType(currentSimType);
+      currentSimType = text.type();
+      typeSelector.setValue(currentSimType);
+    }
     infoText.setTitle(text.title());
     infoText.setAuthor(text.author());
     infoText.setDescription(text.description());
-    cellGrid.setSimType(currentSimType);
     infoPopUp.changeInfoText(infoText);
   }
 
@@ -193,14 +205,10 @@ public class DisplayView {
     return map;
   }
 
-  private void resetSimulation() {
-    cellGrid.clearGrid();
-    controller.setupSimulation(currentSimFile);
-  }
-
   public void setupSimulation(File f) {
     currentSimFile = f;
     cellGrid.clearGrid();
     controller.setupSimulation(currentSimFile);
+    colorPopUp.setStateColors(cellGrid.getStateColors());
   }
 }

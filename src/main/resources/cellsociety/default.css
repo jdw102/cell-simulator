@@ -75,3 +75,18 @@
   -fx-opacity: 1.0;
   -fx-alignment: center;
 }
+
+.pop-up-content {
+  -fx-spacing: 5;
+  -fx-alignment: center;
+}
+
+.state-color-picker {
+  -fx-font-size: 15;
+  -fx-max-width: 125;
+}
+
+.state-color-box {
+  -fx-alignment: center;
+  -fx-spacing: 50;
+}

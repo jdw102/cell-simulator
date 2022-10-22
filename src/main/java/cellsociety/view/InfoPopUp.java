@@ -1,6 +1,5 @@
 package cellsociety.view;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -18,13 +17,10 @@ import javafx.util.Callback;
 public class InfoPopUp {
 
   private final Dialog<InfoText> dialog;
-  private final int SPACING = 5;
   private final InputFactory inputFactory;
   private TextField titleField;
   private TextField authorField;
   private TextArea descriptionField;
-  private ButtonType saveInfoButton;
-  private ButtonType cancelInfoButton;
   private Button editInfoButton;
   private InfoText infoText;
 
@@ -74,6 +70,10 @@ public class InfoPopUp {
   private void makeButtons() {
     editInfoButton = inputFactory.makeButton("EditInfoButton", event -> toggleFields(false));
     dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    inputFactory.changeButtonTypeLabel("SaveInfoButton",
+        dialog.getDialogPane().lookupButton(ButtonType.OK));
+    inputFactory.changeButtonTypeLabel("CancelInfoButton",
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL));
   }
 
   /**
@@ -89,6 +89,7 @@ public class InfoPopUp {
     titleField.getStyleClass().add("info-text-field");
     authorField.getStyleClass().add("info-text-field");
     descriptionField.getStyleClass().add("info-text-area");
+    descriptionField.setWrapText(true);
     toggleFields(true);
   }
 
@@ -124,8 +125,7 @@ public class InfoPopUp {
 
     VBox box = new VBox(topBox, titleLabel, titleField, authorLabel, authorField, descriptionLabel,
         descriptionField);
-    box.setAlignment(Pos.CENTER);
-    box.setSpacing(SPACING);
+    box.getStyleClass().add("pop-up-content");
     return box;
   }
 
