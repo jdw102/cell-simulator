@@ -2,7 +2,7 @@ package cellsociety.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cellsociety.model.StateHandler;
+import cellsociety.model.statehandlers.StateHandler;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
 import java.io.IOException;
@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 class InitialStateReaderTest {
 
 
-  StateHandlerLoader stateHandlerLoaderTester = new StateHandlerLoader("gameoflife");
-  StateHandler stateHandlerTester = stateHandlerLoaderTester.getStateHandler();
+  StateHandlerLoader stateHandlerLoaderTester = new StateHandlerLoader();
+  StateHandler stateHandlerTester = stateHandlerLoaderTester.getStateHandler("GameOfLife");
   File initTestFile = new File("data/game_of_life/blinkers.csv");
 
   InitialStateReader initialStateReaderTester = new InitialStateReader(stateHandlerTester, initTestFile);
 
-  InitialStateReaderTest() throws CsvValidationException, IOException, WrongFileTypeException {
+  InitialStateReaderTest()
+      throws CsvValidationException, IOException, WrongFileTypeException, ClassNotFoundException {
   }
 
   @Test

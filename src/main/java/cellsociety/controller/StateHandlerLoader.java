@@ -1,19 +1,15 @@
 package cellsociety.controller;
 
-import cellsociety.model.StateHandler;
+import cellsociety.model.statehandlers.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
 public class StateHandlerLoader {
-
-  private final String mySimType;
+  public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.model.statehandlers.";
 
   private static final String STATE_HANDLER_SUFFIX = "StateHandler";
 
   private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.statehandlers.";
 
-  public StateHandlerLoader(String simType) {
-    mySimType = simType;
-  }
 
   //Right now just gets a game of life state handler, will expand in future.
 
@@ -50,19 +46,21 @@ public class StateHandlerLoader {
     }
   }
 
-  public StateHandler getStateHandler()  {
+
+  // @Todo: throw class not found exception
+  public StateHandler getStateHandler(String simType) throws ClassNotFoundException {
     Class clazz = null;
-    try{
-      clazz =  Class.forName(STATE_HANDLER_PACKAGE + mySimType + STATE_HANDLER_SUFFIX);
-    } catch(NoClassDefFoundError | Exception e) {
-      String altClassName = getCorrectClassName(mySimType);
-      try{
-        clazz =  Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
-      } catch(Exception e2) {
+    try {
+      clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
+    } catch (NoClassDefFoundError | Exception e) {
+      String altClassName = getCorrectClassName(simType);
+      try {
+        clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
+      } catch (Exception e2) {
 //        throw e2;
       }
     }
-    if(clazz == null) {
+    if (clazz == null) {
       return null;
     }
     try {
@@ -74,6 +72,15 @@ public class StateHandlerLoader {
     } catch (InvocationTargetException e) {
       throw new RuntimeException(e);
     } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
+  private StateHandler instantiateNewStateHandler(Class<?> clazz) {
+    try {
+      return (StateHandler) clazz.getDeclaredConstructor().newInstance();
+    } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
   }
