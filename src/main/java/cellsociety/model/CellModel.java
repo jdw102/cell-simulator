@@ -5,6 +5,7 @@ import cellsociety.Observer;
 import cellsociety.State;
 import java.util.ArrayList;
 import java.util.Collection;
+import javafx.scene.control.Cell;
 
 /**
  * Contains the current state and next state of cells. Alerts list of Observers when the current
@@ -100,5 +101,13 @@ public class CellModel implements Observable {
     for (Observer observer : myObservers) {
       observer.update();
     }
+  }
+  @Override
+  public boolean equals(Object obj) {
+    if(!(obj instanceof CellModel)) {
+      return false;
+    }
+    CellModel cell = (CellModel) obj;
+    return this.getCurrentStateEnum().equals(cell.getCurrentStateEnum());
   }
 }

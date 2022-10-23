@@ -1,5 +1,5 @@
 Type=GameOfLife
-Title=Circle Glider
+Title=Glider Gun
 Author=Bill Gosper
 Description=
 InitialStates=game_of_life/glider_gun.csv

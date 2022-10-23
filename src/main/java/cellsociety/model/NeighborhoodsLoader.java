@@ -2,16 +2,27 @@ package cellsociety.model;
 
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Responsible for creating neighborhoods of cells
+ */
 public class NeighborhoodsLoader {
 
   private final int myDistance;
+  private final CellSpawner myCellSpawner;
   private int myNumRows;
   private int myNumCols;
   private Neighborhood[] myNeighborhoods;
 
-  private final CellSpawner myCellSpawner;
-
+  /**
+   * Generates a list of all neighborhoods that exist in the simulation, one neighborhood for each
+   * cell
+   *
+   * @param cellSpawner Responsible for creating the cells that are placed into neighborhoods
+   * @param distance    The number of cells in radius that constitutes being part of a cell's
+   *                    neighborhood
+   */
   public NeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
     myCellSpawner = cellSpawner;
     myDistance = distance;
@@ -22,86 +33,83 @@ public class NeighborhoodsLoader {
     loadNeighborhoods();
   }
 
-  private void initializeCells() {
-
-  }
-  public Neighborhood getNeighborhood(int row, int col) {
-    int flattenedIdx = getFlattenedIdx(row, col);
-    return myNeighborhoods[flattenedIdx];
-  }
-
   public Neighborhood getNeighborhood(int flattenedIdx) {
     return myNeighborhoods[flattenedIdx];
   }
 
-  private int getFlattenedIdx(int row, int col) {
-    return row * myNumCols + col;
-  }
 
-
-  private boolean validNeighbor(int x1, int y1, int x2, int y2) {
-    return (cellExists(x2, y2) && !tooFarHorizontally(x1, x2) && !tooFarVertically(y1, y2)
-        && !sameCoord(x1, y1, x2, y2));
-  }
-
-  private boolean sameCoord(int x1, int y1, int x2, int y2) {
-    return (x1 == x2 && y1 == y2);
+  private boolean validNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+    return cellExists(candidateNeighbor) && inNeighborhood(centerCoordinate, candidateNeighbor) && !centerCoordinate.equals(candidateNeighbor);
   }
 
   private boolean tooFarHorizontally(int x1, int x2) {
-//    if(warpHorizontal) return ((x1 - x2) % (myNumCols + 1) > myDistance ||(x2 - x1) % (myNumCols + 1) > myDistance);
-    return (x1 - x2 > myDistance || x2 - x1 > myDistance);
+    return Math.abs(x1-x2) > myDistance;
   }
 
   private boolean tooFarVertically(int y1, int y2) {
-    //    if(warpVertical) return ((y1 - y2) % (myNumRows + 1) > myDistance ||(y2 - y1) % (myNumRows + 1) > myDistance);
-    return (y1 - y2 > myDistance || y2 - y1 > myDistance);
+    return Math.abs(y1-y2) > myDistance;
+  }
+
+  private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
+    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(centerCoord.x(), candidateNeighbor.x()));
   }
 
 
-  private boolean cellExists(int row, int col) {
+  private boolean cellExists(Coordinate coordinate) {
     try {
-      myCellSpawner.getCell(row, col);
+      myCellSpawner.getCell(coordinate);
       return true;
     } catch (Exception e) {
       return false;
     }
   }
 
-
-  private CellModel[] getNeighbors(int row, int col) {
-    ArrayList<CellModel> retCells = new ArrayList<>();
-
-    for (int curr_row = 0; curr_row < myNumRows; curr_row++) {
-      for (int curr_col = 0; curr_col < myNumCols; curr_col++) {
-
-        if (validNeighbor(row, col, curr_row, curr_col)) {
-          retCells.add(myCellSpawner.getCell(curr_row, curr_col));
+  private <T> List<T> iterateRowsAndColsGenerateList(GridIterator<T> gridIterator) {
+    List<T> cells = new ArrayList<>();
+    for (int row = 0; row < myNumRows; row++) {
+      for (int col = 0; col < myNumCols; col++) {
+        Coordinate coord = new Coordinate(row, col);
+        T obj = gridIterator.create(coord);
+        if (obj != null) {
+          cells.add(obj);
         }
-
       }
     }
+    return cells;
+  }
+
+
+  private CellModel[] getNeighbors(Coordinate centerCoordinate) {
+    GridIterator<CellModel> gridIterator = (coordinate) -> getIfNeighbor(centerCoordinate, coordinate);
+    List<CellModel> retCells = iterateRowsAndColsGenerateList(gridIterator);
     return retCells.toArray(new CellModel[0]);
   }
 
-  private void loadNeighborhoods() {
-    ArrayList<Neighborhood> neighborhoodTracker = new ArrayList<>();
-
-//    List<Neighborhood> retNeighborhoods = new ArrayList<>();
-    for (int row = 0; row < myNumRows; row++) {
-      for (int col = 0; col < myNumCols; col++) {
-
-        CellModel currCell = myCellSpawner.getCell(row, col);
-        CellModel[] neighbors = getNeighbors(row, col);
-
-        Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
-        neighborhoodTracker.add(currNeighborhood);
-      }
+  private CellModel getIfNeighbor(Coordinate coord1, Coordinate coord2) {
+    CellModel retCell = null;
+    if (validNeighbor(coord1, coord2)) {
+      retCell = myCellSpawner.getCell(coord2);
     }
-
-    myNeighborhoods = neighborhoodTracker.toArray(new Neighborhood[0]);
+    return retCell;
   }
 
+  private void loadNeighborhoods() {
+    GridIterator<Neighborhood> gridIterator = (coordinate) -> createNeighborhood(coordinate);
+    List<Neighborhood> neighborhoods = iterateRowsAndColsGenerateList(gridIterator);
+    myNeighborhoods = neighborhoods.toArray(new Neighborhood[0]);
+  }
+
+  private Neighborhood createNeighborhood(Coordinate centerCoordinate) {
+    CellModel currCell = myCellSpawner.getCell(centerCoordinate);
+    CellModel[] neighbors = getNeighbors(centerCoordinate);
+
+    Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
+    return currNeighborhood;
+  }
+  
+  private int getFlattenedIdx(int row, int col) {
+    return row * myNumCols + col;
+  }
 
   private void setNumRows() {
     myNumRows = myCellSpawner.getNumRows();
@@ -114,5 +122,4 @@ public class NeighborhoodsLoader {
   public int getNumNeighborhoods() {
     return myNeighborhoods.length;
   }
-
 }

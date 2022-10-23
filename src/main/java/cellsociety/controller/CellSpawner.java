@@ -2,6 +2,7 @@ package cellsociety.controller;
 
 import cellsociety.State;
 import cellsociety.model.CellModel;
+import cellsociety.model.Coordinate;
 import cellsociety.view.CellView;
 import cellsociety.view.GridView;
 
@@ -68,11 +69,10 @@ public class CellSpawner {
   /**
    * Method to allow outside classes to access a particular cell model
    *
-   * @param row the x value in the [x][y] coordinate of the data structure
-   * @param col the y value in the [x][y] coordinate of the data structure
+   * @param coord Coordinate of the cell to be retrieved
    */
-  public CellModel getCell(int row, int col) {
-    return myCellModels[row][col];
+  public CellModel getCell(Coordinate coord) {
+    return myCellModels[coord.x()][coord.y()];
   }
 
   /**
