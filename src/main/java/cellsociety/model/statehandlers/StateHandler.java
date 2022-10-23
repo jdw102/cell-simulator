@@ -9,10 +9,11 @@ import java.util.ResourceBundle;
 
 public abstract class StateHandler {
 
+  private static final String STATE_SUFFIX = "State";
   Enum[] states;
   ResourceBundle properties;
 
-  StateHandler(Enum[] states, String handlerName) {
+  StateHandler(Enum[] states, String handlerName, String statesPackage) {
 //    this.properties = properties;
     this.states = states;
 
@@ -35,6 +36,34 @@ public abstract class StateHandler {
       return new Dead();
     }
     return null;
+  }
+
+  public State getStateInstance(Enum state) {
+    String stateName = getEnumString(state);
+
+    State retState = null;
+    try {
+      retState = (State) Class.forName(stateName).getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+
+    }
+    return retState;
+  }
+
+  private String getEnumString(Enum state){
+    String myState = state.toString();
+    String simpleName = (myState.toLowerCase()).split(STATE_SUFFIX.toLowerCase())[0];
+    StringBuilder outputName = new StringBuilder();
+
+    char[] simpleNameAsArray = simpleName.toCharArray();
+    for(int i = 0; i < simpleNameAsArray.length; i++) {
+      if(i == 0) {
+        outputName.append(Character.toUpperCase(simpleNameAsArray[i]));
+      } else {
+        outputName.append(simpleNameAsArray[i]);
+      }
+    }
+    return outputName + STATE_SUFFIX;
   }
 
   private int getEnumIndex(Enum state) {

@@ -15,9 +15,10 @@ public class GameOfLifeStateHandler extends StateHandler {
 //  private static enum STATES = GameOfLifeCellState;
   private Map<Integer, Class> stateOfValue;
   private static final String PROPERTIES_FILE = "GameOfLifeStateHandler";
+  private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates";
 
   public GameOfLifeStateHandler() {
-    super(GameOfLifeCellState.values(), PROPERTIES_FILE);
+    super(GameOfLifeCellState.values(), PROPERTIES_FILE, STATES_PACKAGE);
 
     stateOfValue = new HashMap<>();
 
