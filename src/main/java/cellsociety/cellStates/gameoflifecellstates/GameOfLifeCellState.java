@@ -6,7 +6,11 @@ package cellsociety.cellStates;
  */
 public enum GameOfLifeCellState {
   DEAD,
-  ALIVE
+  ALIVE;
+
+  public GameOfLifeCellState getNextState() {
+    return GameOfLifeCellState.DEAD;
+  }
 
 
 }

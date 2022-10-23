@@ -1,14 +1,14 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellStates.Alive;
-import cellsociety.cellStates.Dead;
-import cellsociety.cellStates.GameOfLifeCellState;
+import cellsociety.cellStates.gameoflifecellstates.Alive;
+import cellsociety.cellStates.gameoflifecellstates.Dead;
+import cellsociety.cellStates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameOfLifeStateHandler implements StateHandler {
+public class GameOfLifeStateHandler extends StateHandler {
 
   Map<Integer, Class> stateOfValue;
 

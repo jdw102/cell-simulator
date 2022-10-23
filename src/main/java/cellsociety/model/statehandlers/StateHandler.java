@@ -3,9 +3,11 @@ package cellsociety.model.statehandlers;
 import cellsociety.State;
 import cellsociety.model.Neighborhood;
 
-public interface StateHandler {
+public abstract class StateHandler {
 
-  State figureOutNextState(Neighborhood currNeighborhood);
+  public abstract State figureOutNextState(Neighborhood currNeighborhood);
 
-  Class getMapping(int stateValue);
+  public abstract Class getMapping(int stateValue);
+
 }
+
