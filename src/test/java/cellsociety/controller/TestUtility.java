@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class TestUtility {
 
@@ -11,7 +12,6 @@ public class TestUtility {
 
   public TestUtility() {
     loadExpectedGrids();
-    validateSimulations();
   }
 
   protected File getTestFile(String simType, int testInstance) {
@@ -27,16 +27,17 @@ public class TestUtility {
     return expectedGrids.get(simType)[gridIndex];
   }
 
-  private void validateSimulations() {
+  private void validateSimulations() throws Exception {
     for(String sim: validSimTypes) {
       if(expectedGrids.get(sim) == null){
-        System.out.println("Test Error: No grids established for simulation " + sim);
+        throw new Exception("Test Error: No grids established for simulation " + sim);
       } else {
         for(int i = 0; i < 3; i++) {
           try{
             int[][] temp = expectedGrids.get(sim)[i];
           } catch (Exception e) {
             System.out.println("Test Error: Only " + i + " grids set up for simulation " + sim  + " expected 3");
+            throw new Exception("Test Error: No grids established for simulation " + sim);
           }
         }
       }
@@ -121,7 +122,8 @@ public class TestUtility {
 
   @Test
   void validateUtility() {
-//    TestUtility utilityTester = new TestUtility();
+    Assertions.assertDoesNotThrow(() -> validateSimulations());
+
   }
 }
 
