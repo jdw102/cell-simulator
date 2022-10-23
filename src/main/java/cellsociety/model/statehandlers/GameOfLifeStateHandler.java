@@ -19,7 +19,6 @@ public class GameOfLifeStateHandler extends StateHandler {
     stateOfValue.put(0, Dead.class);
   }
 
-  @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
     int liveNeighbors = currNeighborhood.count(new Alive());
     if ((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2)
@@ -30,7 +29,11 @@ public class GameOfLifeStateHandler extends StateHandler {
     }
   }
 
-  @Override
+  // TODO: Implement this method
+  public State getToggledState(Neighborhood currNeighborhood) {
+    return null;
+  }
+
   public Class getMapping(int stateValue) {
     return stateOfValue.get(stateValue);
   }

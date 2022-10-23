@@ -9,5 +9,8 @@ public abstract class StateHandler {
 
   public abstract Class getMapping(int stateValue);
 
+  public abstract State getToggledState(Neighborhood currNeighborhood);
+
+
 }
 

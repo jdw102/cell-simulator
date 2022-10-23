@@ -20,14 +20,17 @@ public class PercolationStateHandler extends StateHandler {
     stateOfValue.put(0, Open.class);
   }
 
-  @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
 //    if currNeighborhood.contains(PercolationCellState.PERCOLATED);
     return new Percolated();
 
   }
 
-  @Override
+  //TODO: implement
+  public State getToggledState(Neighborhood currNeighborhood) {
+    return null;
+  }
+
   public Class getMapping(int stateValue) {
     return stateOfValue.get(stateValue);
   }
