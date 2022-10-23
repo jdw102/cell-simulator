@@ -2,25 +2,56 @@ package cellsociety.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cellsociety.model.StateHandler;
+import cellsociety.model.statehandlers.StateHandler;
+import java.util.ArrayList;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class StateHandlerLoaderTest {
 
-  private StateHandlerLoader myGameOfLifeStateHandlerLoaderTester1 = new StateHandlerLoader("GameOfLife");
-  private StateHandlerLoader myGameOfLifeStateHandlerLoaderTester2 = new StateHandlerLoader("gAmEofLIFe");
-  private StateHandlerLoader invalidStateHandler = new StateHandlerLoader("gAmEodaijfLIFe");
+  static String[] myValidSims;
+  static TestUtility myUtilities;
+  private StateHandlerLoader myStateHandlerLoader = new StateHandlerLoader();
 
-  @Test
-  void getsCorrectHandler() {
+  @BeforeAll
+  static void setUp() {
+    myUtilities = new TestUtility();
+    myValidSims = myUtilities.getValidSimTypes();;
+  }
 
-    StateHandler stateHandler1 = myGameOfLifeStateHandlerLoaderTester1.getStateHandler();
-    StateHandler stateHandler2 = myGameOfLifeStateHandlerLoaderTester2.getStateHandler();
-    StateHandler stateHandler3 = invalidStateHandler.getStateHandler();
+  static String[] getSimTypes() {
+    return myValidSims;
+  }
 
-    assertEquals(stateHandler1.getClass().getSimpleName(), "GameOfLifeStateHandler");
-    assertEquals(stateHandler2.getClass().getSimpleName(), "GameOfLifeStateHandler");
-    assertEquals(stateHandler3, null);
+  @ParameterizedTest
+  @MethodSource("getSimTypes")
+  void getsCorrectHandler(String mySimType) {
+
+    StateHandler stateHandler = null;
+
+    String[] validVariations = getValidVariations(mySimType);
+
+    for(String variation: validVariations) {
+      try {
+        stateHandler = myStateHandlerLoader.getStateHandler(variation);
+      } catch (Exception e) {
+        Assertions.fail();
+      }
+      assertNotEquals(stateHandler, null);
+      assertEquals(stateHandler.getClass().getSimpleName(), mySimType + "StateHandler");
+    }
+  }
+
+  String[] getValidVariations(String simType) {
+    ArrayList<String> myVariations = new ArrayList<>();
+    myVariations.add(simType);
+    myVariations.add(simType.toLowerCase());
+    myVariations.add(simType.toUpperCase());
+
+    return myVariations.toArray(new String[myVariations.size()]);
   }
 
 }
