@@ -106,9 +106,13 @@ public class NeighborhoodsLoader {
     Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
     return currNeighborhood;
   }
-  
-  private int getFlattenedIdx(int row, int col) {
-    return row * myNumCols + col;
+
+  public Neighborhood getNeighborhood(Coordinate coordinate) {
+    return myNeighborhoods[getFlattenedIdx(coordinate)];
+  }
+
+  private int getFlattenedIdx(Coordinate coordinate) {
+    return coordinate.y() * myNumCols + coordinate.x();
   }
 
   private void setNumRows() {
