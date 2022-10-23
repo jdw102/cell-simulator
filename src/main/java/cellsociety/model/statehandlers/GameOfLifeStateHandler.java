@@ -17,7 +17,7 @@ public class GameOfLifeStateHandler extends StateHandler {
   private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates.";
 
   public GameOfLifeStateHandler() {
-    super(GameOfLifeCellState.values(), PROPERTIES_FILE, STATES_PACKAGE);
+    super(GameOfLifeCellState.values(), STATES_PACKAGE);
 
     stateOfValue = new HashMap<>();
 

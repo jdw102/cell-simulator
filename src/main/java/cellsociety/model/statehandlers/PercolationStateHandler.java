@@ -16,7 +16,7 @@ public class PercolationStateHandler extends StateHandler {
   private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates";
 
   public PercolationStateHandler() {
-    super(PercolationCellState.values(), PROPERTIES_FILE, STATES_PACKAGE);
+    super(PercolationCellState.values(), STATES_PACKAGE);
     stateOfValue = new HashMap<>();
     stateOfValue.put(2, BlockedState.class);
     stateOfValue.put(1, PercolatedState.class);

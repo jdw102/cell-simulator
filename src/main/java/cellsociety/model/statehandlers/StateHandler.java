@@ -1,9 +1,6 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellstates.gameoflifecellstates.AliveState;
-import cellsociety.cellstates.gameoflifecellstates.DeadState;
-import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 import java.util.ResourceBundle;
 
@@ -11,15 +8,14 @@ public abstract class StateHandler {
 
   private static final String STATE_SUFFIX = "State";
 
-  private static String STATES_PACKAGE;
+  private String STATES_PACKAGE;
   Enum[] states;
   ResourceBundle properties;
 
-  StateHandler(Enum[] states, String handlerName, String statesPackage) {
+  StateHandler(Enum[] states, String statesPackage) {
 //    this.properties = properties;
     this.states = states;
     this.STATES_PACKAGE = statesPackage;
-
   }
 
   public abstract State figureOutNextState(Neighborhood currNeighborhood);
