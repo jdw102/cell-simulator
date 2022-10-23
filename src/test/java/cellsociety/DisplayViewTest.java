@@ -210,7 +210,7 @@ public class DisplayViewTest extends DukeApplicationTest {
     clickOn(resetButton);
     sleep(500);
     Rectangle cell = lookup("#CellView[2][1]").query();
-    Paint expected = Paint.valueOf("#00FF00");
+    Paint expected = Paint.valueOf("#00FFFF");
     assertEquals(expected, cell.getFill());
   }
 }

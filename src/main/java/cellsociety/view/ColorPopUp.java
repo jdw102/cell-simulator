@@ -11,8 +11,8 @@ import javafx.scene.layout.VBox;
 public class ColorPopUp {
 
   private final Dialog<ResourceBundle> dialog;
-  private GridView gridView;
-  private InputFactory inputFactory;
+  private final GridView gridView;
+  private final InputFactory inputFactory;
 
   public ColorPopUp(String title, String styleSheet, GridView grid, InputFactory factory) {
     inputFactory = factory;

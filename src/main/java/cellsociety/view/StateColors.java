@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 
 public class StateColors {
 
-  private Map<String, Color> colorMap;
+  private final Map<String, Color> colorMap;
 
 
   public StateColors(ResourceBundle colors) {

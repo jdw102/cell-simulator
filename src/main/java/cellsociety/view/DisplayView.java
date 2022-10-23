@@ -1,7 +1,7 @@
 package cellsociety.view;
 
+import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
-import cellsociety.controller.GameDisplayInfo;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,15 +35,15 @@ public class DisplayView {
   private final HBox simInputsBox;
   private final String SIMULATION_KEYS_FILE = "SimulationKeys";
   private final String DEFAULT_FILE_PATH = "blank.sim";
+  private final InfoText infoText;
+  private final InfoPopUp infoPopUp;
+  private final Map<String, File> simDefaults;
+  private final ResourceBundle simulationKeys;
+  private final String DEFAULT_SIM = "GameOfLife";
   private GridInputs gridInputs;
-  private InfoText infoText;
   private GridView cellGrid;
-  private InfoPopUp infoPopUp;
   private Controller controller;
-  private Map<String, File> simDefaults;
   private ComboBox<String> typeSelector;
-  private ResourceBundle simulationKeys;
-  private String DEFAULT_SIM = "GameOfLife";
   private String currentSimType;
   private File currentSimFile;
   private ColorPopUp colorPopUp;

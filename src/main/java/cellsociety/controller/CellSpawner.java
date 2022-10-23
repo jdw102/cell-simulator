@@ -1,8 +1,8 @@
 package cellsociety.controller;
 
+import cellsociety.Coordinate;
 import cellsociety.State;
 import cellsociety.model.CellModel;
-import cellsociety.model.Coordinate;
 import cellsociety.view.CellView;
 import cellsociety.view.GridView;
 
@@ -11,12 +11,10 @@ public class CellSpawner {
 
   private final CellModel[][] myCellModels;
   private final CellView[][] myCellViews;
+  private final GridView myGridView;
+  private final InitialStateReader myInitialStateReader;
   private int myNumRows;
   private int myNumCols;
-
-  private final GridView myGridView;
-
-  private final InitialStateReader myInitialStateReader;
 
   /**
    * Initializes parallel cell model/view data structures for a given simulation

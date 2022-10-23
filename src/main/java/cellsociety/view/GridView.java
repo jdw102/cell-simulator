@@ -45,7 +45,6 @@ public class GridView {
       gridHeight = height;
       cellWidth = gridWidth / numCols;
       cellHeight = gridHeight / numRows;
-      ;
       for (CellView[] row : cells) {
         for (CellView c : row) {
           c.setDimensions(cellWidth, cellHeight);
@@ -75,7 +74,7 @@ public class GridView {
     cellView.setStateColors(stateColors);
     //cellView.getRectangle().setOnMouseClicked(event -> controller.changeState(i, j));
     cellView.getRectangle()
-        .setId("CellView" + "[" + Integer.toString(i) + "]" + "[" + Integer.toString(j) + "]");
+        .setId("CellView" + "[" + i + "]" + "[" + j + "]");
     cells[i][j] = cellView;
     grid.add(cellView.getCellPane(), j, i);
   }
