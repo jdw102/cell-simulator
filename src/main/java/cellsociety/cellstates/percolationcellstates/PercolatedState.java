@@ -1,8 +1,8 @@
-package cellsociety.cellStates.percolationcellstates;
+package cellsociety.cellstates.percolationcellstates;
 
 import cellsociety.State;
 
-public class Percolated implements State {
+public class PercolatedState implements State {
 
   @Override
   public Enum getStateEnum() {

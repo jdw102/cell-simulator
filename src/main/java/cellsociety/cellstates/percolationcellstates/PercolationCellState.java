@@ -1,4 +1,4 @@
-package cellsociety.cellStates.percolationcellstates;
+package cellsociety.cellstates.percolationcellstates;
 
 public enum PercolationCellState {
   BLOCKED,

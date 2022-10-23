@@ -1,10 +1,10 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellStates.percolationcellstates.Blocked;
-import cellsociety.cellStates.percolationcellstates.Open;
-import cellsociety.cellStates.percolationcellstates.Percolated;
-import cellsociety.cellStates.percolationcellstates.PercolationCellState;
+import cellsociety.cellstates.percolationcellstates.BlockedState;
+import cellsociety.cellstates.percolationcellstates.OpenState;
+import cellsociety.cellstates.percolationcellstates.PercolatedState;
+import cellsociety.cellstates.percolationcellstates.PercolationCellState;
 import cellsociety.model.Neighborhood;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +18,14 @@ public class PercolationStateHandler extends StateHandler {
   public PercolationStateHandler() {
     super(PercolationCellState.values(), PROPERTIES_FILE, STATES_PACKAGE);
     stateOfValue = new HashMap<>();
-    stateOfValue.put(2, Blocked.class);
-    stateOfValue.put(1, Percolated.class);
-    stateOfValue.put(0, Open.class);
+    stateOfValue.put(2, BlockedState.class);
+    stateOfValue.put(1, PercolatedState.class);
+    stateOfValue.put(0, OpenState.class);
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
 //    if currNeighborhood.contains(PercolationCellState.PERCOLATED);
-    return new Percolated();
+    return new PercolatedState();
 
   }
 

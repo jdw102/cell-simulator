@@ -1,7 +1,5 @@
-package cellsociety.cellStates.gameoflifecellstates;
+package cellsociety.cellstates.gameoflifecellstates;
 
-
-import cellsociety.State;
 
 /**
  * Contains States for the GameOfLife
