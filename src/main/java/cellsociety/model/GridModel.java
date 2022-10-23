@@ -37,11 +37,10 @@ public class GridModel {
    * For example, if a cell's state is B, then calling this method on that cell
    * should result in the state becoming C, assuming the list of possible states
    * is [A, B, C].
-   * @param x the cell's x coordinate
-   * @param y the cell's y coordinate
+   * @param coordinate holds the coordinate of the cell to change
    */
-  public void changeCellState(int x, int y) {
-    Neighborhood n = myNeighborhoodsLoader.getNeighborhood(x, y);
+  public void changeCellState(Coordinate coordinate) {
+    Neighborhood n = myNeighborhoodsLoader.getNeighborhood(coordinate);
     n.updateCellState(myStateHandler.getToggledState(n));
   }
 
