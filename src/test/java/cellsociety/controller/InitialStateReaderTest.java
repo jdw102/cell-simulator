@@ -67,18 +67,21 @@ class InitialStateReaderTest {
         }
       }
 
-      assertEquals(expected.length, stateReaderTester.getNumRows());
-      assertEquals(expected[0].length, stateReaderTester.getNumCols());
+      String expectedRowsString = mySimType + ", expectedGrids[" + i + "] has " + expected.length + "rows";
+      String actualRowsString = mySimType + ", expectedGrids[" + i + "] has " + stateReaderTester.getNumRows() + "rows";
 
+      String expectedColsString = mySimType + ", expectedGrids[" + i + "] has " + expected[0].length + "cols";
+      String actualColsString = mySimType + ", expectedGrids[" + i + "] has " + stateReaderTester.getNumCols() + "cols";
+
+      assertEquals(expectedRowsString, actualRowsString);
+      assertEquals(expectedColsString, actualColsString);
     }
 
   }
 
-
   /**
    * Part of the set up sequence, each simulation should have 3 test csvs, numbered 0-2.
    */
-
   static void loadExpectedGrids() {
     expectedGrids = new HashMap<>();
 
