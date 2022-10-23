@@ -34,10 +34,8 @@ class InitialStateReaderTest {
     }
 
     for(int i = 0; i < 3; i ++) {
-      String filename = mySimType.toLowerCase() + "cellstatestest";
 
-
-      File myFile = new File("src/test/resources/" + filename + i + ".csv");
+      File myFile = myUtilities.getTestFile(mySimType, i);
 
       InitialStateReader stateReaderTester = null;
 

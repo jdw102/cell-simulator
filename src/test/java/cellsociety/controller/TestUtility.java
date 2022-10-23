@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,11 @@ public class TestUtility {
   public TestUtility() {
     loadExpectedGrids();
     validateSimulations();
+  }
+
+  protected File getTestFile(String simType, int testInstance) {
+    String filename = simType.toLowerCase() + "cellstatestest";
+    return new File("src/test/resources/" + filename + testInstance + ".csv");
   }
 
   protected String[] getValidSimTypes() {
@@ -39,7 +45,7 @@ public class TestUtility {
 
   static Map<String, int[][][]> expectedGrids;
 
-  public static void loadExpectedGrids() {
+  private static void loadExpectedGrids() {
     expectedGrids = new HashMap<>();
 
     int[][] golExpected1 = {
