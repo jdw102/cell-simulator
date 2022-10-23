@@ -32,15 +32,6 @@ public abstract class StateHandler {
     return getStateInstance(states[(stateIdx + 1) % states.length]);
   }
 
-  public State getGOLStateInstance(Enum state) {
-    if (GameOfLifeCellState.ALIVE.equals(state)) {
-      return new AliveState();
-    } else if (GameOfLifeCellState.DEAD.equals(state)) {
-      return new DeadState();
-    }
-    return null;
-  }
-
   public State getStateInstance(Enum state) {
     String stateName = getEnumString(state);
 

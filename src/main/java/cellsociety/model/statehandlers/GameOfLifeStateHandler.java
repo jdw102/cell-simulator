@@ -29,9 +29,9 @@ public class GameOfLifeStateHandler extends StateHandler {
     int liveNeighbors = currNeighborhood.count(GameOfLifeCellState.ALIVE);
     if ((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2)
         || liveNeighbors == 3) {
-      return new AliveState();
+      return getStateInstance(GameOfLifeCellState.ALIVE);
     } else {
-      return new DeadState();
+      return getStateInstance(GameOfLifeCellState.DEAD);
     }
   }
 
