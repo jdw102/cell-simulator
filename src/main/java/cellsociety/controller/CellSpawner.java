@@ -38,7 +38,7 @@ public class CellSpawner {
   /**
    * Method to iterate over each cell
    */
-  public void initializeGrid() {
+  private void initializeGrid() {
 
     for (int row = 0; row < myNumRows; row++) {
       for (int col = 0; col < myNumCols; col++) {
@@ -76,6 +76,16 @@ public class CellSpawner {
   }
 
   /**
+   * Method for testing to make sure all CellViews are instantiated.
+   * @param row
+   * @param col
+   * @return the CellView at a specified location
+   */
+  protected CellView getCellView(int row, int col) {
+    return myCellViews[row][col];
+  }
+
+  /**
    * Method to obtain the length of the cell model/view grid
    */
   public int getNumRows() {
@@ -91,8 +101,7 @@ public class CellSpawner {
 
   /**
    * Method to obtain the state of the cell model/view grid. Uses abstraction through
-   * InitialStateReader to translate the state value, e.g. 0 or 1, to the state's enum, e.g. DEAD or
-   * ALIVE.
+   * InitialStateReader to translate the state value, e.g. 0 or 1, to a state instance.
    *
    * @param row the x value in the [x][y] coordinate of the data structure
    * @param col the y value in the [x][y] coordinate of the data structure
