@@ -11,9 +11,11 @@ import java.util.Map;
 
 public class PercolationStateHandler extends StateHandler {
 
-  Map<Integer, Class> stateOfValue;
+  private Map<Integer, Class> stateOfValue;
+  private static final String PROPERTIES_FILE = "PercolationStateHandler";
 
   public PercolationStateHandler() {
+    super(PercolationCellState.values(), PROPERTIES_FILE);
     stateOfValue = new HashMap<>();
     stateOfValue.put(2, Blocked.class);
     stateOfValue.put(1, Percolated.class);

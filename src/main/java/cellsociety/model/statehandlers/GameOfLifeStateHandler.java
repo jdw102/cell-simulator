@@ -11,12 +11,13 @@ import java.util.ResourceBundle;
 
 public class GameOfLifeStateHandler extends StateHandler {
 
-//  private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle();
+  //  private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle();
 //  private static enum STATES = GameOfLifeCellState;
-  Map<Integer, Class> stateOfValue;
+  private Map<Integer, Class> stateOfValue;
+  private static final String PROPERTIES_FILE = "GameOfLifeStateHandler";
 
   public GameOfLifeStateHandler() {
-//    super(PROPERTIES);
+    super(GameOfLifeCellState.values(), PROPERTIES_FILE);
 
     stateOfValue = new HashMap<>();
 
@@ -25,7 +26,7 @@ public class GameOfLifeStateHandler extends StateHandler {
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
-    int liveNeighbors = currNeighborhood.count(new Alive());
+    int liveNeighbors = currNeighborhood.count(GameOfLifeCellState.ALIVE);
     if ((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2)
         || liveNeighbors == 3) {
       return new Alive();

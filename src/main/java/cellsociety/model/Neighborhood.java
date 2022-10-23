@@ -13,20 +13,23 @@ public class Neighborhood {
     myNeighboringCells = neighbors;
   }
 
-  public int count(State targetState) {
+  public int count(Enum targetState) {
     int retCounter = 0;
     for (CellModel cellModel : myNeighboringCells) {
-      if (sameState(targetState, cellModel.getCurrentState())) {
+      if (sameState(targetState, cellModel.getCurrentStateEnum())) {
         retCounter += 1;
       }
     }
     return retCounter;
   }
 
-  public boolean contains(State targetState) {
+  public boolean contains(Enum targetState) {
     return count(targetState) >= 1;
   }
 
+  private boolean sameState(Enum state1, Enum state2) {
+    return state1.equals(state2);
+  }
   private boolean sameState(State state1, State state2) {
     return (state1.getStateEnum()).equals(state2.getStateEnum());
   }
@@ -48,5 +51,8 @@ public class Neighborhood {
     centerCell.setNextState(state);
   }
 
+  public Enum getStateEnum() {
+    return centerCell.getCurrentStateEnum();
+  }
 
 }

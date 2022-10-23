@@ -4,12 +4,12 @@ import cellsociety.model.statehandlers.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
 public class StateHandlerLoader {
+
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.model.statehandlers.";
 
   private static final String STATE_HANDLER_SUFFIX = "StateHandler";
 
   private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.statehandlers.";
-
 
   //Right now just gets a game of life state handler, will expand in future.
 
@@ -19,17 +19,17 @@ public class StateHandlerLoader {
 
     input = input.toLowerCase();
 
-
     for (int i = 0; i < max; i++) {
       char combination[] = input.toCharArray();
 
       for (int j = 0; j < n; j++) {
-        if (((i >> j) & 1) == 1)
-          combination[j] = (char)(combination[j] - 32);
+        if (((i >> j) & 1) == 1) {
+          combination[j] = (char) (combination[j] - 32);
         }
+      }
 
       String currString = String.valueOf(combination);
-      if(isValidClass(currString)) {
+      if (isValidClass(currString)) {
         System.out.println(currString);
         return currString;
       }
@@ -39,7 +39,8 @@ public class StateHandlerLoader {
 
   private boolean isValidClass(String myClassString) {
     try {
-      Class.forName(STATE_HANDLER_PACKAGE + myClassString + STATE_HANDLER_SUFFIX, false, getClass().getClassLoader());
+      Class.forName(STATE_HANDLER_PACKAGE + myClassString + STATE_HANDLER_SUFFIX, false,
+          getClass().getClassLoader());
       return true;
     } catch (Error | Exception e) {
       return false;
@@ -80,7 +81,8 @@ public class StateHandlerLoader {
   private StateHandler instantiateNewStateHandler(Class<?> clazz) {
     try {
       return (StateHandler) clazz.getDeclaredConstructor().newInstance();
-    } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+    } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+             NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
   }

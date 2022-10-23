@@ -77,6 +77,7 @@ public class CellSpawner {
 
   /**
    * Method for testing to make sure all CellViews are instantiated.
+   *
    * @return the CellView at a specified location
    */
   protected CellView getCellView(Coordinate coord) {
