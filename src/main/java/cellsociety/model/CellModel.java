@@ -107,7 +107,7 @@ public class CellModel implements Observable {
     if(!(obj instanceof CellModel)) {
       return false;
     }
-    CellModel cell = (CellModel) obj;
-    return this.getCurrentStateEnum().equals(cell.getCurrentStateEnum());
+    CellModel cellState = (CellModel) obj;
+    return this.getCurrentStateEnum().equals(cellState.getCurrentStateEnum());
   }
 }
