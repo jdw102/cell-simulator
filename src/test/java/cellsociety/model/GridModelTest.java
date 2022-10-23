@@ -48,9 +48,12 @@ class GridModelTest {
     }
    */
 
-
   @BeforeEach
   void setup() throws IOException, WrongFileTypeException {
+//    DisplayView view = new DisplayView(DEFAULT_LANGUAGE, new Stage());
+//    Controller controller = new Controller(view);
+//    view.setController(controller);
+
 
   }
 

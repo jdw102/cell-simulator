@@ -43,9 +43,9 @@ public class Neighborhood {
     centerCell.setCurrentState(centerCell.getNextState());
   }
 
-  // TODO: Implement this method
   public void updateCellState(State state) {
-    // implement this
+    centerCell.setNextState(state);
+    updateCellState();
   }
 
   public void updateCellNextState(State state) {
