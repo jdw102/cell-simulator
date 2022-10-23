@@ -77,12 +77,10 @@ public class CellSpawner {
 
   /**
    * Method for testing to make sure all CellViews are instantiated.
-   * @param row
-   * @param col
    * @return the CellView at a specified location
    */
-  protected CellView getCellView(int row, int col) {
-    return myCellViews[row][col];
+  protected CellView getCellView(Coordinate coord) {
+    return myCellViews[coord.x()][coord.y()];
   }
 
   /**

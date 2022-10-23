@@ -7,12 +7,17 @@ import cellsociety.cellStates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class GameOfLifeStateHandler extends StateHandler {
 
+//  private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle();
+//  private static enum STATES = GameOfLifeCellState;
   Map<Integer, Class> stateOfValue;
 
   public GameOfLifeStateHandler() {
+//    super(PROPERTIES);
+
     stateOfValue = new HashMap<>();
 
     stateOfValue.put(1, Alive.class);
@@ -27,11 +32,6 @@ public class GameOfLifeStateHandler extends StateHandler {
     } else {
       return new Dead();
     }
-  }
-
-  // TODO: Implement this method
-  public State getToggledState(Neighborhood currNeighborhood) {
-    return null;
   }
 
   public Class getMapping(int stateValue) {

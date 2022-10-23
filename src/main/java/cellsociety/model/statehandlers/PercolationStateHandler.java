@@ -26,10 +26,6 @@ public class PercolationStateHandler extends StateHandler {
 
   }
 
-  //TODO: implement
-  public State getToggledState(Neighborhood currNeighborhood) {
-    return null;
-  }
 
   public Class getMapping(int stateValue) {
     return stateOfValue.get(stateValue);
