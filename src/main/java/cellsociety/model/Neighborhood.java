@@ -31,13 +31,8 @@ public class Neighborhood {
     return (state1.getStateEnum()).equals(state2.getStateEnum());
   }
 
-  public boolean isState(State stateType) {
-    return (centerCell.getCurrentState().getStateEnum()).equals(stateType.getStateEnum());
-  }
-
-
   public boolean isState(Enum stateType) {
-    return (centerCell.getCurrentState().getStateEnum()).equals(stateType);
+    return (centerCell.getCurrentStateEnum()).equals(stateType);
   }
 
   public void updateCellState() {
