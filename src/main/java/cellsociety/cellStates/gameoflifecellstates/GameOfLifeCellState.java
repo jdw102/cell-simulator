@@ -1,4 +1,4 @@
-package cellsociety.cellStates;
+package cellsociety.cellStates.gameoflifecellstates;
 
 
 /**
