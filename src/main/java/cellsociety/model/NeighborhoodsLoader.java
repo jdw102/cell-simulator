@@ -106,7 +106,10 @@ public class NeighborhoodsLoader {
     Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
     return currNeighborhood;
   }
-
+  
+  private int getFlattenedIdx(int row, int col) {
+    return row * myNumCols + col;
+  }
 
   private void setNumRows() {
     myNumRows = myCellSpawner.getNumRows();
