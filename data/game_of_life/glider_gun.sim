@@ -1,0 +1,6 @@
+Type=GameOfLife
+Title=Circle Glider
+Author=Bill Gosper
+Description=
+InitialStates=game_of_life/glider_gun.csv
+StateColors=00FF00,FF00FF
