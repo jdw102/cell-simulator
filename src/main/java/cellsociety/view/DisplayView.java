@@ -26,11 +26,12 @@ public class DisplayView {
 
   public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
   public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
-  private static final String STYLESHEET = "default.css";
+  private static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   private static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
   private static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
   private static final String BLANK_SIM_TAG = "Blank.sim";
+  private static final String STYLESHEET_TAG = ".css";
   private final ResourceBundle myResources;
   private final double HEIGHT_BUFFER = 170;
   private final double WIDTH_BUFFER = 50;
@@ -47,9 +48,11 @@ public class DisplayView {
   private GridView cellGrid;
   private Controller controller;
   private ComboBox<String> typeSelector;
+  private ComboBox<String> themeSelector;
   private String currentSimType;
   private File currentSimFile;
   private ColorPopUp colorPopUp;
+  private Scene scene;
 
   /**
    * Create a new view.
@@ -64,9 +67,11 @@ public class DisplayView {
         DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + language);
     infoText = new InfoText();
     inputFactory = new InputFactory(myResources);
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
-        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
     simInputsBox = makeSimInputsBox(newWindow);
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
+            + STYLESHEET_TAG,
+        inputFactory);
     simDefaults = makeDefaultFileMap();
     currentSimFile = simDefaults.get(currentSimType);
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
@@ -89,7 +94,9 @@ public class DisplayView {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     cellGrid.setSimType(currentSimType);
     colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
-        DEFAULT_RESOURCE_FOLDER + STYLESHEET, cellGrid, inputFactory);
+        DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
+            + STYLESHEET_TAG, cellGrid,
+        inputFactory);
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
@@ -100,9 +107,12 @@ public class DisplayView {
     root.setCenter(cellGrid.getGrid());
     root.setBottom(gridInputs.getContainer());
     root.setTop(simInputsBox);
-    Scene scene = new Scene(root, width, height);
+    scene = new Scene(root, width, height);
     scene.getStylesheets()
-        .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+        .add(getClass().getResource(
+                DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
+                    + STYLESHEET_TAG)
+            .toExternalForm());
     setupSimulation(currentSimFile);
     return scene;
   }
@@ -114,8 +124,12 @@ public class DisplayView {
    * @return the HBox containing the inputs
    */
   private HBox makeSimInputsBox(EventHandler<ActionEvent> newWindow) {
-    typeSelector = makeTypeSelector();
+    typeSelector = makeComboBox("SimSelector", DEFAULT_SIM_COLORS_FOLDER,
+        event -> changeSimulation(typeSelector.getValue()));
+    themeSelector = makeComboBox("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
+        event -> changeStyleSheet(themeSelector.getValue()));
     inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
+    inputFactory.attachTooltip("ThemeSelectorTooltip", themeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
@@ -130,7 +144,8 @@ public class DisplayView {
     attachTooltip(resetButton);
     attachTooltip(changeColorButton);
     attachTooltip(newWindowButton);
-    HBox b = new HBox(newWindowButton, changeColorButton, saveButton, importButton, infoButton,
+    HBox b = new HBox(themeSelector, newWindowButton, changeColorButton, saveButton, importButton,
+        infoButton,
         typeSelector,
         resetButton);
     b.getStyleClass().add("sim-inputs-container");
@@ -157,31 +172,11 @@ public class DisplayView {
     new Alert(AlertType.ERROR, exception.getMessage()).showAndWait();
   }
 
-  /**
-   * Creates combobox to select simulation type.
-   *
-   * @return the combo box
-   */
-  private ComboBox<String> makeTypeSelector() {
-    ComboBox<String> c = new ComboBox<>();
-    c.getStyleClass().add("sim-selector");
-    c.setId("SimSelector");
-    File colorDirectory = new File(
-        getClass().getResource(DEFAULT_RESOURCE_FOLDER + DEFAULT_SIM_COLORS_FOLDER).getPath());
-    String[] colorFiles = colorDirectory.list();
-    if (colorFiles != null) {
-      for (String f : colorFiles) {
-        String s = f.split("\\.")[0];
-        c.getItems().add(s);
-      }
-      c.setValue(c.getItems().get(0));
-    }
-    c.setOnAction(event -> {
-      currentSimType = c.getValue();
-      currentSimFile = simDefaults.get(currentSimType);
-      setupSimulation(currentSimFile);
-    });
-    return c;
+
+  private void changeSimulation(String s) {
+    currentSimType = s;
+    currentSimFile = simDefaults.get(currentSimType);
+    setupSimulation(currentSimFile);
   }
 
   public GridView getGridView() {
@@ -220,5 +215,37 @@ public class DisplayView {
 
   private void attachTooltip(Button button) {
     inputFactory.attachTooltip(String.format("%sTooltip", button.getId()), button);
+  }
+
+  private ComboBox<String> makeComboBox(String id, String folder,
+      EventHandler<ActionEvent> handler) {
+    ComboBox<String> c = new ComboBox<>();
+    c.getStyleClass().add("sim-selector");
+    c.setId("ThemeSelector");
+    addComboBoxItems(folder, c);
+    c.setOnAction(handler);
+    c.setId(id);
+    return c;
+  }
+
+  private void addComboBoxItems(String folder, ComboBox<String> c) {
+    File directory = new File(
+        getClass().getResource(DEFAULT_RESOURCE_FOLDER + folder).getPath());
+    String[] files = directory.list();
+    if (files != null) {
+      for (String f : files) {
+        String s = f.split("\\.")[0];
+        c.getItems().add(s);
+      }
+      c.setValue(c.getItems().get(0));
+    }
+  }
+
+  private void changeStyleSheet(String s) {
+    String newStylesheet = DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + s + STYLESHEET_TAG;
+    scene.getStylesheets().clear();
+    scene.getStylesheets().add(newStylesheet);
+    infoPopUp.changeStyleSheet(newStylesheet);
+    colorPopUp.changeStyleSheet(newStylesheet);
   }
 }

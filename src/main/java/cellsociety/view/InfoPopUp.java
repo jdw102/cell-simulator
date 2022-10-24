@@ -157,5 +157,10 @@ public class InfoPopUp {
   public void changeInfoText(InfoText text) {
     infoText = text;
   }
+
+  public void changeStyleSheet(String stylesheet) {
+    dialog.getDialogPane().getStylesheets().clear();
+    dialog.getDialogPane().getStylesheets().add(stylesheet);
+  }
 }
 

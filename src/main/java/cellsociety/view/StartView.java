@@ -14,10 +14,12 @@ import javafx.scene.layout.VBox;
 public class StartView {
 
   private static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
+  private static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
+
   private static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
   private static final String START_LANGUAGE = "English";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  private static final String STYLESHEET = "default.css";
+  private static final String STYLESHEET = "LightMode.css";
   private BorderPane root;
   private ComboBox<String> languageSelector;
   private InputFactory inputFactory;
@@ -40,7 +42,9 @@ public class StartView {
     root.setCenter(box);
     Scene scene = new Scene(root, sizeWidth, sizeHeight);
     scene.getStylesheets()
-        .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+        .add(
+            getClass().getResource(DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + STYLESHEET)
+                .toExternalForm());
     return scene;
   }
 

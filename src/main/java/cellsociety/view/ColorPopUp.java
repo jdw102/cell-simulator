@@ -67,4 +67,9 @@ public class ColorPopUp {
     return colorBox;
   }
 
+  public void changeStyleSheet(String stylesheet) {
+    dialog.getDialogPane().getStylesheets().clear();
+    dialog.getDialogPane().getStylesheets().add(stylesheet);
+  }
+
 }
