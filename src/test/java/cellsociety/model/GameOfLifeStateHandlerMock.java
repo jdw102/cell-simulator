@@ -1,30 +1,26 @@
 package cellsociety.model;
 
 import cellsociety.State;
-import cellsociety.cellStates.Alive;
-import cellsociety.cellStates.Dead;
-import cellsociety.cellStates.GameOfLifeCellState;
+import cellsociety.cellstates.gameoflifecellstates.AliveState;
+import cellsociety.cellstates.gameoflifecellstates.DeadState;
+import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
+import cellsociety.model.statehandlers.GameOfLifeStateHandler;
 import cellsociety.model.statehandlers.StateHandler;
 
-public class GameOfLifeStateHandlerMock implements StateHandler {
+public class GameOfLifeStateHandlerMock extends GameOfLifeStateHandler {
 
   @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
-    return new Dead();
+    return new DeadState();
   }
 
   @Override
   public State getToggledState(Neighborhood currNeighborhood) {
     if (currNeighborhood.isState(GameOfLifeCellState.ALIVE)) {
-      return new Dead();
+      return new DeadState();
     }
     else {
-      return new Alive();
+      return new AliveState();
     }
-  }
-
-  @Override
-  public Class getMapping(int stateValue) {
-    return null;
   }
 }
