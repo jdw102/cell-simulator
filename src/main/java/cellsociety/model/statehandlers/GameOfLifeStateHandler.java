@@ -22,8 +22,6 @@ public class GameOfLifeStateHandler extends StateHandler {
 
     stateOfValue.put(1, AliveState.class);
     stateOfValue.put(0, DeadState.class);
-
-    System.out.println("Successfully instantiated");
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {

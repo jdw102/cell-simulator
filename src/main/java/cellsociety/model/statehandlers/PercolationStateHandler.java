@@ -19,7 +19,6 @@ public class PercolationStateHandler extends StateHandler {
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
-//    if currNeighborhood.contains(PercolationCellState.PERCOLATED);
     Enum currState = currNeighborhood.getStateEnum();
     if (currState.equals(PercolationCellState.OPEN) && currNeighborhood.contains(
         PercolationCellState.PERCOLATED)) {
