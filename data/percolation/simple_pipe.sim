@@ -1,4 +1,4 @@
-SimType=Percolation
+Type=Percolation
 ConfigTitle=Simple Pipe
 Author=Robert Duvall
 Description=A simple pipe flowing from top to bottom

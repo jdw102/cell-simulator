@@ -188,7 +188,7 @@ public class DisplayView {
 
   public void setInfoText(GameDisplayInfo text) {
     if (!currentSimType.equals(text.type())) {
-      cellGrid.setSimType(currentSimType);
+      cellGrid.setSimType(text.type());
       currentSimType = text.type();
       typeSelector.setValue(currentSimType);
     }

@@ -1,4 +1,4 @@
-package cellsociety.cellStates;
+package cellsociety.cellstates.gameoflifecellstates;
 
 
 /**
@@ -6,7 +6,6 @@ package cellsociety.cellStates;
  */
 public enum GameOfLifeCellState {
   DEAD,
-  ALIVE
-
+  ALIVE;
 
 }

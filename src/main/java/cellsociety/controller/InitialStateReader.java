@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Coordinate;
 import cellsociety.State;
 import cellsociety.model.statehandlers.StateHandler;
 import com.opencsv.CSVReader;
@@ -9,6 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+
+/**
+ * Class in charge of reading in initial states (as ints)
+ */
 public class InitialStateReader extends FileParser {
 
   public static final String CSV_FILE_TYPE = "csv";
@@ -23,12 +28,12 @@ public class InitialStateReader extends FileParser {
 
   public InitialStateReader(StateHandler stateHandler, File f)
       throws CsvValidationException, IOException, WrongFileTypeException {
+    this.myStateHandler = stateHandler;
     isFileTypeCorrect(f, CSV_FILE_TYPE);
     myFile = f;
     statesAsInts = parse();
-
-    myStateHandler = stateHandler;
   }
+
 
   //Read numbers from a file into a grid.
   private int[][] parse() throws IOException, CsvValidationException {
@@ -49,8 +54,8 @@ public class InitialStateReader extends FileParser {
 
         int current_val = Integer.parseInt(nextLine[col]);
 
-        outputArray[row][col] = current_val;
         validateState(current_val);
+        outputArray[row][col] = current_val;
 
       }
       row += 1;
@@ -65,6 +70,7 @@ public class InitialStateReader extends FileParser {
     } catch (Exception e) {
       //if index out of bounds, suggests incorrect num cols
       //if could not parse int then incorrect file format
+      throw new RuntimeException(e);
     }
   }
 
@@ -73,6 +79,7 @@ public class InitialStateReader extends FileParser {
       myStateHandler.getMapping(value);
     } catch (Exception e) {
       // no such state mapping exists, i.e. not a valid int for this simulation
+      throw new RuntimeException(e);
     }
   }
 
@@ -84,7 +91,6 @@ public class InitialStateReader extends FileParser {
     try {
       firstLine = myCSVReader.readNext();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
     }
 
     int numRows = 0;
@@ -93,36 +99,63 @@ public class InitialStateReader extends FileParser {
     try {
       numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
     } catch (Exception e) {
-      /// num rows not given
+      throw new RuntimeException(e);
     }
     try {
       numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
     } catch (Exception e) {
-      /// num cols not given
+      throw new RuntimeException(e);
     }
 
     myNumRows = numRows;
     myNumCols = numCols;
   }
 
-  public State createStateInstance(int row, int col) {
-    int valOfState = statesAsInts[row][col];
-    try {
-      return (State) myStateHandler.getMapping(valOfState).getDeclaredConstructor().newInstance();
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-             NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    }
+
+  /**
+   * Class to instantiate an object of a given cell state
+   *
+   * @param coord the x,y coordinate in the grid of cells
+   * @return the newly instantiated state object
+   */
+  public State createStateInstance(Coordinate coord) {
+    int x = coord.x();
+    int y = coord.y();
+    int valOfState = statesAsInts[x][y];
+    Enum state = myStateHandler.getMapping(valOfState);
+
+    return myStateHandler.getStateInstance(state);
   }
 
-  public int getStateValue(int row, int col) {
-    return statesAsInts[row][col];
+  /**
+   * A method for testing that the states were read in correctly.
+   *
+   * @param row the x position of a cell's coordinate
+   * @param col the y position of a cell's coordinate
+   * @return the integer (denoting the state) at a specific coordinate
+   */
+  protected int getStateValue(Coordinate myCoord) {
+    int x = myCoord.x();
+    int y = myCoord.y();
+
+    return statesAsInts[x][y];
   }
 
+
+  /**
+   * A method to obtain the length of a cell grid
+   *
+   * @return the number of rows in the grid
+   */
   public int getNumRows() {
     return myNumRows;
   }
 
+  /**
+   * A method to obtain the width of a cell grid
+   *
+   * @return the number of columns in the grid
+   */
   public int getNumCols() {
     return myNumCols;
   }

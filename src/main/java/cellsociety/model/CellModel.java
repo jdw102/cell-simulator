@@ -101,4 +101,12 @@ public class CellModel implements Observable {
       observer.update();
     }
   }
+  @Override
+  public boolean equals(Object obj) {
+    if(!(obj instanceof CellModel)) {
+      return false;
+    }
+    CellModel cellState = (CellModel) obj;
+    return this.getCurrentStateEnum().equals(cellState.getCurrentStateEnum());
+  }
 }
