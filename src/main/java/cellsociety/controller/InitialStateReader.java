@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Coordinate;
 import cellsociety.State;
 import cellsociety.model.statehandlers.StateHandler;
 import com.opencsv.CSVReader;
@@ -118,8 +119,10 @@ public class InitialStateReader extends FileParser {
    * @param col the y coordinate in the grid of cells
    * @return the newly instantiated state object
    */
-  public State createStateInstance(int row, int col) {
-    int valOfState = statesAsInts[row][col];
+  public State createStateInstance(Coordinate coord) {
+    int x = coord.x();
+    int y = coord.y();
+    int valOfState = statesAsInts[x][x];
     Enum state = myStateHandler.getMapping(valOfState);
 
     return myStateHandler.getStateInstance(state);

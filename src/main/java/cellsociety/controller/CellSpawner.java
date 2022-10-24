@@ -56,7 +56,9 @@ public class CellSpawner {
    * @param col the y value in the [x][y] coordinate of the data structure
    */
   private void initializeCell(int row, int col) {
-    State cellState = getState(row, col);
+    Coordinate cellCoord = new Coordinate(row, col);
+
+    State cellState = getState(cellCoord);
     myCellModels[row][col] = new CellModel(cellState);
     myCellViews[row][col] = new CellView(myCellModels[row][col]);
     myGridView.addCell(myCellViews[row][col], row, col);
@@ -100,11 +102,10 @@ public class CellSpawner {
    * Method to obtain the state of the cell model/view grid. Uses abstraction through
    * InitialStateReader to translate the state value, e.g. 0 or 1, to a state instance.
    *
-   * @param row the x value in the [x][y] coordinate of the data structure
-   * @param col the y value in the [x][y] coordinate of the data structure
+   * @param coord the x,y value in the [x][y] coordinate of the data structure
    */
-  private State getState(int row, int col) {
-    return myInitialStateReader.createStateInstance(row, col);
+  private State getState(Coordinate coord) {
+    return myInitialStateReader.createStateInstance(coord);
   }
 
   private void setNumRows() {
