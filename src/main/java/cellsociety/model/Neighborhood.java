@@ -55,4 +55,8 @@ public class Neighborhood {
     return centerCell.getCurrentStateEnum();
   }
 
+  public State getState() {
+    return centerCell.getCurrentState();
+  }
+
 }
