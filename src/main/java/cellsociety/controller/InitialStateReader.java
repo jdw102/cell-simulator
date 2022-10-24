@@ -122,7 +122,7 @@ public class InitialStateReader extends FileParser {
   public State createStateInstance(Coordinate coord) {
     int x = coord.x();
     int y = coord.y();
-    int valOfState = statesAsInts[x][x];
+    int valOfState = statesAsInts[x][y];
     Enum state = myStateHandler.getMapping(valOfState);
 
     return myStateHandler.getStateInstance(state);
