@@ -19,7 +19,6 @@ public class Main extends Application {
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
   public static final Dimension START_SIZE = new Dimension(400, 500);
-  public static final String DEFAULT_LANGUAGE = "English";
   public static final String TITLE = "CellSociety";
 
   /**
@@ -37,7 +36,7 @@ public class Main extends Application {
 //    primaryStage.setMinHeight(MIN_SIZE.height);
 //    primaryStage.setMinWidth(MIN_SIZE.width);
 //    primaryStage.show();
-    openStartView();
+    openStartView(primaryStage);
   }
 
   /**
@@ -55,8 +54,9 @@ public class Main extends Application {
   private void openDisplayView(StartView startView, Stage stage) {
     stage.close();
     Stage newStage = new Stage();
+    newStage.setTitle(TITLE);
     DisplayView view = new DisplayView(startView.getStartLanguage(), newStage,
-        event -> openStartView());
+        event -> openStartView(new Stage()));
     Controller controller = new Controller(view);
     view.setController(controller);
     newStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
@@ -65,8 +65,7 @@ public class Main extends Application {
     newStage.show();
   }
 
-  private void openStartView() {
-    Stage stage = new Stage();
+  private void openStartView(Stage stage) {
     StartView startView = new StartView();
     stage.setScene(startView.setUpScene(START_SIZE.width, START_SIZE.height,
         event -> openDisplayView(startView, stage)));

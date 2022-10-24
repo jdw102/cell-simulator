@@ -68,9 +68,11 @@ public class DisplayView {
     infoText = new InfoText();
     inputFactory = new InputFactory(myResources);
     simInputsBox = makeSimInputsBox(newWindow);
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+    String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
-            + STYLESHEET_TAG,
+            + STYLESHEET_TAG;
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        stylesheet,
         inputFactory);
     simDefaults = makeDefaultFileMap();
     currentSimFile = simDefaults.get(currentSimType);
@@ -93,9 +95,11 @@ public class DisplayView {
   public Scene makeScene(int width, int height) {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     cellGrid.setSimType(currentSimType);
-    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
+    String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
-            + STYLESHEET_TAG, cellGrid,
+            + STYLESHEET_TAG;
+    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
+        stylesheet, cellGrid,
         inputFactory);
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
@@ -110,8 +114,7 @@ public class DisplayView {
     scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(
-                DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
-                    + STYLESHEET_TAG)
+                stylesheet)
             .toExternalForm());
     setupSimulation(currentSimFile);
     return scene;
