@@ -2,9 +2,9 @@ package cellsociety.model;
 
 import cellsociety.Coordinate;
 import cellsociety.State;
-import cellsociety.cellStates.Alive;
-import cellsociety.cellStates.Dead;
-import cellsociety.cellStates.GameOfLifeCellState;
+import cellsociety.cellstates.gameoflifecellstates.AliveState;
+import cellsociety.cellstates.gameoflifecellstates.DeadState;
+import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,10 @@ public class GameOfLifeNeighborhoodsLoaderMock extends NeighborhoodsLoader {
 
   private State getInitState() {
     if (myInitStates == GameOfLifeCellState.ALIVE) {
-      return new Alive();
+      return new AliveState();
     }
     else {
-      return new Dead();
+      return new DeadState();
     }
   }
 

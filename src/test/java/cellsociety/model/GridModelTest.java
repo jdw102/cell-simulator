@@ -1,10 +1,6 @@
 package cellsociety.model;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import cellsociety.cellStates.Alive;
-import cellsociety.cellStates.Dead;
-import cellsociety.cellStates.GameOfLifeCellState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
