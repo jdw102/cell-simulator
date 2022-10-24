@@ -1,9 +1,15 @@
 package cellsociety.model;
 
+import cellsociety.controller.CellSpawner;
 import cellsociety.controller.Controller;
+import cellsociety.controller.GameDisplayInfo;
+import cellsociety.controller.InitialStateReader;
 import cellsociety.controller.SimParser;
+import cellsociety.controller.StateHandlerLoader;
 import cellsociety.controller.WrongFileTypeException;
+import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
+import com.opencsv.exceptions.CsvValidationException;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +53,33 @@ class GridModelTest {
       throw new RuntimeException(e);
     }
    */
+  public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
+  private final DisplayView displayView;
+  private GridModel gridModel;
+  private StateHandlerLoader stateHandlerLoader;
+
+  public void setupSimulation(File simFile) {
+    SimParser simParser;
+    try {
+      simParser = new SimParser(simFile);
+      // Give the view the info about the game
+      GameDisplayInfo gameDisplayInfo = simParser.getGameDisplayInfo();
+      displayView.setInfoText(gameDisplayInfo);
+
+      File initStateCsv = simParser.getInitStateCsv();
+      // Instantiate a CellSpawner
+      StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
+      InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
+      CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
+      NeighborhoodsLoader neighborhoodsLoader = new NeighborhoodsLoader(cellSpawner,
+          DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
+      gridModel = new GridModel(neighborhoodsLoader, stateHandler);
+    } catch (IOException | CsvValidationException | WrongFileTypeException e) {
+      displayView.showMessage(e);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   @BeforeEach
   void setup() throws IOException, WrongFileTypeException {
