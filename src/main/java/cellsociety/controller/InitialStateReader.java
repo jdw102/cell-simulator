@@ -8,7 +8,6 @@ import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -27,16 +26,25 @@ public class InitialStateReader extends FileParser {
   private final StateHandler myStateHandler;
 
   public InitialStateReader(StateHandler stateHandler, File f)
-      throws CsvValidationException, IOException, WrongFileTypeException {
+      throws CsvValidationException, IOException, WrongFileTypeException, NumberFormatException,
+      IndexOutOfBoundsException {
     this.myStateHandler = stateHandler;
     isFileTypeCorrect(f, CSV_FILE_TYPE);
     myFile = f;
     statesAsInts = parse();
   }
 
-
-  //Read numbers from a file into a grid.
-  private int[][] parse() throws IOException, CsvValidationException {
+  /**
+   * Reads in initial states from CSV, checks for any issues.
+   * @return
+   * @throws IOException
+   * @throws CsvValidationException
+   * @throws NumberFormatException
+   * @throws IndexOutOfBoundsException
+   */
+  private int[][] parse()
+      throws IOException, CsvValidationException, NumberFormatException,
+      IndexOutOfBoundsException {
     int[][] outputArray;
 
     CSVReader myCSVReader = new CSVReader(new FileReader(myFile));
@@ -54,7 +62,6 @@ public class InitialStateReader extends FileParser {
 
         int current_val = Integer.parseInt(nextLine[col]);
 
-        validateState(current_val);
         outputArray[row][col] = current_val;
 
       }
@@ -63,34 +70,32 @@ public class InitialStateReader extends FileParser {
     return outputArray;
   }
 
-  private void validateCell(String[] line, int index) {
-    try {
-      Integer.parseInt(line[index]);
-
-    } catch (Exception e) {
-      //if index out of bounds, suggests incorrect num cols
-      //if could not parse int then incorrect file format
-      throw new RuntimeException(e);
-    }
+  /**
+   * Validates that a particular cell is valid
+   * @param line the line in the cell of interest
+   * @param index the index of the component
+   * @throws NumberFormatException non-integer input
+   * @throws IndexOutOfBoundsException input shorter than expected
+   */
+  private void validateCell(String[] line, int index)
+      throws NumberFormatException,
+      IndexOutOfBoundsException {
+    int value = Integer.parseInt(line[index]);
+    myStateHandler.getMapping(value);
   }
 
-  private void validateState(int value) {
-    try {
-      myStateHandler.getMapping(value);
-    } catch (Exception e) {
-      // no such state mapping exists, i.e. not a valid int for this simulation
-      throw new RuntimeException(e);
-    }
-  }
-
-  private void setDimensions(CSVReader myCSVReader) throws IOException, CsvValidationException {
-    int[] outputIntArray; /// should be [num_rows, num_cols]
+  /**
+   * Reads out the dimensions from the first line of the CSV, catches any exceptions.
+   * @param myCSVReader
+   */
+  private void setDimensions(CSVReader myCSVReader) {
 
     String[] firstLine = null;
 
     try {
       firstLine = myCSVReader.readNext();
     } catch (Exception e) {
+      throw new RuntimeException(String.format("Empty file passed for initial states: %s", myFile));
     }
 
     int numRows = 0;
@@ -99,12 +104,12 @@ public class InitialStateReader extends FileParser {
     try {
       numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException(String.format("Missing number of rows in %s", myFile));
     }
     try {
       numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException(String.format("Missing number of columns in %s", myFile));
     }
 
     myNumRows = numRows;
@@ -130,8 +135,7 @@ public class InitialStateReader extends FileParser {
   /**
    * A method for testing that the states were read in correctly.
    *
-   * @param row the x position of a cell's coordinate
-   * @param col the y position of a cell's coordinate
+   * @param myCoord the x,y position of a cell's coordinate
    * @return the integer (denoting the state) at a specific coordinate
    */
   protected int getStateValue(Coordinate myCoord) {
