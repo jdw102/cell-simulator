@@ -1,5 +1,5 @@
-Type=Percolation
+Type=PredatorPrey
 Title=Blank Simulation
 Author=Enter Name
 Description=A blank simulation... Feel free to change!
-InitialStates=percolation/blank.csv
+InitialStates=blank_sims/blank.csv

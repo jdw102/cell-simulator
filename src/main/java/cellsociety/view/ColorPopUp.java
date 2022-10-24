@@ -34,17 +34,7 @@ public class ColorPopUp {
     topBox.getStyleClass().add("info-header-container");
     VBox box = new VBox(topBox);
     for (String state : colors.getStates()) {
-      Label colorLabel = new Label(state);
-      colorLabel.getStyleClass().add("info-text-label");
-      ColorPicker cp = new ColorPicker();
-      cp.setValue(colors.getColor(state));
-      cp.setOnAction(event -> {
-        colors.changeStateColor(state, cp.getValue());
-        gridView.updateCellColors();
-      });
-      cp.getStyleClass().add("state-color-picker");
-      HBox colorBox = new HBox(colorLabel, cp);
-      colorBox.getStyleClass().add("state-color-box");
+      HBox colorBox = makeColorPickerBox(state, colors);
       box.getChildren().add(colorBox);
     }
     box.getStyleClass().add("pop-up-content");
@@ -59,6 +49,22 @@ public class ColorPopUp {
   public void setStateColors(StateColors colors) {
     VBox box = makeColorPickersBox(colors);
     dialog.getDialogPane().setContent(box);
+  }
+
+  private HBox makeColorPickerBox(String state, StateColors colors) {
+    Label colorLabel = new Label(state);
+    colorLabel.getStyleClass().add("info-text-label");
+    ColorPicker cp = new ColorPicker();
+    cp.setValue(colors.getColor(state));
+    cp.setOnAction(event -> {
+      colors.changeStateColor(state, cp.getValue());
+      gridView.updateCellColors();
+    });
+    cp.setId(state + "ColorPicker");
+    cp.getStyleClass().add("state-color-picker");
+    HBox colorBox = new HBox(colorLabel, cp);
+    colorBox.getStyleClass().add("state-color-box");
+    return colorBox;
   }
 
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Slider;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -27,7 +29,6 @@ import util.DukeApplicationTest;
 
 public class DisplayViewTest extends DukeApplicationTest {
 
-  public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
   public static final String DEFAULT_LANGUAGE = "English";
@@ -200,8 +201,7 @@ public class DisplayViewTest extends DukeApplicationTest {
 
   @Test
   void testSimulationReset() {
-    File f = new File(
-        "C:\\Users\\User\\IdeaProjects\\cellsociety_team06\\data\\game_of_life\\glider.sim");
+    File f = new File(getClass().getResource("/cellsociety/test_sims/display_test.sim").getPath());
     runAsJFXAction(() -> view.setupSimulation(f));
     sleep(1000);
     Button forwardButton = lookup("#ForwardButton").query();
@@ -209,8 +209,20 @@ public class DisplayViewTest extends DukeApplicationTest {
     clickOn(forwardButton);
     clickOn(resetButton);
     sleep(500);
-    Rectangle cell = lookup("#CellView[2][1]").query();
-    Paint expected = Paint.valueOf("#00FFFF");
+    Rectangle cell = lookup("#CellView[3][1]").query();
+    Paint expected = Paint.valueOf("#FFFFFF");
     assertEquals(expected, cell.getFill());
+  }
+
+  @Test
+  void testColorChange() {
+    Color expected = Color.RED;
+    Button colorButton = lookup("#ChangeColorButton").query();
+    clickOn(colorButton);
+    ColorPicker cp = lookup("#DEADColorPicker").query();
+    setValue(cp, expected);
+    sleep(500);
+    Rectangle cell = lookup("#CellView[0][0]").query();
+    assertEquals(cell.getFill(), expected);
   }
 }

@@ -1,0 +1,6 @@
+Type=GameOfLife
+Title=DisplayTest
+Author=Jerry Worthy
+Description=A simple pattern to test the display.
+InitialStates=test_sims/display_test.csv
+StateColors=00FF00,FF00FF
