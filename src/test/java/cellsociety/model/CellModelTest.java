@@ -30,6 +30,7 @@ public class CellModelTest {
   public void testNotifyObservers_onOneObserver() {
     CellModel cellModel = new CellModel(new Alive());
     TestObserver observer = new TestObserver();
+    cellModel.addObserver(observer);
     cellModel.notifyObservers();
 
     assertEquals(1, observer.getUpdatedCount());
