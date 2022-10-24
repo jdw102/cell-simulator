@@ -90,3 +90,21 @@
   -fx-alignment: center;
   -fx-spacing: 50;
 }
+
+.language-selector-label {
+  -fx-font-size: 16pt;
+}
+
+.language-combo-box {
+  -fx-font-size: 14pt;
+  -fx-min-width: 200;
+}
+
+.start-button {
+  -fx-min-width: 100;
+}
+
+.start-box {
+  -fx-alignment: center;
+  -fx-spacing: 30;
+}

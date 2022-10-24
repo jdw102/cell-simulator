@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -23,6 +25,7 @@ import javafx.stage.Stage;
 public class DisplayView {
 
   public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
+  public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
   private static final String STYLESHEET = "default.css";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   private static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
@@ -54,15 +57,16 @@ public class DisplayView {
    * @param language the language displayed by the components
    * @param stage    the stage displaying the scene
    */
-  public DisplayView(String language, Stage stage) {
+  public DisplayView(String language, Stage stage, EventHandler<ActionEvent> newWindow) {
     currentSimType = DEFAULT_SIM;
     STAGE = stage;
-    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    myResources = ResourceBundle.getBundle(
+        DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + language);
     infoText = new InfoText();
     inputFactory = new InputFactory(myResources);
     infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
         DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
-    simInputsBox = makeSimInputsBox();
+    simInputsBox = makeSimInputsBox(newWindow);
     simDefaults = makeDefaultFileMap();
     currentSimFile = simDefaults.get(currentSimType);
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
@@ -109,7 +113,7 @@ public class DisplayView {
    *
    * @return the HBox containing the inputs
    */
-  private HBox makeSimInputsBox() {
+  private HBox makeSimInputsBox(EventHandler<ActionEvent> newWindow) {
     typeSelector = makeTypeSelector();
     inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
@@ -119,12 +123,15 @@ public class DisplayView {
         event -> setupSimulation(currentSimFile));
     Button changeColorButton = inputFactory.makeButton("ChangeColorButton",
         event -> colorPopUp.open());
+    Button newWindowButton = inputFactory.makeButton("NewWindowButton", newWindow);
     attachTooltip(saveButton);
     attachTooltip(importButton);
     attachTooltip(infoButton);
     attachTooltip(resetButton);
     attachTooltip(changeColorButton);
-    HBox b = new HBox(changeColorButton, saveButton, importButton, infoButton, typeSelector,
+    attachTooltip(newWindowButton);
+    HBox b = new HBox(newWindowButton, changeColorButton, saveButton, importButton, infoButton,
+        typeSelector,
         resetButton);
     b.getStyleClass().add("sim-inputs-container");
     return b;

@@ -39,7 +39,8 @@ public class DisplayViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage primaryStage) {
-    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage,
+        event -> System.out.println("New Window"));
     Controller controller = new Controller(view);
     view.setController(controller);
     // give the window a title
