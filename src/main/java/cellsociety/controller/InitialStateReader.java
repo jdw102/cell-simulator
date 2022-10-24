@@ -27,13 +27,11 @@ public class InitialStateReader extends FileParser {
 
   public InitialStateReader(StateHandler stateHandler, File f)
       throws CsvValidationException, IOException, WrongFileTypeException {
+    this.myStateHandler = stateHandler;
     isFileTypeCorrect(f, CSV_FILE_TYPE);
     myFile = f;
     statesAsInts = parse();
-
-    myStateHandler = stateHandler;
   }
-
 
 
   //Read numbers from a file into a grid.
@@ -71,6 +69,7 @@ public class InitialStateReader extends FileParser {
     } catch (Exception e) {
       //if index out of bounds, suggests incorrect num cols
       //if could not parse int then incorrect file format
+      throw new RuntimeException(e);
     }
   }
 
@@ -79,6 +78,7 @@ public class InitialStateReader extends FileParser {
       myStateHandler.getMapping(value);
     } catch (Exception e) {
       // no such state mapping exists, i.e. not a valid int for this simulation
+      throw new RuntimeException(e);
     }
   }
 
@@ -90,7 +90,6 @@ public class InitialStateReader extends FileParser {
     try {
       firstLine = myCSVReader.readNext();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
     }
 
     int numRows = 0;
@@ -99,36 +98,36 @@ public class InitialStateReader extends FileParser {
     try {
       numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
     } catch (Exception e) {
-      /// num rows not given
+      throw new RuntimeException(e);
     }
     try {
       numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
     } catch (Exception e) {
-      /// num cols not given
+      throw new RuntimeException(e);
     }
 
     myNumRows = numRows;
     myNumCols = numCols;
   }
 
+
   /**
    * Class to instantiate an object of a given cell state
+   *
    * @param row the x coordinate in the grid of cells
    * @param col the y coordinate in the grid of cells
    * @return the newly instantiated state object
    */
   public State createStateInstance(int row, int col) {
     int valOfState = statesAsInts[row][col];
-    try {
-      return (State) myStateHandler.getMapping(valOfState).getDeclaredConstructor().newInstance();
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-             NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    }
+    Enum state = myStateHandler.getMapping(valOfState);
+
+    return myStateHandler.getStateInstance(state);
   }
 
   /**
    * A method for testing that the states were read in correctly.
+   *
    * @param row the x position of a cell's coordinate
    * @param col the y position of a cell's coordinate
    * @return the integer (denoting the state) at a specific coordinate
@@ -140,6 +139,7 @@ public class InitialStateReader extends FileParser {
 
   /**
    * A method to obtain the length of a cell grid
+   *
    * @return the number of rows in the grid
    */
   public int getNumRows() {
@@ -148,6 +148,7 @@ public class InitialStateReader extends FileParser {
 
   /**
    * A method to obtain the width of a cell grid
+   *
    * @return the number of columns in the grid
    */
   public int getNumCols() {

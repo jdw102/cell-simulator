@@ -5,8 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 
 public class StateHandlerLoader {
 
-  public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.model.statehandlers.";
-
   private static final String STATE_HANDLER_SUFFIX = "StateHandler";
 
   private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.statehandlers.";
@@ -51,6 +49,7 @@ public class StateHandlerLoader {
   // @Todo: throw class not found exception
   public StateHandler getStateHandler(String simType) throws ClassNotFoundException {
     Class clazz = null;
+    System.out.println(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
     try {
       clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
     } catch (NoClassDefFoundError | Exception e) {
@@ -58,21 +57,18 @@ public class StateHandlerLoader {
       try {
         clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
       } catch (Exception e2) {
-//        throw e2;
+        throw new ClassNotFoundException();
       }
     }
+
     if (clazz == null) {
-      return null;
+      throw new RuntimeException("Unable to instantiate StateHandler");
     }
+
     try {
       return (StateHandler) clazz.getDeclaredConstructor().newInstance();
-    } catch (InstantiationException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
-    } catch (NoSuchMethodException e) {
+    } catch (InstantiationException | RuntimeException | IllegalAccessException |
+             InvocationTargetException | NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
   }
