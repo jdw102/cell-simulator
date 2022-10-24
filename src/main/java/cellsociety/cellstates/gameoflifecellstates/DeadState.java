@@ -1,8 +1,8 @@
-package cellsociety.cellStates;
+package cellsociety.cellstates.gameoflifecellstates;
 
 import cellsociety.State;
 
-public class Dead implements State {
+public class DeadState implements State {
 
   public Enum getStateEnum() {
     return GameOfLifeCellState.DEAD;

@@ -1,8 +1,8 @@
-package cellsociety.cellStates;
+package cellsociety.cellstates.gameoflifecellstates;
 
 import cellsociety.State;
 
-public class Alive implements State {
+public class AliveState implements State {
 
   @Override
   public Enum getStateEnum() {

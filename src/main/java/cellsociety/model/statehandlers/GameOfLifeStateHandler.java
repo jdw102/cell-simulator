@@ -1,45 +1,33 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellStates.Alive;
-import cellsociety.cellStates.Dead;
-import cellsociety.cellStates.GameOfLifeCellState;
+import cellsociety.cellstates.gameoflifecellstates.AliveState;
+import cellsociety.cellstates.gameoflifecellstates.DeadState;
+import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameOfLifeStateHandler implements StateHandler {
+public class GameOfLifeStateHandler extends StateHandler {
 
-  Map<Integer, Class> stateOfValue;
+  private Map<Integer, Class> stateOfValue;
 
-  public GameOfLifeStateHandler() {
-    stateOfValue = new HashMap<>();
+  private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates.";
+  private static final String HANDLER_NAME = "GameOfLifeStateHandler";
 
-    stateOfValue.put(1, Alive.class);
-    stateOfValue.put(0, Dead.class);
+  public GameOfLifeStateHandler() throws RuntimeException {
+    super(GameOfLifeCellState.values(), HANDLER_NAME, STATES_PACKAGE);
   }
 
-  @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
-    int liveNeighbors = currNeighborhood.count(new Alive());
+    int liveNeighbors = currNeighborhood.count(GameOfLifeCellState.ALIVE);
     if ((currNeighborhood.isState(GameOfLifeCellState.ALIVE) && liveNeighbors == 2)
         || liveNeighbors == 3) {
-      return new Alive();
+      return getStateInstance(GameOfLifeCellState.ALIVE);
     } else {
-      return new Dead();
+      return getStateInstance(GameOfLifeCellState.DEAD);
     }
-
   }
 
-  // TODO: Implement this method
-  @Override
-  public State getToggledState(Neighborhood currNeighborhood) {
-    return null;
-  }
-
-  @Override
-  public Class getMapping(int stateValue) {
-    return stateOfValue.get(stateValue);
-  }
 
 }
