@@ -53,6 +53,7 @@ public class DisplayView {
   private File currentSimFile;
   private ColorPopUp colorPopUp;
   private Scene scene;
+  private boolean setDefault;
 
   /**
    * Create a new view.
@@ -76,6 +77,7 @@ public class DisplayView {
         inputFactory);
     simDefaults = makeDefaultFileMap();
     currentSimFile = simDefaults.get(currentSimType);
+    setDefault = true;
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
@@ -93,7 +95,7 @@ public class DisplayView {
    * @return the scene
    */
   public Scene makeScene(int width, int height) {
-    cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
+    cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER, controller);
     cellGrid.setSimType(currentSimType);
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
@@ -177,9 +179,12 @@ public class DisplayView {
 
 
   private void changeSimulation(String s) {
+    cellGrid.clearGrid();
     currentSimType = s;
-    currentSimFile = simDefaults.get(currentSimType);
-    setupSimulation(currentSimFile);
+    cellGrid.setSimType(currentSimType);
+    if (setDefault) {
+      setupSimulation(simDefaults.get(currentSimType));
+    }
   }
 
   public GridView getGridView() {
@@ -188,9 +193,10 @@ public class DisplayView {
 
   public void setInfoText(GameDisplayInfo text) {
     if (!currentSimType.equals(text.type())) {
-      cellGrid.setSimType(text.type());
       currentSimType = text.type();
+      setDefault = false;
       typeSelector.setValue(currentSimType);
+      setDefault = true;
     }
     infoText.setTitle(text.title());
     infoText.setAuthor(text.author());

@@ -87,7 +87,7 @@
 }
 
 .state-color-box {
-  -fx-alignment: center;
+  -fx-alignment: center-right;
   -fx-spacing: 50;
 }
 

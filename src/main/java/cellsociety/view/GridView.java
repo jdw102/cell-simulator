@@ -1,5 +1,7 @@
 package cellsociety.view;
 
+import cellsociety.Coordinate;
+import cellsociety.controller.Controller;
 import java.util.ResourceBundle;
 import javafx.scene.layout.GridPane;
 
@@ -18,6 +20,7 @@ public class GridView {
   private double cellWidth;
   private double cellHeight;
   private StateColors stateColors;
+  private Controller controller;
 
   /**
    * Create a new view for the grid of cell.
@@ -25,7 +28,8 @@ public class GridView {
    * @param width  the width of the grid
    * @param height the height of the grid
    */
-  public GridView(double width, double height) {
+  public GridView(double width, double height, Controller contr) {
+    controller = contr;
     gridWidth = width;
     gridHeight = height;
     grid = new GridPane();
@@ -72,7 +76,10 @@ public class GridView {
   public void addCell(CellView cellView, int i, int j) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setStateColors(stateColors);
-    //cellView.getRectangle().setOnMouseClicked(event -> controller.changeState(i, j));
+    cellView.getCellPane()
+        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(i, j)));
+    cellView.getRectangle()
+        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(i, j)));
     cellView.getRectangle()
         .setId("CellView" + "[" + i + "]" + "[" + j + "]");
     cells[i][j] = cellView;
