@@ -17,6 +17,7 @@ public class GameOfLifeNeighborhoodsLoaderMock extends NeighborhoodsLoader {
   public static final int NUM_COLS = 30;
 
   public GameOfLifeNeighborhoodsLoaderMock(GameOfLifeCellState initStateOfAllCellModels) {
+    super(null, 5);
     loadNeighborhoods();
     myInitStates = initStateOfAllCellModels;
   }
