@@ -2,6 +2,7 @@ package cellsociety.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import cellsociety.Coordinate;
 import cellsociety.model.statehandlers.StateHandler;
 import java.io.File;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,10 +50,12 @@ class InitialStateReaderTest {
 
       for(int row = 0; row < expected.length; row++) {
         for(int col = 0; col < expected[row].length; col++) {
+
+          Coordinate myCoord = new Coordinate(row, col);
           String expectedString = mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col +" = " +
               expected[row][col];
           String actualString = mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col +" = " +
-              stateReaderTester.getStateValue(row, col);
+              stateReaderTester.getStateValue(myCoord);
           assertEquals(expectedString, actualString);
         }
       }
