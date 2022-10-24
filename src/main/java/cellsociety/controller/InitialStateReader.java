@@ -115,8 +115,7 @@ public class InitialStateReader extends FileParser {
   /**
    * Class to instantiate an object of a given cell state
    *
-   * @param row the x coordinate in the grid of cells
-   * @param col the y coordinate in the grid of cells
+   * @param coord the x,y coordinate in the grid of cells
    * @return the newly instantiated state object
    */
   public State createStateInstance(Coordinate coord) {

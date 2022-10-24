@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Coordinate;
 import cellsociety.model.statehandlers.GameOfLifeStateHandler;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.GridView;
@@ -72,11 +73,13 @@ class CellSpawnerTest {
           String actualModelOutput = modelOutput;
           String actualViewOutput = viewOutput;
 
-          if(myCellSpawnerTester.getCell(j,k) == null) {
+          Coordinate myCoord = new Coordinate(j,k);
+
+          if(myCellSpawnerTester.getCell(myCoord) == null) {
             actualModelOutput = null;
           }
 
-          if(myCellSpawnerTester.getCellView(j,k) == null) {
+          if(myCellSpawnerTester.getCellView(myCoord) == null) {
             actualViewOutput = null;
           }
           Assertions.assertEquals(modelOutput, actualModelOutput);
