@@ -14,7 +14,7 @@ public class PercolationStateHandler extends StateHandler {
   private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
   private static final String HANDLER_NAME = "PercolationStateHandler";
 
-  public PercolationStateHandler() {
+  public PercolationStateHandler() throws RuntimeException {
     super(PercolationCellState.values(), HANDLER_NAME, STATES_PACKAGE);
   }
 

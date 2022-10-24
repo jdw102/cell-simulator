@@ -12,7 +12,7 @@ public abstract class StateHandler {
   private static final String STATE_SUFFIX = "State";
 
   private String statesPackage;
-  private static final String PROPERTIES_PACKAGE = "cellsociety.statehandlers..";
+  private static final String PROPERTIES_PACKAGE = "cellsociety.statehandlers.";
   private String handlerName;
   private Map<Integer, Enum> stateOf;
   Enum[] states;

@@ -17,11 +17,6 @@ public class GameOfLifeStateHandler extends StateHandler {
 
   public GameOfLifeStateHandler() throws RuntimeException {
     super(GameOfLifeCellState.values(), HANDLER_NAME, STATES_PACKAGE);
-
-    stateOfValue = new HashMap<>();
-
-    stateOfValue.put(1, AliveState.class);
-    stateOfValue.put(0, DeadState.class);
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
