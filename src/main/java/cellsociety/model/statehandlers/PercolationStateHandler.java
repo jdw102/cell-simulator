@@ -11,8 +11,6 @@ import java.util.Map;
 
 public class PercolationStateHandler extends StateHandler {
 
-  private Map<Integer, Class> stateOfValue;
-  private static final String PROPERTIES_FILE = "PercolationStateHandler";
   private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
   private static final String HANDLER_NAME = "PercolationStateHandler";
 
@@ -22,8 +20,13 @@ public class PercolationStateHandler extends StateHandler {
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
 //    if currNeighborhood.contains(PercolationCellState.PERCOLATED);
-    return new PercolatedState();
-
+    Enum currState = currNeighborhood.getStateEnum();
+    if (currState.equals(PercolationCellState.OPEN) && currNeighborhood.contains(
+        PercolationCellState.PERCOLATED)) {
+      return getStateInstance(PercolationCellState.PERCOLATED);
+    } else {
+      return currNeighborhood.getState();
+    }
   }
 
 
