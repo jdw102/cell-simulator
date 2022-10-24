@@ -2,9 +2,7 @@ package cellsociety.view;
 
 import cellsociety.Observer;
 import cellsociety.model.CellModel;
-import java.util.ResourceBundle;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -16,7 +14,7 @@ public class CellView implements Observer {
   private final Pane cellPane;
   private final Rectangle rectangle;
   private final CellModel model;
-  private ResourceBundle colorBundle;
+  private StateColors stateColors;
 
   /**
    * Create a new instance of a cell view.
@@ -30,7 +28,7 @@ public class CellView implements Observer {
 
   @Override
   public void update() {
-    rectangle.setFill(Paint.valueOf(colorBundle.getString(model.getCurrentStateEnum().toString())));
+    rectangle.setFill(stateColors.getColor(model.getCurrentStateEnum().toString()));
   }
 
   public Pane getCellPane() {
@@ -52,7 +50,7 @@ public class CellView implements Observer {
   /**
    * Sets the resource bundle to the appropriate one.
    */
-  public void setColorBundle(ResourceBundle colors) {
-    colorBundle = colors;
+  public void setStateColors(StateColors colors) {
+    stateColors = colors;
   }
 }

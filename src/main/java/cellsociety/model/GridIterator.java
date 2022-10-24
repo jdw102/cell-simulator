@@ -1,8 +1,9 @@
 package cellsociety.model;
 
-import java.util.Collection;
+import cellsociety.Coordinate;
 
 @FunctionalInterface
 public interface GridIterator<T> {
+
   T create(Coordinate coord);
 }

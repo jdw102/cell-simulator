@@ -2,17 +2,25 @@ package cellsociety;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,17 +29,19 @@ import util.DukeApplicationTest;
 
 public class DisplayViewTest extends DukeApplicationTest {
 
-  public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
   public static final String DEFAULT_LANGUAGE = "English";
   public static final String TITLE = "CellSociety";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   private ResourceBundle myResources;
+  private DisplayView view;
 
   @Override
   public void start(Stage primaryStage) {
-    DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
+    Controller controller = new Controller(view);
+    view.setController(controller);
     // give the window a title
     primaryStage.setTitle(TITLE);
     //add our user interface components to Frame and show it
@@ -150,20 +160,69 @@ public class DisplayViewTest extends DukeApplicationTest {
     sleep(500);
     assertEquals(expected, titleField.getText());
   }
-//  @Test
-//  void testInfoSave() {
-//    String expected = "test";
-//    Button infoButton = lookup("#InfoButton").query();
-//    clickOn(infoButton);
-//    TextArea titleField = lookup("#DescriptionTextField").query();
-//    Button editButton = lookup("#EditInfoButton").query();
-//    clickOn(editButton);
-//    clickOn(titleField).clickOn(titleField).clickOn(titleField).press(KeyCode.BACK_SPACE)
-//        .write(expected);
-//    DialogPane dp = lookup("#InfoPane").query();
-//    Node saveButton = dp.lookupButton(ButtonType.APPLY);
-//    clickOn(saveButton);
-//    sleep(500);
-//    assertEquals(expected, titleField.getText());
-//  }
+
+  @Test
+  void testInfoSave() {
+    String expected = "test";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextArea description = lookup("#DescriptionTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(description).clickOn(description).clickOn(description).press(KeyCode.BACK_SPACE)
+        .write(expected);
+    DialogPane dp = lookup("#InfoPane").query();
+    Button saveButton = (Button) dp.lookupButton(ButtonType.OK);
+    clickOn(saveButton);
+    sleep(500);
+    clickOn(infoButton);
+    sleep(500);
+    assertEquals(expected, description.getText());
+  }
+
+  @Test
+  void testInfoCancel() {
+    String expected = "A blank simulation... Feel free to change!";
+    Button infoButton = lookup("#InfoButton").query();
+    clickOn(infoButton);
+    TextArea description = lookup("#DescriptionTextField").query();
+    Button editButton = lookup("#EditInfoButton").query();
+    clickOn(editButton);
+    clickOn(description).clickOn(description).clickOn(description).press(KeyCode.BACK_SPACE)
+        .write("test");
+    DialogPane dp = lookup("#InfoPane").query();
+    Button cancelButton = (Button) dp.lookupButton(ButtonType.CANCEL);
+    clickOn(cancelButton);
+    sleep(500);
+    clickOn(infoButton);
+    sleep(500);
+    assertEquals(expected, description.getText());
+  }
+
+  @Test
+  void testSimulationReset() {
+    File f = new File(getClass().getResource("/cellsociety/test_sims/display_test.sim").getPath());
+    runAsJFXAction(() -> view.setupSimulation(f));
+    sleep(1000);
+    Button forwardButton = lookup("#ForwardButton").query();
+    Button resetButton = lookup("#ResetButton").query();
+    clickOn(forwardButton);
+    clickOn(resetButton);
+    sleep(500);
+    Rectangle cell = lookup("#CellView[3][1]").query();
+    Paint expected = Paint.valueOf("#FFFFFF");
+    assertEquals(expected, cell.getFill());
+  }
+
+  @Test
+  void testColorChange() {
+    Color expected = Color.RED;
+    Button colorButton = lookup("#ChangeColorButton").query();
+    clickOn(colorButton);
+    ColorPicker cp = lookup("#DEADColorPicker").query();
+    setValue(cp, expected);
+    sleep(500);
+    Rectangle cell = lookup("#CellView[0][0]").query();
+    assertEquals(cell.getFill(), expected);
+  }
 }

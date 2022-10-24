@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.GameDisplayInfo;
 import cellsociety.model.GridModel;
 import cellsociety.model.NeighborhoodsLoader;
 import cellsociety.model.statehandlers.StateHandler;
@@ -9,10 +10,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Daniel Feinblatt
- * Controller class in the Model-View-Controller design
+ * @author Daniel Feinblatt Controller class in the Model-View-Controller design
  */
 public class Controller {
+
   public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
   private GridModel gridModel;
@@ -20,7 +21,9 @@ public class Controller {
 
   /**
    * Instantiates a new Controller that handles communication between the model and view
-   * @param displayView The main View class that the controller communicates with to display information to the user
+   *
+   * @param displayView The main View class that the controller communicates with to display
+   *                    information to the user
    */
   public Controller(DisplayView displayView) {
     this.displayView = displayView;

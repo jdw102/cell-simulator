@@ -1,5 +1,6 @@
 package cellsociety.model;
 
+import cellsociety.Coordinate;
 import cellsociety.controller.CellSpawner;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +40,21 @@ public class NeighborhoodsLoader {
 
 
   private boolean validNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
-    return cellExists(candidateNeighbor) && inNeighborhood(centerCoordinate, candidateNeighbor) && !centerCoordinate.equals(candidateNeighbor);
+    return cellExists(candidateNeighbor) && inNeighborhood(centerCoordinate, candidateNeighbor)
+        && !centerCoordinate.equals(candidateNeighbor);
   }
 
   private boolean tooFarHorizontally(int x1, int x2) {
-    return Math.abs(x1-x2) > myDistance;
+    return Math.abs(x1 - x2) > myDistance;
   }
 
   private boolean tooFarVertically(int y1, int y2) {
-    return Math.abs(y1-y2) > myDistance;
+    return Math.abs(y1 - y2) > myDistance;
   }
 
   private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
-    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(centerCoord.x(), candidateNeighbor.x()));
+    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(
+        centerCoord.x(), candidateNeighbor.x()));
   }
 
 
@@ -80,7 +83,8 @@ public class NeighborhoodsLoader {
 
 
   private CellModel[] getNeighbors(Coordinate centerCoordinate) {
-    GridIterator<CellModel> gridIterator = (coordinate) -> getIfNeighbor(centerCoordinate, coordinate);
+    GridIterator<CellModel> gridIterator = (coordinate) -> getIfNeighbor(centerCoordinate,
+        coordinate);
     List<CellModel> retCells = iterateRowsAndColsGenerateList(gridIterator);
     return retCells.toArray(new CellModel[0]);
   }
