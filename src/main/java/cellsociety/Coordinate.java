@@ -1,4 +1,4 @@
-package cellsociety.model;
+package cellsociety;
 
 public record Coordinate(int x, int y) {
 

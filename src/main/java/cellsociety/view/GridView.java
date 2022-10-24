@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
  */
 public class GridView {
 
-  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.simcolors.";
+  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   private final GridPane grid;
   private CellView[][] cells;
   private int numRows;
@@ -17,7 +17,7 @@ public class GridView {
   private double gridHeight;
   private double cellWidth;
   private double cellHeight;
-  private ResourceBundle colorBundle;
+  private StateColors stateColors;
 
   /**
    * Create a new view for the grid of cell.
@@ -43,16 +43,13 @@ public class GridView {
     if (cells != null) {
       gridWidth = width;
       gridHeight = height;
-      double rectHeight = height / numRows;
-      double rectWidth = width / numCols;
+      cellWidth = gridWidth / numCols;
+      cellHeight = gridHeight / numRows;
       for (CellView[] row : cells) {
         for (CellView c : row) {
-          c.getRectangle().setWidth(rectWidth);
-          c.getRectangle().setHeight(rectHeight);
+          c.setDimensions(cellWidth, cellHeight);
         }
       }
-      cellHeight = rectHeight;
-      cellWidth = rectWidth;
     }
   }
 
@@ -74,7 +71,10 @@ public class GridView {
    */
   public void addCell(CellView cellView, int i, int j) {
     cellView.setDimensions(cellWidth, cellHeight);
-    cellView.setColorBundle(colorBundle);
+    cellView.setStateColors(stateColors);
+    //cellView.getRectangle().setOnMouseClicked(event -> controller.changeState(i, j));
+    cellView.getRectangle()
+        .setId("CellView" + "[" + i + "]" + "[" + j + "]");
     cells[i][j] = cellView;
     grid.add(cellView.getCellPane(), j, i);
   }
@@ -85,6 +85,22 @@ public class GridView {
    * @param type the type of simulation used to retrieve the correct property file
    */
   public void setSimType(String type) {
-    colorBundle = ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type);
+    stateColors = new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
+  }
+
+  public void clearGrid() {
+    grid.getChildren().removeAll(grid.getChildren());
+  }
+
+  public StateColors getStateColors() {
+    return stateColors;
+  }
+
+  public void updateCellColors() {
+    for (CellView[] row : cells) {
+      for (CellView c : row) {
+        c.update();
+      }
+    }
   }
 }

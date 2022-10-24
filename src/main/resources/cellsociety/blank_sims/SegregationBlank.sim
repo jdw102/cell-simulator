@@ -1,0 +1,5 @@
+Type=Segregation
+Title=Blank Simulation
+Author=Enter Name
+Description=A blank simulation... Feel free to change!
+InitialStates=blank_sims/blank.csv

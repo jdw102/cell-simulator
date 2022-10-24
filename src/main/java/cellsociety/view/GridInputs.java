@@ -20,12 +20,11 @@ public class GridInputs {
   private final double MAX_SPEED = 4.0;
   private final double MIN_SPEED = 0.5;
   private final double DEFAULT_SPEED = 1.0;
-  private final int FRAMES_PER_SECOND = 1;
+  private final int FRAMES_PER_SECOND = 5;
   private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
   private final Button forwardButton;
-  private final Button backwardButton;
   private final InputFactory inputFactory;
   private final Timeline animation;
   private final Controller controller;
@@ -45,18 +44,14 @@ public class GridInputs {
         .add(new KeyFrame(Duration.seconds(SECOND_DELAY), e -> stepForward()));
     animation.setRate(DEFAULT_SPEED);
     inputFactory = utils;
-    backwardButton = inputFactory.makeButton("BackwardButton",
-        event -> stepBackward());
     forwardButton = inputFactory.makeButton("ForwardButton",
         event -> stepForward());
     playButton = new PlayButton(utils, animation, this);
-    inputFactory.attachTooltip("BackwardButtonTooltip", backwardButton);
     inputFactory.attachTooltip("ForwardButtonTooltip", forwardButton);
     VBox sliderBox = makeSliderBox();
     Region padderRegion = new Region();
     padderRegion.prefWidthProperty().bind(sliderBox.widthProperty());
-    container = new HBox(padderRegion, backwardButton, playButton.getButton(), forwardButton,
-        sliderBox);
+    container = new HBox(sliderBox, playButton.getButton(), forwardButton);
     container.getStyleClass().add("grid-inputs-container");
   }
 
@@ -105,15 +100,6 @@ public class GridInputs {
     controller.updateState();
   }
 
-  /**
-   * Jumps the animation back by one frame.
-   */
-  private void stepBackward() {
-    Duration time = animation.getCurrentTime().add(Duration.seconds(SECOND_DELAY).negate());
-    if (time.toMillis() > 0) {
-      animation.jumpTo(time);
-    }
-  }
 
   /**
    * Disables or enables the backward and forward buttons.
@@ -121,7 +107,6 @@ public class GridInputs {
    * @param disable if true disables, if false enables
    */
   public void disableStepButtons(Boolean disable) {
-    backwardButton.setDisable(disable);
     forwardButton.setDisable(disable);
   }
 }

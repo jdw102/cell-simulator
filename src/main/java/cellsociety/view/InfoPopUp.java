@@ -1,8 +1,6 @@
 package cellsociety.view;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -19,13 +17,10 @@ import javafx.util.Callback;
 public class InfoPopUp {
 
   private final Dialog<InfoText> dialog;
-  private final int SPACING = 5;
   private final InputFactory inputFactory;
   private TextField titleField;
   private TextField authorField;
   private TextArea descriptionField;
-  private ButtonType saveInfoButton;
-  private ButtonType cancelInfoButton;
   private Button editInfoButton;
   private InfoText infoText;
 
@@ -59,7 +54,7 @@ public class InfoPopUp {
     Callback<ButtonType, InfoText> cb = new Callback<ButtonType, InfoText>() {
       @Override
       public InfoText call(ButtonType param) {
-        if (param.getButtonData() == ButtonBar.ButtonData.APPLY) {
+        if (param == ButtonType.OK) {
           updateText();
         }
         toggleFields(true);
@@ -73,11 +68,12 @@ public class InfoPopUp {
    * Creates the three button inputs.
    */
   private void makeButtons() {
-    saveInfoButton = inputFactory.makeButtonType("SaveInfoButton", ButtonBar.ButtonData.APPLY);
-    cancelInfoButton = inputFactory.makeButtonType("CancelInfoButton",
-        ButtonBar.ButtonData.CANCEL_CLOSE);
     editInfoButton = inputFactory.makeButton("EditInfoButton", event -> toggleFields(false));
-    dialog.getDialogPane().getButtonTypes().addAll(saveInfoButton, cancelInfoButton);
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    inputFactory.changeButtonTypeLabel("SaveInfoButton",
+        dialog.getDialogPane().lookupButton(ButtonType.OK));
+    inputFactory.changeButtonTypeLabel("CancelInfoButton",
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL));
   }
 
   /**
@@ -93,6 +89,7 @@ public class InfoPopUp {
     titleField.getStyleClass().add("info-text-field");
     authorField.getStyleClass().add("info-text-field");
     descriptionField.getStyleClass().add("info-text-area");
+    descriptionField.setWrapText(true);
     toggleFields(true);
   }
 
@@ -128,8 +125,7 @@ public class InfoPopUp {
 
     VBox box = new VBox(topBox, titleLabel, titleField, authorLabel, authorField, descriptionLabel,
         descriptionField);
-    box.setAlignment(Pos.CENTER);
-    box.setSpacing(SPACING);
+    box.getStyleClass().add("pop-up-content");
     return box;
   }
 

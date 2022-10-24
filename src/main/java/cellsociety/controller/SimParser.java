@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.GameDisplayInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,8 +9,8 @@ import java.util.Properties;
 public class SimParser extends FileParser {
 
   public static final String SIM_FILE_TYPE = "sim";
-  private Properties properties;
   private final String pathToFiles;
+  private Properties properties;
 
   public SimParser(File simFile)
       throws IOException, WrongFileTypeException { // catch this in controller and tell view

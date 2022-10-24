@@ -1,5 +1,6 @@
 package cellsociety.model;
 
+import cellsociety.Coordinate;
 import cellsociety.State;
 import cellsociety.model.statehandlers.StateHandler;
 
@@ -32,11 +33,11 @@ public class GridModel {
   }
 
   /**
-   * For the cell whose x and y coordinates match params x and y, toggle its
-   * state to the next state that it should be based on a list of possible states.
-   * For example, if a cell's state is B, then calling this method on that cell
-   * should result in the state becoming C, assuming the list of possible states
-   * is [A, B, C].
+   * For the cell whose x and y coordinates match params x and y, toggle its state to the next state
+   * that it should be based on a list of possible states. For example, if a cell's state is B, then
+   * calling this method on that cell should result in the state becoming C, assuming the list of
+   * possible states is [A, B, C].
+   *
    * @param coordinate holds the coordinate of the cell to change
    */
   public void changeCellState(Coordinate coordinate) {

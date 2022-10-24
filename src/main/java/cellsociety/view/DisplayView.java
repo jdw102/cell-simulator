@@ -1,8 +1,10 @@
 package cellsociety.view;
 
+import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
-import cellsociety.controller.GameDisplayInfo;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -23,6 +25,9 @@ public class DisplayView {
   public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
   private static final String STYLESHEET = "default.css";
   private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
+  private static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
+  private static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
+  private static final String BLANK_SIM_TAG = "Blank.sim";
   private final ResourceBundle myResources;
   private final double HEIGHT_BUFFER = 170;
   private final double WIDTH_BUFFER = 50;
@@ -31,11 +36,17 @@ public class DisplayView {
   private final String DATA_FILE_SIM_EXTENSION = "*.sim";
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
+  private final InfoText infoText;
+  private final InfoPopUp infoPopUp;
+  private final Map<String, File> simDefaults;
+  private final String DEFAULT_SIM = "GameOfLife";
   private GridInputs gridInputs;
-  private InfoText infoText;
   private GridView cellGrid;
-  private InfoPopUp infoPopUp;
   private Controller controller;
+  private ComboBox<String> typeSelector;
+  private String currentSimType;
+  private File currentSimFile;
+  private ColorPopUp colorPopUp;
 
   /**
    * Create a new view.
@@ -44,10 +55,16 @@ public class DisplayView {
    * @param stage    the stage displaying the scene
    */
   public DisplayView(String language, Stage stage) {
+    currentSimType = DEFAULT_SIM;
     STAGE = stage;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    infoText = new InfoText();
     inputFactory = new InputFactory(myResources);
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
     simInputsBox = makeSimInputsBox();
+    simDefaults = makeDefaultFileMap();
+    currentSimFile = simDefaults.get(currentSimType);
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
     System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
@@ -66,6 +83,9 @@ public class DisplayView {
    */
   public Scene makeScene(int width, int height) {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
+    cellGrid.setSimType(currentSimType);
+    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
+        DEFAULT_RESOURCE_FOLDER + STYLESHEET, cellGrid, inputFactory);
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
@@ -79,6 +99,7 @@ public class DisplayView {
     Scene scene = new Scene(root, width, height);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+    setupSimulation(currentSimFile);
     return scene;
   }
 
@@ -89,15 +110,22 @@ public class DisplayView {
    * @return the HBox containing the inputs
    */
   private HBox makeSimInputsBox() {
-    ComboBox<String> c = makeTypeSelector();
-    inputFactory.attachTooltip("SimulationTypeTooltip", c);
+    typeSelector = makeTypeSelector();
+    inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
-    inputFactory.attachTooltip("SaveButtonTooltip", saveButton);
-    inputFactory.attachTooltip("ImportButtonTooltip", importButton);
-    inputFactory.attachTooltip("InfoButtonTooltip", infoButton);
-    HBox b = new HBox(saveButton, importButton, infoButton, c);
+    Button resetButton = inputFactory.makeButton("ResetButton",
+        event -> setupSimulation(currentSimFile));
+    Button changeColorButton = inputFactory.makeButton("ChangeColorButton",
+        event -> colorPopUp.open());
+    attachTooltip(saveButton);
+    attachTooltip(importButton);
+    attachTooltip(infoButton);
+    attachTooltip(resetButton);
+    attachTooltip(changeColorButton);
+    HBox b = new HBox(changeColorButton, saveButton, importButton, infoButton, typeSelector,
+        resetButton);
     b.getStyleClass().add("sim-inputs-container");
     return b;
   }
@@ -108,7 +136,7 @@ public class DisplayView {
   private void openFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(STAGE);
     if (dataFile != null) {
-      controller.setupSimulation(dataFile);
+      setupSimulation(dataFile);
     }
   }
 
@@ -132,7 +160,7 @@ public class DisplayView {
     c.getStyleClass().add("sim-selector");
     c.setId("SimSelector");
     File colorDirectory = new File(
-        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "simcolors").getPath());
+        getClass().getResource(DEFAULT_RESOURCE_FOLDER + DEFAULT_SIM_COLORS_FOLDER).getPath());
     String[] colorFiles = colorDirectory.list();
     if (colorFiles != null) {
       for (String f : colorFiles) {
@@ -141,6 +169,11 @@ public class DisplayView {
       }
       c.setValue(c.getItems().get(0));
     }
+    c.setOnAction(event -> {
+      currentSimType = c.getValue();
+      currentSimFile = simDefaults.get(currentSimType);
+      setupSimulation(currentSimFile);
+    });
     return c;
   }
 
@@ -149,9 +182,36 @@ public class DisplayView {
   }
 
   public void setInfoText(GameDisplayInfo text) {
-    infoText = new InfoText(text.title(), text.author(), text.description());
-    cellGrid.setSimType(text.type());
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
-        DEFAULT_RESOURCE_FOLDER + STYLESHEET, inputFactory);
+    if (!currentSimType.equals(text.type())) {
+      cellGrid.setSimType(currentSimType);
+      currentSimType = text.type();
+      typeSelector.setValue(currentSimType);
+    }
+    infoText.setTitle(text.title());
+    infoText.setAuthor(text.author());
+    infoText.setDescription(text.description());
+    infoPopUp.changeInfoText(infoText);
+  }
+
+  private Map<String, File> makeDefaultFileMap() {
+    Map<String, File> map = new HashMap<>();
+    for (String s : typeSelector.getItems()) {
+      File f = new File(
+          getClass().getResource(DEFAULT_RESOURCE_FOLDER + DEFAULT_BLANK_SIMS_FOLDER).getPath() + s
+              + BLANK_SIM_TAG);
+      map.put(s, f);
+    }
+    return map;
+  }
+
+  public void setupSimulation(File f) {
+    currentSimFile = f;
+    cellGrid.clearGrid();
+    controller.setupSimulation(currentSimFile);
+    colorPopUp.setStateColors(cellGrid.getStateColors());
+  }
+
+  private void attachTooltip(Button button) {
+    inputFactory.attachTooltip(String.format("%sTooltip", button.getId()), button);
   }
 }

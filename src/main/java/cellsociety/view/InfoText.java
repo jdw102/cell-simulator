@@ -9,6 +9,12 @@ public class InfoText {
   private String author;
   private String description;
 
+  public InfoText() {
+    title = "";
+    author = "";
+    description = "";
+  }
+
   /**
    * Creates a new instance of the simulation information.
    *

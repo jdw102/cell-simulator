@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import cellsociety.GameDisplayInfo;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ class SimParserTest {
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.csv").getPath());
     String expectedMessage = "Must provide a file of type sim, but was provided a file of type csv";
 
-    Exception thrownException = assertThrows(WrongFileTypeException.class, () -> new SimParser(blinkerCsvFile));
+    Exception thrownException = assertThrows(WrongFileTypeException.class,
+        () -> new SimParser(blinkerCsvFile));
     assertEquals(expectedMessage, thrownException.getMessage());
   }
 
