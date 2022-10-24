@@ -134,8 +134,11 @@ public class InitialStateReader extends FileParser {
    * @param col the y position of a cell's coordinate
    * @return the integer (denoting the state) at a specific coordinate
    */
-  protected int getStateValue(int row, int col) {
-    return statesAsInts[row][col];
+  protected int getStateValue(Coordinate myCoord) {
+    int x = myCoord.x();
+    int y = myCoord.y();
+
+    return statesAsInts[x][y];
   }
 
 
