@@ -28,7 +28,6 @@ public class StateHandlerLoader {
 
       String currString = String.valueOf(combination);
       if (isValidClass(currString)) {
-        System.out.println(currString);
         return currString;
       }
     }
@@ -49,7 +48,6 @@ public class StateHandlerLoader {
   // @Todo: throw class not found exception
   public StateHandler getStateHandler(String simType) throws ClassNotFoundException {
     Class clazz = null;
-    System.out.println(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
     try {
       clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
     } catch (NoClassDefFoundError | Exception e) {
