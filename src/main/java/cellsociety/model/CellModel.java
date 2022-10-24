@@ -5,7 +5,6 @@ import cellsociety.Observer;
 import cellsociety.State;
 import java.util.ArrayList;
 import java.util.Collection;
-import javafx.scene.control.Cell;
 
 /**
  * Contains the current state and next state of cells. Alerts list of Observers when the current
