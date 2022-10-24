@@ -56,11 +56,10 @@ public class StateHandlerLoader {
       String altClassName = getCorrectClassName(simType);
       try {
         clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
-      } catch (Exception e2) {
-        throw new ClassNotFoundException();
+      }  catch (NoClassDefFoundError | Exception ex){
+        throw new RuntimeException(ex);
       }
     }
-
     if (clazz == null) {
       throw new RuntimeException("Unable to instantiate StateHandler");
     }

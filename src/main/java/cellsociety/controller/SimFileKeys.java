@@ -1,6 +1,6 @@
 package cellsociety.controller;
 
-public enum  SimFileKeys {
+public enum SimFileKeys {
   TYPE("Type"),
   TITLE("Title"),
   AUTHOR("Author"),

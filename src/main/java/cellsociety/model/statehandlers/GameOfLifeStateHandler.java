@@ -10,8 +10,6 @@ import java.util.Map;
 
 public class GameOfLifeStateHandler extends StateHandler {
 
-  //  private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle();
-//  private static enum STATES = GameOfLifeCellState;
   private Map<Integer, Class> stateOfValue;
 
   private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates.";

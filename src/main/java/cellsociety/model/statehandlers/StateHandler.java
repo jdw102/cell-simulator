@@ -18,7 +18,6 @@ public abstract class StateHandler {
   Enum[] states;
 
   StateHandler(Enum[] states, String handler, String statesPackage) throws RuntimeException {
-//    this.properties = properties;
     this.handlerName = handler;
     this.states = states;
     this.statesPackage = statesPackage;
