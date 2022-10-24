@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import static cellsociety.controller.FileParserTest.DEFAULT_RESOURCE_FOLDER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,12 +12,10 @@ import org.junit.jupiter.api.Test;
 
 class SimParserTest {
 
-  public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
-
   @Test
   void SimParserThrowsWrongFileTypeExceptionTest() {
     File blinkerCsvFile = new File(
-        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.csv").getPath());
+        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.csv").getPath());
     String expectedMessage = "Must provide a file of type sim, but was provided a file of type csv";
 
     Exception thrownException = assertThrows(WrongFileTypeException.class,
@@ -37,7 +36,7 @@ class SimParserTest {
   void SimFileParserReadsAllRequiredFieldsTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
-        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.sim").getPath());
+        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.sim").getPath());
 
     // Act
     SimParser simParser = new SimParser(blinkerSimFile);
@@ -56,7 +55,7 @@ class SimParserTest {
   void SimFileParserGetInitStateCsvTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
-        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "blinkers.sim").getPath());
+        getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.sim").getPath());
     String expectedCsvFilePath = "game_of_life\\blinkers.csv";
 
     // Act
