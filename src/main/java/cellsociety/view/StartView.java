@@ -11,6 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Creates starting view from which the language is selected and the app is started.
+ */
 public class StartView {
 
   private static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
@@ -25,6 +28,9 @@ public class StartView {
   private InputFactory inputFactory;
 
 
+  /**
+   * Creates new start view instance.
+   */
   public StartView() {
     root = new BorderPane();
     languageSelector = makeLanguageSelector("LanguageSelector");
@@ -32,6 +38,13 @@ public class StartView {
         DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + START_LANGUAGE));
   }
 
+  /**
+   * Sets up the scene of the start view.
+   *
+   * @param sizeWidth  the width of the screen
+   * @param sizeHeight the height of the screen
+   * @param startApp   the event to open the application
+   */
   public Scene setUpScene(int sizeWidth, int sizeHeight, EventHandler<ActionEvent> startApp) {
     Label languageLabel = inputFactory.makeLabel("LanguageSelectorLabel");
     languageLabel.getStyleClass().add("language-selector-label");
@@ -54,7 +67,6 @@ public class StartView {
    *
    * @param name - The id of the combo box.
    * @return The combo box of language strings.
-   * @author Jerry Worthy
    */
   private ComboBox<String> makeLanguageSelector(String name) {
     File languageDirectory = new File(

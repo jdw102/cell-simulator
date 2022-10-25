@@ -58,8 +58,9 @@ public class DisplayView {
   /**
    * Create a new view.
    *
-   * @param language the language displayed by the components
-   * @param stage    the stage displaying the scene
+   * @param language  the language displayed by the components
+   * @param stage     the stage displaying the scene
+   * @param newWindow the event to open a new starting window for comparison of multiple sims
    */
   public DisplayView(String language, Stage stage, EventHandler<ActionEvent> newWindow) {
     currentSimType = DEFAULT_SIM;
@@ -95,8 +96,9 @@ public class DisplayView {
    * @return the scene
    */
   public Scene makeScene(int width, int height) {
-    cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER, controller);
+    cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     cellGrid.setSimType(currentSimType);
+    cellGrid.setController(controller);
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
@@ -126,6 +128,7 @@ public class DisplayView {
    * Creates the inputs relating to the loading and saving of simulations, contained within an
    * HBox.
    *
+   * @param newWindow the event handler to open a new window, attaches to new window button
    * @return the HBox containing the inputs
    */
   private HBox makeSimInputsBox(EventHandler<ActionEvent> newWindow) {
@@ -174,10 +177,17 @@ public class DisplayView {
    */
   // display given message to user using the given type of Alert dialog box
   public void showMessage(Exception exception) {
-    new Alert(AlertType.ERROR, exception.getMessage()).showAndWait();
+    Alert alert = new Alert(AlertType.ERROR, exception.getMessage());
+    alert.getDialogPane().setId("AlertPane");
+    alert.showAndWait();
   }
 
-
+  /**
+   * Changes the simulation type of the grid, also loads default sim if user selects from combo
+   * box.
+   *
+   * @param s the type of simulation
+   */
   private void changeSimulation(String s) {
     cellGrid.clearGrid();
     currentSimType = s;
@@ -187,10 +197,21 @@ public class DisplayView {
     }
   }
 
+  /**
+   * Gets the grid view. Used in the controller and sim set up to add the cells to the grid.
+   *
+   * @return the grid view
+   */
   public GridView getGridView() {
     return cellGrid;
   }
 
+  /**
+   * Sets the info text displayed by the pop-up and the type displayed by the combo box.
+   *
+   * @param text the record that contains the information read from the sim file, passed from the
+   *             controller
+   */
   public void setInfoText(GameDisplayInfo text) {
     if (!currentSimType.equals(text.type())) {
       currentSimType = text.type();
@@ -198,12 +219,15 @@ public class DisplayView {
       typeSelector.setValue(currentSimType);
       setDefault = true;
     }
-    infoText.setTitle(text.title());
-    infoText.setAuthor(text.author());
-    infoText.setDescription(text.description());
+    infoText.setText(text.title(), text.author(), text.description());
     infoPopUp.changeInfoText(infoText);
   }
 
+  /**
+   * Sets the color resource bundle that will be passed to each cell view.
+   *
+   * @return the map the maps the sim type to the default sim file
+   */
   private Map<String, File> makeDefaultFileMap() {
     Map<String, File> map = new HashMap<>();
     for (String s : typeSelector.getItems()) {
@@ -215,6 +239,11 @@ public class DisplayView {
     return map;
   }
 
+  /**
+   * Clears the grid, updates the current file, and sets up the simulation using the controller.
+   *
+   * @param f the sim file to set up
+   */
   public void setupSimulation(File f) {
     currentSimFile = f;
     cellGrid.clearGrid();
@@ -222,10 +251,22 @@ public class DisplayView {
     colorPopUp.setStateColors(cellGrid.getStateColors());
   }
 
+  /**
+   * Attaches a tooltip label to a button.
+   *
+   * @param button the button to attach a tooltip
+   */
   private void attachTooltip(Button button) {
     inputFactory.attachTooltip(String.format("%sTooltip", button.getId()), button);
   }
 
+  /**
+   * Creates a combo box that gets its items from contents of folder.
+   *
+   * @param id      the id of the combobox
+   * @param folder  the path to the folder to be read
+   * @param handler the event triggered on item selection
+   */
   private ComboBox<String> makeComboBox(String id, String folder,
       EventHandler<ActionEvent> handler) {
     ComboBox<String> c = new ComboBox<>();
@@ -237,6 +278,12 @@ public class DisplayView {
     return c;
   }
 
+  /**
+   * Adds file names in folder to combo box.
+   *
+   * @param folder the path to the folder to be read
+   * @param c      the combobox to which items are added
+   */
   private void addComboBoxItems(String folder, ComboBox<String> c) {
     File directory = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + folder).getPath());
@@ -250,6 +297,11 @@ public class DisplayView {
     }
   }
 
+  /**
+   * Updates the stylesheet of the application.
+   *
+   * @param s the string referencing the path to the stylesheet
+   */
   private void changeStyleSheet(String s) {
     String newStylesheet = DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + s + STYLESHEET_TAG;
     scene.getStylesheets().clear();

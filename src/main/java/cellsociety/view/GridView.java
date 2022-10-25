@@ -28,8 +28,8 @@ public class GridView {
    * @param width  the width of the grid
    * @param height the height of the grid
    */
-  public GridView(double width, double height, Controller contr) {
-    controller = contr;
+  public GridView(double width, double height) {
+//    controller = contr;
     gridWidth = width;
     gridHeight = height;
     grid = new GridPane();
@@ -72,14 +72,16 @@ public class GridView {
   /**
    * Adds a cell view to the corresponding position in the grid pane, sets its dimensions, sets its
    * color resource bundle, and adds it to the array of cells.
+   *
+   * @param cellView the cell to add
+   * @param i        the column index
+   * @param j        the row index
    */
   public void addCell(CellView cellView, int i, int j) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setStateColors(stateColors);
     cellView.getCellPane()
-        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(i, j)));
-    cellView.getRectangle()
-        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(i, j)));
+        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(j, i)));
     cellView.getRectangle()
         .setId("CellView" + "[" + i + "]" + "[" + j + "]");
     cells[i][j] = cellView;
@@ -95,6 +97,9 @@ public class GridView {
     stateColors = new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
   }
 
+  /**
+   * Clears the panes on the grid
+   */
   public void clearGrid() {
     grid.getChildren().removeAll(grid.getChildren());
   }
@@ -103,11 +108,21 @@ public class GridView {
     return stateColors;
   }
 
+  /**
+   * Updates all the cells to their correct colors.
+   */
   public void updateCellColors() {
     for (CellView[] row : cells) {
       for (CellView c : row) {
         c.update();
       }
     }
+  }
+
+  /**
+   * Sets the controller of the grid view.
+   */
+  public void setController(Controller contr) {
+    controller = contr;
   }
 }

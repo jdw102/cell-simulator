@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,7 +49,8 @@ public class DisplayViewTest extends DukeApplicationTest {
 
   @ParameterizedTest
   @CsvSource({
-      "GameOfLife"
+      "GameOfLife",
+      "Percolation"
   })
   void testSimSelector(String simType) {
     ComboBox<String> simSelector = lookup("#SimSelector").query();
@@ -119,4 +121,16 @@ public class DisplayViewTest extends DukeApplicationTest {
     Paint expected = Paint.valueOf("#FFFFFF");
     assertEquals(expected, cell.getFill());
   }
+
+  @Test
+  void testErrorMessage() {
+    File f = new File(getClass().getResource("/cellsociety/test_sims/display_test.csv").getPath());
+    String expected = "Must provide a file of type sim, but was provided a file of type csv";
+    runAsJFXAction(() -> view.setupSimulation(f));
+    DialogPane pane = lookup("#AlertPane").query();
+    String errorMessage = pane.getContentText();
+    sleep(500);
+    assertEquals(expected, errorMessage);
+  }
+
 }

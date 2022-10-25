@@ -14,10 +14,11 @@ public class StartViewTest extends DukeApplicationTest {
 
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
   public static final Dimension START_SIZE = new Dimension(400, 500);
+  private StartView startView;
 
   @Override
   public void start(Stage primaryStage) {
-    StartView startView = new StartView();
+    startView = new StartView();
     primaryStage.setScene(startView.setUpScene(START_SIZE.width, START_SIZE.height,
         event -> System.out.println("Start")));
     primaryStage.setMinHeight(MIN_SIZE.height);
@@ -32,8 +33,9 @@ public class StartViewTest extends DukeApplicationTest {
   })
   void testLanguageSelector(String language) {
     ComboBox<String> languages = lookup("#LanguageSelector").query();
-    String expected = language;
-    select(languages, expected);
-    assertEquals(expected, languages.getValue());
+    select(languages, language);
+    String actual = startView.getStartLanguage();
+    sleep(300);
+    assertEquals(language, actual);
   }
 }

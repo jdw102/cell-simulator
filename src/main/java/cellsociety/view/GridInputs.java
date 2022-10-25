@@ -34,7 +34,7 @@ public class GridInputs {
    * Create a new grid inputs container.
    *
    * @param utils      the input maker that contains methods to create inputs
-   * @param controller
+   * @param controller the controller
    */
   public GridInputs(InputFactory utils, Controller controller) {
     this.controller = controller;

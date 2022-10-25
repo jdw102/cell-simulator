@@ -52,6 +52,12 @@ public class InputFactory {
     return result;
   }
 
+  /**
+   * Changes the label of a default button type.
+   *
+   * @param property the id of the button used to get the new label
+   * @param button   the button to edit
+   */
   public void changeButtonTypeLabel(String property, Node button) {
     ((Button) button).setText(myResources.getString(property));
   }
