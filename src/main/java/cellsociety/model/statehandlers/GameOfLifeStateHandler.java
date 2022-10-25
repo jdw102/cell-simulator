@@ -1,11 +1,8 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellstates.gameoflifecellstates.AliveState;
-import cellsociety.cellstates.gameoflifecellstates.DeadState;
 import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
-import java.util.HashMap;
 import java.util.Map;
 
 public class GameOfLifeStateHandler extends StateHandler {
@@ -16,7 +13,8 @@ public class GameOfLifeStateHandler extends StateHandler {
   private static final String HANDLER_NAME = "GameOfLifeStateHandler";
 
   public GameOfLifeStateHandler() throws RuntimeException {
-    super(GameOfLifeCellState.values(), HANDLER_NAME, STATES_PACKAGE);
+    super(GameOfLifeCellState.class, HANDLER_NAME, STATES_PACKAGE);
+    ;
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
