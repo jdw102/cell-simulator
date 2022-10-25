@@ -1,5 +1,7 @@
 package cellsociety.controller;
 
+import static java.lang.Character.isLetter;
+
 import cellsociety.model.statehandlers.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
@@ -22,6 +24,7 @@ public class StateHandlerLoader {
     int n = input.length();
     int max = 1 << n;
 
+    input = isolateLetters(input);
     input = input.toLowerCase();
 
     for (int i = 0; i < max; i++) {
@@ -49,6 +52,18 @@ public class StateHandlerLoader {
     } catch (Error | Exception e) {
       return false;
     }
+  }
+
+  private String isolateLetters(String input) {
+    StringBuilder outputString = new StringBuilder();
+
+    for(char c: input.toCharArray()) {
+      if(isLetter(c) == true) {
+        outputString.append(c);
+      }
+    }
+
+    return outputString.toString();
   }
 
 
