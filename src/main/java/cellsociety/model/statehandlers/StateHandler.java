@@ -29,7 +29,7 @@ public abstract class StateHandler {
     }
   }
 
-  void loadStates() throws Exception {
+  private void loadStates() throws Exception {
     stateOf = new HashMap<>();
     ResourceBundle myResources = ResourceBundle.getBundle(PROPERTIES_PACKAGE + handlerName);
     for (String key : myResources.keySet()) {

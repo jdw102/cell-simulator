@@ -13,11 +13,21 @@ public class SimulationStates {
     }
   }
 
+  /**
+   * Cycles to the next Enum in the simulation
+   * @param currState
+   * @return
+   */
   public Enum getNextEnum(Enum currState) {
     int stateIdx = getEnumIndex(currState);
     return states[(stateIdx + 1) % states.length];
   }
 
+  /**
+   * Gets the index of an Enum in the array of enums
+   * @param state
+   * @return
+   */
   private int getEnumIndex(Enum state) {
     for (int i = 0; i < states.length; i++) {
       if (states[i].equals(state)) {
@@ -27,6 +37,12 @@ public class SimulationStates {
     return -1;
   }
 
+  /**
+   * Gets the corresponding Enum to a string
+   * @param enumCandidate
+   * @return
+   * @throws RuntimeException
+   */
   public Enum getEnum(String enumCandidate) throws RuntimeException {
     for (Enum e : states) {
       if (e.toString().equalsIgnoreCase(enumCandidate)) {
