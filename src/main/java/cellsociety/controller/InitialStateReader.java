@@ -18,16 +18,14 @@ public class InitialStateReader extends FileParser {
   public static final String CSV_FILE_TYPE = "csv";
   private static final int NUM_ROWS_INDEX = 1;
   private static final int NUM_COLS_INDEX = 0;
-  private int myNumRows;
-
-  private int myNumCols;
   private final File myFile;
   private final int[][] statesAsInts;
   private final StateHandler myStateHandler;
+  private int myNumRows;
+  private int myNumCols;
 
   public InitialStateReader(StateHandler stateHandler, File f)
-      throws CsvValidationException, IOException, WrongFileTypeException, NumberFormatException,
-      IndexOutOfBoundsException {
+      throws CsvValidationException, IOException, WrongFileTypeException, IncorrectInputException {
     this.myStateHandler = stateHandler;
     isFileTypeCorrect(f, CSV_FILE_TYPE);
     myFile = f;
@@ -36,15 +34,13 @@ public class InitialStateReader extends FileParser {
 
   /**
    * Reads in initial states from CSV, checks for any issues.
+   *
    * @return
    * @throws IOException
    * @throws CsvValidationException
-   * @throws NumberFormatException
-   * @throws IndexOutOfBoundsException
    */
   private int[][] parse()
-      throws IOException, CsvValidationException, NumberFormatException,
-      IndexOutOfBoundsException {
+      throws IOException, CsvValidationException, IncorrectInputException {
     int[][] outputArray;
 
     CSVReader myCSVReader = new CSVReader(new FileReader(myFile));
@@ -72,20 +68,27 @@ public class InitialStateReader extends FileParser {
 
   /**
    * Validates that a particular cell is valid
-   * @param line the line in the cell of interest
+   *
+   * @param line  the line in the cell of interest
    * @param index the index of the component
-   * @throws NumberFormatException non-integer input
-   * @throws IndexOutOfBoundsException input shorter than expected
+   * @throws IncorrectInputException
    */
-  private void validateCell(String[] line, int index)
-      throws NumberFormatException,
-      IndexOutOfBoundsException {
-    int value = Integer.parseInt(line[index]);
-    myStateHandler.getMapping(value);
+  private void validateCell(String[] line, int index) throws IncorrectInputException {
+    int value;
+    try {
+      value = Integer.parseInt(line[index]);
+    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+      throw new IncorrectInputException(myFile.getName(), line[index]);
+    }
+    Enum stateChecker = myStateHandler.getMapping(value);
+    if (stateChecker == null) {
+      throw new IncorrectInputException(myFile.getName(), value);
+    }
   }
 
   /**
    * Reads out the dimensions from the first line of the CSV, catches any exceptions.
+   *
    * @param myCSVReader
    */
   private void setDimensions(CSVReader myCSVReader) throws IncorrectInputException {
