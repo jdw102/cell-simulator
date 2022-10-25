@@ -58,5 +58,4 @@ public class Neighborhood {
   public State getState() {
     return centerCell.getCurrentState();
   }
-
 }

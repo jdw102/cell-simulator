@@ -10,18 +10,24 @@ import java.util.ResourceBundle;
 public abstract class StateHandler {
 
   private static final String STATE_SUFFIX = "State";
-
-  private String statesPackage;
   private static final String PROPERTIES_PACKAGE = "cellsociety.statehandlers.";
-  private String handlerName;
-  private Map<Integer, Enum> stateOf;
-  Enum[] states;
+  private final String statesPackage;
+  private final String handlerName;
+  private final SimulationStates states;
+  private Map<Integer, Enum> statesNumMap;
 
-  StateHandler(Enum[] states, String handler, String statesPackage) throws RuntimeException {
+  /**
+   * @param states        The class of the Enum that has the states for the specific simulation
+   *                      type
+   * @param handler       Name of the specific concrete state handler
+   * @param statesPackage Package where the Enum of states for the simulation is located to be
+   *                      accessed
+   * @throws RuntimeException
+   */
+  StateHandler(Class<?> states, String handler, String statesPackage) throws RuntimeException {
     this.handlerName = handler;
-    this.states = states;
+    this.states = new SimulationStates(states);
     this.statesPackage = statesPackage;
-
     try {
       loadStates();
     } catch (Exception e) {
@@ -29,44 +35,59 @@ public abstract class StateHandler {
     }
   }
 
-  void loadStates() throws Exception {
-    stateOf = new HashMap<>();
+  private void loadStates() throws Exception {
+    statesNumMap = new HashMap<>();
     ResourceBundle myResources = ResourceBundle.getBundle(PROPERTIES_PACKAGE + handlerName);
     for (String key : myResources.keySet()) {
-      Enum currEnum = getEnum(key);
+      Enum currEnum = states.getEnum(key);
       int val;
-
       try {
         val = Integer.parseInt(myResources.getString(key));
       } catch (Exception e) {
         throw new Exception(e);
       }
-
-      stateOf.put(val, currEnum);
+      statesNumMap.put(val, currEnum);
     }
   }
 
-  private Enum getEnum(String enumCandidate) throws RuntimeException {
-    for (Enum e : states) {
-      if (e.toString().equalsIgnoreCase(enumCandidate)) {
-        return e;
-      }
-    }
-    throw new RuntimeException(String.format("No such Enum: %s", enumCandidate));
-  }
-
+  /**
+   * Determines what the next state of a given Neighborhood should be in the simulation
+   *
+   * @param currNeighborhood The current neighborhood being examined to determine next state of
+   * @return What the state of the neighborhood's center cell should change to
+   */
   public abstract State figureOutNextState(Neighborhood currNeighborhood);
 
+  /**
+   * Retrieves the state for a given integer value input in the grid, such as in the init state
+   * file
+   *
+   * @param stateValue The number that represents a state in the init state file
+   * @return The Enum that corresponds to the given state value
+   */
   public Enum getMapping(int stateValue) {
-    return stateOf.get(stateValue);
+    return statesNumMap.get(stateValue);
   }
 
+  /**
+   * Change the state to a new state
+   *
+   * @param currNeighborhood The neighborhood where a state change should be made
+   * @return The new state to be changed to
+   */
   public State getToggledState(Neighborhood currNeighborhood) {
     Enum state = currNeighborhood.getStateEnum();
-    int stateIdx = getEnumIndex(state);
-    return getStateInstance(states[(stateIdx + 1) % states.length]);
+    Enum nextState = states.getNextEnum(state);
+    return getStateInstance(nextState);
   }
 
+  /**
+   * Uses reflection, given an Enum state name, returns an instance of the class with that given
+   * name
+   *
+   * @param state The name of the class to return an instance of
+   * @return An instance of the class corresponding to the input state name
+   */
   public State getStateInstance(Enum state) {
     String stateName = getEnumString(state);
     State retState = null;
@@ -82,27 +103,10 @@ public abstract class StateHandler {
   private String getEnumString(Enum state) {
     String myState = state.toString();
     String simpleName = (myState.toLowerCase()).split(STATE_SUFFIX.toLowerCase())[0];
-    StringBuilder outputName = new StringBuilder();
 
-    char[] simpleNameAsArray = simpleName.toCharArray();
-    for (int i = 0; i < simpleNameAsArray.length; i++) {
-      if (i == 0) {
-        outputName.append(Character.toUpperCase(simpleNameAsArray[i]));
-      } else {
-        outputName.append(simpleNameAsArray[i]);
-      }
-    }
+    String outputName = simpleName.substring(0, 1).toUpperCase()
+        + simpleName.substring(1);
+
     return outputName + STATE_SUFFIX;
   }
-
-  private int getEnumIndex(Enum state) {
-    for (int i = 0; i < states.length; i++) {
-      if (states[i].equals(state)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
 }
-

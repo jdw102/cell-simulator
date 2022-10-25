@@ -2,8 +2,8 @@ package cellsociety.controller;
 
 import cellsociety.Coordinate;
 import cellsociety.GameDisplayInfo;
-import cellsociety.model.GridModel;
 import cellsociety.model.DefaultNeighborhoodsLoader;
+import cellsociety.model.GridModel;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
@@ -17,8 +17,8 @@ public class Controller {
 
   public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
+  private final StateHandlerLoader stateHandlerLoader;
   private GridModel gridModel;
-  private StateHandlerLoader stateHandlerLoader;
 
   /**
    * Instantiates a new Controller that handles communication between the model and view
@@ -29,7 +29,6 @@ public class Controller {
   public Controller(DisplayView displayView) {
     this.displayView = displayView;
     this.stateHandlerLoader = new StateHandlerLoader();
-    // initialize default stateHandler
   }
 
   /**
@@ -57,18 +56,14 @@ public class Controller {
       StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
-      DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(cellSpawner,
+      DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
+          cellSpawner,
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
       gridModel = new GridModel(defaultNeighborhoodsLoader, stateHandler);
-    } catch (IOException | CsvValidationException | WrongFileTypeException e) {
+    } catch (IOException | CsvValidationException | WrongFileTypeException |
+             IncorrectInputException e) {
       displayView.showMessage(e);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
     }
-  }
-
-  public void changeSimulation(String simulationName) {
-
   }
 
   public void changeCellState(Coordinate coord) {

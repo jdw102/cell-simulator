@@ -2,6 +2,7 @@ package cellsociety.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import cellsociety.model.statehandlers.GameOfLifeStateHandler;
 import cellsociety.model.statehandlers.StateHandler;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
@@ -53,5 +54,19 @@ class StateHandlerLoaderTest {
 
     return myVariations.toArray(new String[myVariations.size()]);
   }
+
+  @Test
+  void catchesInvalidSimulation() {
+    StateHandlerLoader myLoader = new StateHandlerLoader();
+
+    String simType = "lame";
+
+    String expected = "lame simulation not recognized.";
+    String actual = assertThrows(InvalidSimulationException.class,
+        ()-> myLoader.getStateHandler(simType)).getMessage();
+
+    assertEquals(expected, actual);
+  }
+
 
 }

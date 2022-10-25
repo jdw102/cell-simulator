@@ -39,6 +39,10 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     return myNeighborhoods[flattenedIdx];
   }
 
+  @Override
+  public Neighborhood getNeighborhood(Coordinate coordinate) {
+    return myNeighborhoods[getFlattenedIdx(coordinate)];
+  }
 
   private boolean validNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
     return cellExists(candidateNeighbor) && inNeighborhood(centerCoordinate, candidateNeighbor)
@@ -107,15 +111,10 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   private Neighborhood createNeighborhood(Coordinate centerCoordinate) {
     CellModel currCell = myCellSpawner.getCell(centerCoordinate);
     CellModel[] neighbors = getNeighbors(centerCoordinate);
-
     Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
     return currNeighborhood;
   }
 
-  @Override
-  public Neighborhood getNeighborhood(Coordinate coordinate) {
-    return myNeighborhoods[getFlattenedIdx(coordinate)];
-  }
 
   private int getFlattenedIdx(Coordinate coordinate) {
     return coordinate.y() * myNumCols + coordinate.x();

@@ -1,20 +1,13 @@
 package cellsociety.controller;
 
 import cellsociety.Coordinate;
-import cellsociety.model.statehandlers.GameOfLifeStateHandler;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.GridView;
-import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import cellsociety.controller.InitialStateReaderTest.*;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class CellSpawnerTest {
 
@@ -62,7 +55,13 @@ class CellSpawnerTest {
 
       myGridView.setSimType(simType);
 
-      CellSpawner myCellSpawnerTester = new CellSpawner(myGridView, myInitialStateReader);
+      CellSpawner myCellSpawnerTester = null;
+
+      try {
+        myCellSpawnerTester = new CellSpawner(myGridView, myInitialStateReader);
+      } catch(Exception e) {
+
+      }
 
       myGridView.setSimType(simType);
 

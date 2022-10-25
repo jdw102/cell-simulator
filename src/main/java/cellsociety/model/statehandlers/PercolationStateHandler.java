@@ -1,21 +1,19 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellstates.percolationcellstates.BlockedState;
-import cellsociety.cellstates.percolationcellstates.OpenState;
-import cellsociety.cellstates.percolationcellstates.PercolatedState;
 import cellsociety.cellstates.percolationcellstates.PercolationCellState;
 import cellsociety.model.Neighborhood;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * StateHandler that implements the transition function rules for the percolation simulation
+ */
 public class PercolationStateHandler extends StateHandler {
 
   private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
   private static final String HANDLER_NAME = "PercolationStateHandler";
 
   public PercolationStateHandler() throws RuntimeException {
-    super(PercolationCellState.values(), HANDLER_NAME, STATES_PACKAGE);
+    super(PercolationCellState.class, HANDLER_NAME, STATES_PACKAGE);
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
@@ -27,6 +25,4 @@ public class PercolationStateHandler extends StateHandler {
       return currNeighborhood.getState();
     }
   }
-
-
 }

@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 public class GameOfLifeStateHandlerTest {
 
   @Test
-  void testFigureOutNextState() throws IOException, CsvValidationException {
-//    File neighborhoodFile = new File("test.txt");
+  void testFigureOutNextState() throws IOException {
     int i = 1;
     try {
       for (i = 1; i < 10; i++) {
@@ -28,10 +27,6 @@ public class GameOfLifeStateHandlerTest {
       }
     } catch (NullPointerException e) {
       // do nothing
-//      System.out.println(i);
     }
-
   }
-
-
 }
