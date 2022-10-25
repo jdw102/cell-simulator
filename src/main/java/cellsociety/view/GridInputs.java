@@ -102,7 +102,6 @@ public class GridInputs {
    * Jump forward one frame by calling the update state method in the controller.
    */
   private void stepForward() {
-    System.out.println("Step forward");
     controller.updateState();
   }
 

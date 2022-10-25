@@ -83,7 +83,6 @@ public class DisplayView {
     currentSimFile = simDefaults.get(currentSimType);
     setDefault = true;
     FILE_CHOOSER = inputFactory.makeChooser(DATA_FILE_SIM_EXTENSION);
-    System.out.println(FILE_CHOOSER.getExtensionFilters());
   }
 
   public void setController(Controller controller) {
@@ -223,6 +222,8 @@ public class DisplayView {
       setDefault = false;
       typeSelector.setValue(currentSimType);
       setDefault = true;
+    } else {
+      cellGrid.setSimType(currentSimType);
     }
     infoText.setText(text.title(), text.author(), text.description());
     infoPopUp.changeInfoText(infoText);
