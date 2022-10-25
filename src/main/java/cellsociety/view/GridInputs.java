@@ -1,6 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.controller.Controller;
+import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -17,17 +18,17 @@ import javafx.util.Duration;
  */
 public class GridInputs {
 
-  private final double MAX_SPEED = 4.0;
-  private final double MIN_SPEED = 0.5;
-  private final double DEFAULT_SPEED = 1.0;
-  private final int FRAMES_PER_SECOND = 5;
-  private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
   private final Button forwardButton;
   private final InputFactory inputFactory;
   private final Timeline animation;
   private final Controller controller;
+  private double maxSpeed;
+  private double minSpeed;
+  private double defaultSpeed;
+  private double framesPerSecond;
+  private double secondDelay;
 
 
   /**
@@ -36,13 +37,18 @@ public class GridInputs {
    * @param utils      the input maker that contains methods to create inputs
    * @param controller the controller
    */
-  public GridInputs(InputFactory utils, Controller controller) {
+  public GridInputs(InputFactory utils, Controller controller, ResourceBundle settings) {
+    maxSpeed = Double.parseDouble(settings.getString("MaxSpeed"));
+    minSpeed = Double.parseDouble(settings.getString("MinSpeed"));
+    defaultSpeed = Double.parseDouble(settings.getString("DefaultSpeed"));
+    framesPerSecond = Double.parseDouble(settings.getString("FrameRate"));
+    secondDelay = 1.0 / framesPerSecond;
     this.controller = controller;
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(SECOND_DELAY), e -> stepForward()));
-    animation.setRate(DEFAULT_SPEED);
+        .add(new KeyFrame(Duration.seconds(secondDelay), e -> stepForward()));
+    animation.setRate(defaultSpeed);
     inputFactory = utils;
     forwardButton = inputFactory.makeButton("ForwardButton",
         event -> stepForward());
@@ -67,7 +73,7 @@ public class GridInputs {
    * @return the slider that adjusts teh animation speed
    */
   private Slider makeSpeedSlider(TextField speedLabel) {
-    Slider s = new Slider(MIN_SPEED, MAX_SPEED, DEFAULT_SPEED);
+    Slider s = new Slider(minSpeed, maxSpeed, defaultSpeed);
     s.valueProperty().addListener((obs, oldval, newVal) -> {
       s.setValue(Math.round(newVal.doubleValue() * 2) / 2.0);
       speedLabel.setText("x" + s.getValue());
@@ -82,7 +88,7 @@ public class GridInputs {
    * @return VBox containing the slider and label
    */
   private VBox makeSliderBox() {
-    TextField speedLabel = new TextField("x" + DEFAULT_SPEED);
+    TextField speedLabel = new TextField("x" + defaultSpeed);
     speedLabel.setDisable(true);
     speedLabel.setId("SpeedLabel");
     speedLabel.getStyleClass().add("speed-text-field");

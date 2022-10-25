@@ -1,5 +1,16 @@
 package cellsociety.view;
 
+import static cellsociety.Main.BLANK_SIM_TAG;
+import static cellsociety.Main.DATA_FILE_SIM_EXTENSION;
+import static cellsociety.Main.DEFAULT_BLANK_SIMS_FOLDER;
+import static cellsociety.Main.DEFAULT_LANGUAGE_FOLDER;
+import static cellsociety.Main.DEFAULT_RESOURCE_FOLDER;
+import static cellsociety.Main.DEFAULT_RESOURCE_PACKAGE;
+import static cellsociety.Main.DEFAULT_SIM_COLORS_FOLDER;
+import static cellsociety.Main.DEFAULT_STYLESHEET_FOLDER;
+import static cellsociety.Main.SETTINGS_PACKAGE;
+import static cellsociety.Main.STYLESHEET_TAG;
+
 import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
 import java.io.File;
@@ -24,26 +35,16 @@ import javafx.stage.Stage;
  */
 public class DisplayView {
 
-  public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
-  public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
-  private static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
-  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  private static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
-  private static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
-  private static final String BLANK_SIM_TAG = "Blank.sim";
-  private static final String STYLESHEET_TAG = ".css";
   private final ResourceBundle myResources;
   private final double HEIGHT_BUFFER = 170;
   private final double WIDTH_BUFFER = 50;
   private final Stage STAGE;
   private final FileChooser FILE_CHOOSER;
-  private final String DATA_FILE_SIM_EXTENSION = "*.sim";
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
   private final InfoText infoText;
   private final InfoPopUp infoPopUp;
   private final Map<String, File> simDefaults;
-  private final String DEFAULT_SIM = "GameOfLife";
   private GridInputs gridInputs;
   private GridView cellGrid;
   private Controller controller;
@@ -54,6 +55,7 @@ public class DisplayView {
   private ColorPopUp colorPopUp;
   private Scene scene;
   private boolean setDefault;
+  private ResourceBundle settings;
 
   /**
    * Create a new view.
@@ -63,7 +65,8 @@ public class DisplayView {
    * @param newWindow the event to open a new starting window for comparison of multiple sims
    */
   public DisplayView(String language, Stage stage, EventHandler<ActionEvent> newWindow) {
-    currentSimType = DEFAULT_SIM;
+    settings = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
+    currentSimType = settings.getString("DefaultSim");
     STAGE = stage;
     myResources = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + language);
@@ -85,7 +88,7 @@ public class DisplayView {
 
   public void setController(Controller controller) {
     this.controller = controller;
-    gridInputs = new GridInputs(inputFactory, controller);
+    gridInputs = new GridInputs(inputFactory, controller, settings);
   }
 
   /**
@@ -134,8 +137,10 @@ public class DisplayView {
   private HBox makeSimInputsBox(EventHandler<ActionEvent> newWindow) {
     typeSelector = makeComboBox("SimSelector", DEFAULT_SIM_COLORS_FOLDER,
         event -> changeSimulation(typeSelector.getValue()));
+    typeSelector.setValue(currentSimType);
     themeSelector = makeComboBox("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
         event -> changeStyleSheet(themeSelector.getValue()));
+    themeSelector.setValue(settings.getString("DefaultTheme"));
     inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
     inputFactory.attachTooltip("ThemeSelectorTooltip", themeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
@@ -293,7 +298,6 @@ public class DisplayView {
         String s = f.split("\\.")[0];
         c.getItems().add(s);
       }
-      c.setValue(c.getItems().get(0));
     }
   }
 

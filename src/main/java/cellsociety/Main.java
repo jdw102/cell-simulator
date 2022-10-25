@@ -20,22 +20,22 @@ public class Main extends Application {
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
   public static final Dimension START_SIZE = new Dimension(400, 500);
   public static final String TITLE = "CellSociety";
+  public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
+  public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
+  public static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
+  public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
+  public static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
+  public static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
+  public static final String BLANK_SIM_TAG = "Blank.sim";
+  public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
+  public static final String STYLESHEET_TAG = ".css";
+  public static final String SETTINGS_PACKAGE = "Settings";
 
   /**
    * @see Application#start(Stage)
    */
   @Override
   public void start(Stage primaryStage) {
-//    DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
-//    Controller controller = new Controller(view);
-//    view.setController(controller);
-    // give the window a title
-//    primaryStage.setTitle(TITLE);
-    //add our user interface components to Frame and show it
-//    primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
-//    primaryStage.setMinHeight(MIN_SIZE.height);
-//    primaryStage.setMinWidth(MIN_SIZE.width);
-//    primaryStage.show();
     openStartView(primaryStage);
   }
 

@@ -1,5 +1,10 @@
 package cellsociety.view;
 
+import static cellsociety.Main.DEFAULT_LANGUAGE_FOLDER;
+import static cellsociety.Main.DEFAULT_RESOURCE_FOLDER;
+import static cellsociety.Main.DEFAULT_RESOURCE_PACKAGE;
+import static cellsociety.Main.DEFAULT_STYLESHEET_FOLDER;
+
 import java.io.File;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -16,17 +21,11 @@ import javafx.scene.layout.VBox;
  */
 public class StartView {
 
-  private static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
-  private static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
-
-  private static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
-  private static final String START_LANGUAGE = "English";
-  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  private static final String STYLESHEET = "LightMode.css";
+  public static final String START_STYLESHEET = "LightMode.css";
+  public static final String START_LANGUAGE = "English";
   private BorderPane root;
   private ComboBox<String> languageSelector;
   private InputFactory inputFactory;
-
 
   /**
    * Creates new start view instance.
@@ -56,7 +55,8 @@ public class StartView {
     Scene scene = new Scene(root, sizeWidth, sizeHeight);
     scene.getStylesheets()
         .add(
-            getClass().getResource(DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + STYLESHEET)
+            getClass().getResource(
+                    DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + START_STYLESHEET)
                 .toExternalForm());
     return scene;
   }
