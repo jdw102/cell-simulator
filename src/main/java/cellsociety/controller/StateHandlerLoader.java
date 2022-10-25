@@ -20,7 +20,7 @@ public class StateHandlerLoader {
    * @param input
    * @return
    */
-  private String getCorrectClassName(String input) {
+  private String getCorrectClassName(String input) throws InvalidSimulationException {
     int n = input.length();
     int max = 1 << n;
 
@@ -41,7 +41,7 @@ public class StateHandlerLoader {
         return currString;
       }
     }
-    return null;
+    throw new InvalidSimulationException(input);
   }
 
   private boolean isValidClass(String myClassString) {
@@ -58,7 +58,7 @@ public class StateHandlerLoader {
     StringBuilder outputString = new StringBuilder();
 
     for(char c: input.toCharArray()) {
-      if(isLetter(c) == true) {
+      if(isLetter(c)) {
         outputString.append(c);
       }
     }
@@ -68,37 +68,35 @@ public class StateHandlerLoader {
 
 
   // @Todo: throw class not found exception
-  public StateHandler getStateHandler(String simType) throws ClassNotFoundException {
+  public StateHandler getStateHandler(String simType) throws InvalidSimulationException {
     Class clazz = null;
     try {
       clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
-    } catch (NoClassDefFoundError | Exception e) {
-      String altClassName = getCorrectClassName(simType);
-      try {
-        clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
-      }  catch (NoClassDefFoundError | Exception ex){
-        throw new RuntimeException(ex);
-      }
-    }
-    if (clazz == null) {
-      throw new RuntimeException("Unable to instantiate StateHandler");
+    } catch (ClassNotFoundException e) {
+      clazz = attemptCorrectClass(simType);
     }
 
+    StateHandler handler = null;
+
     try {
-      return (StateHandler) clazz.getDeclaredConstructor().newInstance();
-    } catch (InstantiationException | RuntimeException | IllegalAccessException |
+      handler = (StateHandler) clazz.getDeclaredConstructor().newInstance();;
+    } catch (InstantiationException | IllegalAccessException |
              InvocationTargetException | NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      throw new InvalidSimulationException(simType);
     }
+
+    return handler;
+
   }
 
-
-  private StateHandler instantiateNewStateHandler(Class<?> clazz) {
+  private Class attemptCorrectClass(String simType) throws InvalidSimulationException {
+    Class clazz;
     try {
-      return (StateHandler) clazz.getDeclaredConstructor().newInstance();
-    } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-             NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      String altClassName = getCorrectClassName(simType);
+      clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
+    }  catch (ClassNotFoundException e){
+      throw new InvalidSimulationException(simType);
     }
+    return clazz;
   }
 }

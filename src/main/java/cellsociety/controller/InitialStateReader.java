@@ -43,7 +43,9 @@ public class InitialStateReader extends FileParser {
       throws IOException, CsvValidationException, IncorrectInputException {
     int[][] outputArray;
 
-    CSVReader myCSVReader = new CSVReader(new FileReader(myFile));
+    CSVReader myCSVReader = null;
+
+    myCSVReader = new CSVReader(new FileReader(myFile));
 
     setDimensions(myCSVReader);
 

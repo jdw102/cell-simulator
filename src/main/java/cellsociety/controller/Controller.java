@@ -8,6 +8,7 @@ import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -62,8 +63,6 @@ public class Controller {
       gridModel = new GridModel(neighborhoodsLoader, stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException | IncorrectInputException e) {
       displayView.showMessage(e);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
     }
   }
 
