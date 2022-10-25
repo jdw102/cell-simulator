@@ -3,11 +3,8 @@ package cellsociety.model.statehandlers;
 import cellsociety.State;
 import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
-import java.util.Map;
 
 public class GameOfLifeStateHandler extends StateHandler {
-
-  private Map<Integer, Class> stateOfValue;
 
   private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates.";
   private static final String HANDLER_NAME = "GameOfLifeStateHandler";

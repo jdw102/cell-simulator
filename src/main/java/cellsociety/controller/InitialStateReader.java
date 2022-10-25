@@ -42,26 +42,17 @@ public class InitialStateReader extends FileParser {
   private int[][] parse()
       throws IOException, CsvValidationException, IncorrectInputException {
     int[][] outputArray;
-
     CSVReader myCSVReader = null;
-
     myCSVReader = new CSVReader(new FileReader(myFile));
-
     setDimensions(myCSVReader);
-
     outputArray = new int[myNumRows][myNumCols];
-
     String[] nextLine;
     int row = 0;
     while ((nextLine = myCSVReader.readNext()) != null) {
       for (int col = 0; col < myNumCols; col++) {
-
         validateCell(nextLine, col);
-
         int current_val = Integer.parseInt(nextLine[col]);
-
         outputArray[row][col] = current_val;
-
       }
       row += 1;
     }
@@ -69,7 +60,7 @@ public class InitialStateReader extends FileParser {
   }
 
   /**
-   * Validates that a particular cell is valid
+   * Validates a cell to ensure its input can be processed
    *
    * @param line  the line in the cell of interest
    * @param index the index of the component

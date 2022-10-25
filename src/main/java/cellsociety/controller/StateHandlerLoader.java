@@ -11,14 +11,14 @@ public class StateHandlerLoader {
 
   private static final String STATE_HANDLER_PACKAGE = "cellsociety.model.statehandlers.";
 
-  //Right now just gets a game of life state handler, will expand in future.
-
   /**
-   * Remediate incorrect user input, algorithm to brute force all possible capitalization combinations
-   * in a minimal amount of time. Any more readable algorithm will be noticeably slow.
-   * Learned from a GeeksForGeeks tutorial.
-   * @param input
-   * @return
+   * Remediate incorrect user input, algorithm to brute force all possible capitalization
+   * combinations in a minimal amount of time. Any more readable algorithm will be noticeably slow.
+   * Learned from a GeeksForGeeks: https://www.geeksforgeeks.org/permute-string-changing-case/
+   *
+   * @param input String to permute every uppercase character possibility
+   * @return The class name if a valid one is found
+   * @throws InvalidSimulationException thrown if no valid class is found to create
    */
   private String getCorrectClassName(String input) throws InvalidSimulationException {
     int n = input.length();
@@ -57,8 +57,8 @@ public class StateHandlerLoader {
   private String isolateLetters(String input) {
     StringBuilder outputString = new StringBuilder();
 
-    for(char c: input.toCharArray()) {
-      if(isLetter(c)) {
+    for (char c : input.toCharArray()) {
+      if (isLetter(c)) {
         outputString.append(c);
       }
     }
@@ -66,8 +66,6 @@ public class StateHandlerLoader {
     return outputString.toString();
   }
 
-
-  // @Todo: throw class not found exception
   public StateHandler getStateHandler(String simType) throws InvalidSimulationException {
     Class clazz = null;
     try {
@@ -79,7 +77,8 @@ public class StateHandlerLoader {
     StateHandler handler = null;
 
     try {
-      handler = (StateHandler) clazz.getDeclaredConstructor().newInstance();;
+      handler = (StateHandler) clazz.getDeclaredConstructor().newInstance();
+      ;
     } catch (InstantiationException | IllegalAccessException |
              InvocationTargetException | NoSuchMethodException e) {
       throw new InvalidSimulationException(simType);
@@ -94,7 +93,7 @@ public class StateHandlerLoader {
     try {
       String altClassName = getCorrectClassName(simType);
       clazz = Class.forName(STATE_HANDLER_PACKAGE + altClassName + STATE_HANDLER_SUFFIX);
-    }  catch (ClassNotFoundException e){
+    } catch (ClassNotFoundException e) {
       throw new InvalidSimulationException(simType);
     }
     return clazz;

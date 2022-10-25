@@ -1,7 +1,6 @@
 package cellsociety.model.statehandlers;
 
 import cellsociety.State;
-import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -11,12 +10,11 @@ import java.util.ResourceBundle;
 public abstract class StateHandler {
 
   private static final String STATE_SUFFIX = "State";
-
-  private String statesPackage;
   private static final String PROPERTIES_PACKAGE = "cellsociety.statehandlers.";
-  private String handlerName;
-  private Map<Integer, Enum> stateOf;
-  private SimulationStates states;
+  private final String statesPackage;
+  private final String handlerName;
+  private final SimulationStates states;
+  private Map<Integer, Enum> statesNumMap;
 
   StateHandler(Class<?> states, String handler, String statesPackage) throws RuntimeException {
     this.handlerName = handler;
@@ -30,26 +28,24 @@ public abstract class StateHandler {
   }
 
   private void loadStates() throws Exception {
-    stateOf = new HashMap<>();
+    statesNumMap = new HashMap<>();
     ResourceBundle myResources = ResourceBundle.getBundle(PROPERTIES_PACKAGE + handlerName);
     for (String key : myResources.keySet()) {
       Enum currEnum = states.getEnum(key);
       int val;
-
       try {
         val = Integer.parseInt(myResources.getString(key));
       } catch (Exception e) {
         throw new Exception(e);
       }
-
-      stateOf.put(val, currEnum);
+      statesNumMap.put(val, currEnum);
     }
   }
 
   public abstract State figureOutNextState(Neighborhood currNeighborhood);
 
   public Enum getMapping(int stateValue) {
-    return stateOf.get(stateValue);
+    return statesNumMap.get(stateValue);
   }
 
   public State getToggledState(Neighborhood currNeighborhood) {
@@ -75,11 +71,9 @@ public abstract class StateHandler {
     String simpleName = (myState.toLowerCase()).split(STATE_SUFFIX.toLowerCase())[0];
     StringBuilder outputName = new StringBuilder();
 
-    outputName.append(simpleName.substring(0,1).toUpperCase());
+    outputName.append(simpleName.substring(0, 1).toUpperCase());
     outputName.append(simpleName.substring(1));
 
     return outputName + STATE_SUFFIX;
   }
-
 }
-
