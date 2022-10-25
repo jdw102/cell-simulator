@@ -144,9 +144,7 @@ public class InfoPopUp {
    * Updates the text fields' text.
    */
   private void updateText() {
-    infoText.setTitle(titleField.getText());
-    infoText.setAuthor(authorField.getText());
-    infoText.setDescription(descriptionField.getText());
+    infoText.setText(titleField.getText(), authorField.getText(), descriptionField.getText());
   }
 
   /**
@@ -156,6 +154,16 @@ public class InfoPopUp {
    */
   public void changeInfoText(InfoText text) {
     infoText = text;
+  }
+
+  /**
+   * Updates the stylesheet of the pop-up.
+   *
+   * @param stylesheet the string referencing the path to the stylesheet
+   */
+  public void changeStyleSheet(String stylesheet) {
+    dialog.getDialogPane().getStylesheets().clear();
+    dialog.getDialogPane().getStylesheets().add(stylesheet);
   }
 }
 

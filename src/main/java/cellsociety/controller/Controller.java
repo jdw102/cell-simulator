@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Coordinate;
 import cellsociety.GameDisplayInfo;
 import cellsociety.model.GridModel;
 import cellsociety.model.DefaultNeighborhoodsLoader;
@@ -68,5 +69,9 @@ public class Controller {
 
   public void changeSimulation(String simulationName) {
 
+  }
+
+  public void changeCellState(Coordinate coord) {
+    gridModel.changeCellState(coord);
   }
 }

@@ -1,6 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.controller.Controller;
+import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -17,26 +18,32 @@ import javafx.util.Duration;
  */
 public class GridInputs {
 
-  private final double MAX_SPEED = 4.0;
-  private final double MIN_SPEED = 0.5;
-  private final double DEFAULT_SPEED = 1.0;
-  private final int FRAMES_PER_SECOND = 5;
-  private final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private final HBox container;
   private final PlayButton playButton;
   private final Button forwardButton;
   private final InputFactory inputFactory;
   private final Timeline animation;
   private final Controller controller;
+  private final double MAX_SPEED;
+  private final double MIN_SPEED;
+  private final double DEFAULT_SPEED;
+  private final double FRAMES_PER_SECOND;
+  private final double SECOND_DELAY;
 
 
   /**
    * Create a new grid inputs container.
    *
    * @param utils      the input maker that contains methods to create inputs
-   * @param controller
+   * @param controller the controller
+   * @param settings   the settings resource bundle
    */
-  public GridInputs(InputFactory utils, Controller controller) {
+  public GridInputs(InputFactory utils, Controller controller, ResourceBundle settings) {
+    MAX_SPEED = Double.parseDouble(settings.getString("MaxSpeed"));
+    MIN_SPEED = Double.parseDouble(settings.getString("MinSpeed"));
+    DEFAULT_SPEED = Double.parseDouble(settings.getString("DefaultSpeed"));
+    FRAMES_PER_SECOND = Double.parseDouble(settings.getString("FrameRate"));
+    SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     this.controller = controller;
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -96,7 +103,6 @@ public class GridInputs {
    * Jump forward one frame by calling the update state method in the controller.
    */
   private void stepForward() {
-    System.out.println("Step forward");
     controller.updateState();
   }
 

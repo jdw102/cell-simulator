@@ -1,5 +1,7 @@
 package cellsociety.view;
 
+import cellsociety.Coordinate;
+import cellsociety.controller.Controller;
 import java.util.ResourceBundle;
 import javafx.scene.layout.GridPane;
 
@@ -18,6 +20,7 @@ public class GridView {
   private double cellWidth;
   private double cellHeight;
   private StateColors stateColors;
+  private Controller controller;
 
   /**
    * Create a new view for the grid of cell.
@@ -68,15 +71,20 @@ public class GridView {
   /**
    * Adds a cell view to the corresponding position in the grid pane, sets its dimensions, sets its
    * color resource bundle, and adds it to the array of cells.
+   *
+   * @param cellView the cell to add
+   * @param rowIdx   the column index
+   * @param colIdx   the row index
    */
-  public void addCell(CellView cellView, int i, int j) {
+  public void addCell(CellView cellView, int rowIdx, int colIdx) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setStateColors(stateColors);
-    //cellView.getRectangle().setOnMouseClicked(event -> controller.changeState(i, j));
+    cellView.getCellPane()
+        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(colIdx, rowIdx)));
     cellView.getRectangle()
-        .setId("CellView" + "[" + i + "]" + "[" + j + "]");
-    cells[i][j] = cellView;
-    grid.add(cellView.getCellPane(), j, i);
+        .setId("CellView" + "[" + rowIdx + "]" + "[" + colIdx + "]");
+    cells[rowIdx][colIdx] = cellView;
+    grid.add(cellView.getCellPane(), colIdx, rowIdx);
   }
 
   /**
@@ -88,6 +96,9 @@ public class GridView {
     stateColors = new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
   }
 
+  /**
+   * Clears the panes on the grid
+   */
   public void clearGrid() {
     grid.getChildren().removeAll(grid.getChildren());
   }
@@ -96,11 +107,21 @@ public class GridView {
     return stateColors;
   }
 
+  /**
+   * Updates all the cells to their correct colors.
+   */
   public void updateCellColors() {
     for (CellView[] row : cells) {
       for (CellView c : row) {
         c.update();
       }
     }
+  }
+
+  /**
+   * Sets the controller of the grid view.
+   */
+  public void setController(Controller contr) {
+    controller = contr;
   }
 }

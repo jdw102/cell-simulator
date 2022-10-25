@@ -8,12 +8,23 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Creates a pop-up that allows colors of cell states to be edited.
+ */
 public class ColorPopUp {
 
   private final Dialog<ResourceBundle> dialog;
   private final GridView gridView;
   private final InputFactory inputFactory;
 
+  /**
+   * Creates new color pop up instance
+   *
+   * @param title      the title of the window
+   * @param styleSheet the stylesheet
+   * @param grid       the grid view that will have its colors edited
+   * @param factory    an input factory
+   */
   public ColorPopUp(String title, String styleSheet, GridView grid, InputFactory factory) {
     inputFactory = factory;
     gridView = grid;
@@ -27,30 +38,48 @@ public class ColorPopUp {
     dialog.getDialogPane().setId("ColorPane");
   }
 
+  /**
+   * Make box that contains the content of the pop-up, including color pickers and text.
+   *
+   * @param colors the state colors object that contains the color of each state
+   */
   private VBox makeColorPickersBox(StateColors colors) {
     Label topLabel = inputFactory.makeLabel("ColorPopUpHeader");
     topLabel.getStyleClass().add("info-header");
     HBox topBox = new HBox(topLabel);
     topBox.getStyleClass().add("info-header-container");
     VBox box = new VBox(topBox);
-    for (String state : colors.getStates()) {
-      HBox colorBox = makeColorPickerBox(state, colors);
+    while (colors.hasNext()) {
+      HBox colorBox = makeColorPickerBox(colors.next(), colors);
       box.getChildren().add(colorBox);
     }
     box.getStyleClass().add("pop-up-content");
     return box;
   }
 
-
+  /**
+   * Opens the pop-up.
+   */
   public void open() {
     dialog.showAndWait();
   }
 
+  /**
+   * Sets the state colors that will be displayed by the pop-up and edited by the user.
+   *
+   * @param colors the state colors object that contains the color of each state
+   */
   public void setStateColors(StateColors colors) {
     VBox box = makeColorPickersBox(colors);
     dialog.getDialogPane().setContent(box);
   }
 
+  /**
+   * Sets the state colors that will be displayed by the pop-up and edited by the user.
+   *
+   * @param state  the state name
+   * @param colors the state colors object that contains the color of each state
+   */
   private HBox makeColorPickerBox(String state, StateColors colors) {
     Label colorLabel = new Label(state);
     colorLabel.getStyleClass().add("info-text-label");
@@ -65,6 +94,16 @@ public class ColorPopUp {
     HBox colorBox = new HBox(colorLabel, cp);
     colorBox.getStyleClass().add("state-color-box");
     return colorBox;
+  }
+
+  /**
+   * Updates the stylesheet of the pop-up.
+   *
+   * @param stylesheet the string referencing the path to the stylesheet
+   */
+  public void changeStyleSheet(String stylesheet) {
+    dialog.getDialogPane().getStylesheets().clear();
+    dialog.getDialogPane().getStylesheets().add(stylesheet);
   }
 
 }

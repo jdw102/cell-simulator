@@ -2,6 +2,7 @@ package cellsociety;
 
 import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
+import cellsociety.view.StartView;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javafx.application.Application;
@@ -17,24 +18,25 @@ public class Main extends Application {
   public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
-  public static final String DEFAULT_LANGUAGE = "English";
+  public static final Dimension START_SIZE = new Dimension(400, 500);
   public static final String TITLE = "CellSociety";
+  public static final String DEFAULT_RESOURCE_FOLDER = "/cellsociety/";
+  public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
+  public static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
+  public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
+  public static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
+  public static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
+  public static final String BLANK_SIM_TAG = "Blank.sim";
+  public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
+  public static final String STYLESHEET_TAG = ".css";
+  public static final String SETTINGS_PACKAGE = "Settings";
 
   /**
    * @see Application#start(Stage)
    */
   @Override
   public void start(Stage primaryStage) {
-    DisplayView view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
-    Controller controller = new Controller(view);
-    view.setController(controller);
-    // give the window a title
-    primaryStage.setTitle(TITLE);
-    //add our user interface components to Frame and show it
-    primaryStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
-    primaryStage.setMinHeight(MIN_SIZE.height);
-    primaryStage.setMinWidth(MIN_SIZE.width);
-    primaryStage.show();
+    openStartView(primaryStage);
   }
 
   /**
@@ -48,4 +50,27 @@ public class Main extends Application {
   /**
    * Default version of main() is actually included within JavaFX!
    */
+
+  private void openDisplayView(StartView startView, Stage stage) {
+    stage.close();
+    Stage newStage = new Stage();
+    newStage.setTitle(TITLE);
+    DisplayView view = new DisplayView(startView.getStartLanguage(), newStage,
+        event -> openStartView(new Stage()));
+    Controller controller = new Controller(view);
+    view.setController(controller);
+    newStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
+    newStage.setMinHeight(MIN_SIZE.height);
+    newStage.setMinWidth(MIN_SIZE.width);
+    newStage.show();
+  }
+
+  private void openStartView(Stage stage) {
+    StartView startView = new StartView();
+    stage.setScene(startView.setUpScene(START_SIZE.width, START_SIZE.height,
+        event -> openDisplayView(startView, stage)));
+    stage.setMinHeight(MIN_SIZE.height);
+    stage.setMinWidth(MIN_SIZE.width);
+    stage.show();
+  }
 }

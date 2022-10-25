@@ -29,6 +29,7 @@ public class Neighborhood {
   private boolean sameState(Enum state1, Enum state2) {
     return state1.equals(state2);
   }
+
   private boolean sameState(State state1, State state2) {
     return (state1.getStateEnum()).equals(state2.getStateEnum());
   }
