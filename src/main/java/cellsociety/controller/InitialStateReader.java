@@ -88,14 +88,14 @@ public class InitialStateReader extends FileParser {
    * Reads out the dimensions from the first line of the CSV, catches any exceptions.
    * @param myCSVReader
    */
-  private void setDimensions(CSVReader myCSVReader) {
+  private void setDimensions(CSVReader myCSVReader) throws IncorrectInputException {
 
     String[] firstLine = null;
 
     try {
       firstLine = myCSVReader.readNext();
-    } catch (Exception e) {
-      throw new RuntimeException(String.format("Empty file passed for initial states: %s", myFile));
+    } catch (IOException | CsvValidationException e) {
+      throw new IncorrectInputException(myFile.getName(), "any");
     }
 
     int numRows = 0;
@@ -103,13 +103,13 @@ public class InitialStateReader extends FileParser {
 
     try {
       numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
-    } catch (Exception e) {
-      throw new RuntimeException(String.format("Missing number of rows in %s", myFile));
+    } catch (IndexOutOfBoundsException | NumberFormatException e) {
+      throw new IncorrectInputException(myFile.getName(), "rows");
     }
     try {
       numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
-    } catch (Exception e) {
-      throw new RuntimeException(String.format("Missing number of columns in %s", myFile));
+    } catch (IndexOutOfBoundsException | NumberFormatException e) {
+      throw new IncorrectInputException(myFile.getName(), "columns");
     }
 
     myNumRows = numRows;

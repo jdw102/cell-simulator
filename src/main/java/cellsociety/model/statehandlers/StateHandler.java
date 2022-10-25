@@ -75,14 +75,9 @@ public abstract class StateHandler {
     String simpleName = (myState.toLowerCase()).split(STATE_SUFFIX.toLowerCase())[0];
     StringBuilder outputName = new StringBuilder();
 
-    char[] simpleNameAsArray = simpleName.toCharArray();
-    for (int i = 0; i < simpleNameAsArray.length; i++) {
-      if (i == 0) {
-        outputName.append(Character.toUpperCase(simpleNameAsArray[i]));
-      } else {
-        outputName.append(simpleNameAsArray[i]);
-      }
-    }
+    outputName.append(simpleName.substring(0,1).toUpperCase());
+    outputName.append(simpleName.substring(1));
+
     return outputName + STATE_SUFFIX;
   }
 

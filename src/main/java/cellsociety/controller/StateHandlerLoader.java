@@ -11,6 +11,13 @@ public class StateHandlerLoader {
 
   //Right now just gets a game of life state handler, will expand in future.
 
+  /**
+   * Remediate incorrect user input, algorithm to brute force all possible capitalization combinations
+   * in a minimal amount of time. Any more readable algorithm will be noticeably slow.
+   * Learned from a GeeksForGeeks tutorial.
+   * @param input
+   * @return
+   */
   private String getCorrectClassName(String input) {
     int n = input.length();
     int max = 1 << n;
