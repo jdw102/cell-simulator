@@ -29,7 +29,6 @@ public class GridView {
    * @param height the height of the grid
    */
   public GridView(double width, double height) {
-//    controller = contr;
     gridWidth = width;
     gridHeight = height;
     grid = new GridPane();
@@ -74,18 +73,18 @@ public class GridView {
    * color resource bundle, and adds it to the array of cells.
    *
    * @param cellView the cell to add
-   * @param i        the column index
-   * @param j        the row index
+   * @param rowIdx   the column index
+   * @param colIdx   the row index
    */
-  public void addCell(CellView cellView, int i, int j) {
+  public void addCell(CellView cellView, int rowIdx, int colIdx) {
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setStateColors(stateColors);
     cellView.getCellPane()
-        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(j, i)));
+        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(colIdx, rowIdx)));
     cellView.getRectangle()
-        .setId("CellView" + "[" + i + "]" + "[" + j + "]");
-    cells[i][j] = cellView;
-    grid.add(cellView.getCellPane(), j, i);
+        .setId("CellView" + "[" + rowIdx + "]" + "[" + colIdx + "]");
+    cells[rowIdx][colIdx] = cellView;
+    grid.add(cellView.getCellPane(), colIdx, rowIdx);
   }
 
   /**

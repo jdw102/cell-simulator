@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -140,8 +141,8 @@ public class DisplayView {
     themeSelector = makeComboBox("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
         event -> changeStyleSheet(themeSelector.getValue()));
     themeSelector.setValue(settings.getString("DefaultTheme"));
-    inputFactory.attachTooltip("SimulationTypeTooltip", typeSelector);
-    inputFactory.attachTooltip("ThemeSelectorTooltip", themeSelector);
+    attachTooltip(typeSelector);
+    attachTooltip(themeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
@@ -258,12 +259,12 @@ public class DisplayView {
   }
 
   /**
-   * Attaches a tooltip label to a button.
+   * Attaches a tooltip label to a node.
    *
-   * @param button the button to attach a tooltip
+   * @param node the node to attach a tooltip
    */
-  private void attachTooltip(Button button) {
-    inputFactory.attachTooltip(String.format("%sTooltip", button.getId()), button);
+  private void attachTooltip(Node node) {
+    inputFactory.attachTooltip(String.format("%sTooltip", node.getId()), node);
   }
 
   /**
@@ -275,13 +276,13 @@ public class DisplayView {
    */
   private ComboBox<String> makeComboBox(String id, String folder,
       EventHandler<ActionEvent> handler) {
-    ComboBox<String> c = new ComboBox<>();
-    c.getStyleClass().add("sim-selector");
-    c.setId("ThemeSelector");
-    addComboBoxItems(folder, c);
-    c.setOnAction(handler);
-    c.setId(id);
-    return c;
+    ComboBox<String> comboBox = new ComboBox<>();
+    comboBox.getStyleClass().add("sim-selector");
+    comboBox.setId("ThemeSelector");
+    addComboBoxItems(folder, comboBox);
+    comboBox.setOnAction(handler);
+    comboBox.setId(id);
+    return comboBox;
   }
 
   /**
