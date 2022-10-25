@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import cellsociety.controller.TestUtility;
 
-class NeighborhoodsLoaderTest {
+class DefaultNeighborhoodsLoaderTest {
 
   @Test
   void getNeighborhood() {

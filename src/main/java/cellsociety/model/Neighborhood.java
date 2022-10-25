@@ -4,7 +4,6 @@ import cellsociety.State;
 
 public class Neighborhood {
 
-
   private final CellModel centerCell;
   private final CellModel[] myNeighboringCells;
 
