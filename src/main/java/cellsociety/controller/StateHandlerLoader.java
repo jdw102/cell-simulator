@@ -75,7 +75,7 @@ public class StateHandlerLoader {
     Class clazz = null;
     try {
       clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
       clazz = attemptCorrectClass(simType);
     }
 
