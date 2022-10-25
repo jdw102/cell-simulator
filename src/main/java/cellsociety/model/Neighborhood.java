@@ -30,6 +30,7 @@ public class Neighborhood {
   private boolean sameState(Enum state1, Enum state2) {
     return state1.equals(state2);
   }
+
   private boolean sameState(State state1, State state2) {
     return (state1.getStateEnum()).equals(state2.getStateEnum());
   }
@@ -42,9 +43,9 @@ public class Neighborhood {
     centerCell.setCurrentState(centerCell.getNextState());
   }
 
-  // TODO: Implement this method
   public void updateCellState(State state) {
-    // implement this
+    centerCell.setNextState(state);
+    updateCellState();
   }
 
   public void updateCellNextState(State state) {

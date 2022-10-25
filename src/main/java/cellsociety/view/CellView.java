@@ -41,6 +41,9 @@ public class CellView implements Observer {
 
   /**
    * Sets the dimensions of the rectangle held within in the cell.
+   *
+   * @param width
+   * @param height
    */
   public void setDimensions(double width, double height) {
     rectangle.setWidth(width - BORDER_SIZE);
@@ -49,6 +52,8 @@ public class CellView implements Observer {
 
   /**
    * Sets the resource bundle to the appropriate one.
+   *
+   * @param colors the StateColors object that holds the colo of each state.
    */
   public void setStateColors(StateColors colors) {
     stateColors = colors;
