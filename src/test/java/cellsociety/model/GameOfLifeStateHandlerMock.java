@@ -11,7 +11,13 @@ public class GameOfLifeStateHandlerMock extends GameOfLifeStateHandler {
 
   @Override
   public State figureOutNextState(Neighborhood currNeighborhood) {
-    return new DeadState();
+    if (currNeighborhood.isState(GameOfLifeCellState.ALIVE)) {
+      return new DeadState();
+    }
+    else {
+      return new AliveState();
+    }
+
   }
 
   @Override

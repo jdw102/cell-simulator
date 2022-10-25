@@ -2,7 +2,7 @@ package cellsociety.controller;
 
 import cellsociety.GameDisplayInfo;
 import cellsociety.model.GridModel;
-import cellsociety.model.NeighborhoodsLoader;
+import cellsociety.model.DefaultNeighborhoodsLoader;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
@@ -56,9 +56,9 @@ public class Controller {
       StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
-      NeighborhoodsLoader neighborhoodsLoader = new NeighborhoodsLoader(cellSpawner,
+      DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(cellSpawner,
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
-      gridModel = new GridModel(neighborhoodsLoader, stateHandler);
+      gridModel = new GridModel(defaultNeighborhoodsLoader, stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException e) {
       displayView.showMessage(e);
     } catch (ClassNotFoundException e) {
