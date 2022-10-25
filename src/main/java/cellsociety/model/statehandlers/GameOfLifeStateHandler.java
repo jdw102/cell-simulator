@@ -4,14 +4,17 @@ import cellsociety.State;
 import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import cellsociety.model.Neighborhood;
 
+/**
+ * StateHandler that implements the transition function rules for the game of life simulation
+ */
 public class GameOfLifeStateHandler extends StateHandler {
 
   private static final String STATES_PACKAGE = "cellsociety.cellstates.gameoflifecellstates.";
   private static final String HANDLER_NAME = "GameOfLifeStateHandler";
 
+
   public GameOfLifeStateHandler() throws RuntimeException {
     super(GameOfLifeCellState.class, HANDLER_NAME, STATES_PACKAGE);
-    ;
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
@@ -23,6 +26,4 @@ public class GameOfLifeStateHandler extends StateHandler {
       return getStateInstance(GameOfLifeCellState.DEAD);
     }
   }
-
-
 }

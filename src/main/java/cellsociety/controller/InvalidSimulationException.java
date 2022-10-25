@@ -7,5 +7,4 @@ public class InvalidSimulationException extends RuntimeException {
   public InvalidSimulationException(String simulationType) {
     super(String.format(INVALID_SIMULATION_MESSAGE, simulationType));
   }
-
 }

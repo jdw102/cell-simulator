@@ -23,9 +23,9 @@ public class StartView {
 
   public static final String START_STYLESHEET = "LightMode.css";
   public static final String START_LANGUAGE = "English";
-  private BorderPane root;
-  private ComboBox<String> languageSelector;
-  private InputFactory inputFactory;
+  private final BorderPane root;
+  private final ComboBox<String> languageSelector;
+  private final InputFactory inputFactory;
 
   /**
    * Creates new start view instance.

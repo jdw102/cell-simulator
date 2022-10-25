@@ -28,7 +28,7 @@ public class StateHandlerLoader {
     input = input.toLowerCase();
 
     for (int i = 0; i < max; i++) {
-      char combination[] = input.toCharArray();
+      char[] combination = input.toCharArray();
 
       for (int j = 0; j < n; j++) {
         if (((i >> j) & 1) == 1) {
@@ -56,16 +56,21 @@ public class StateHandlerLoader {
 
   private String isolateLetters(String input) {
     StringBuilder outputString = new StringBuilder();
-
     for (char c : input.toCharArray()) {
       if (isLetter(c)) {
         outputString.append(c);
       }
     }
-
     return outputString.toString();
   }
 
+  /**
+   * Uses reflection to get the correct state handler for the type of simulation
+   *
+   * @param simType The simulation type
+   * @return The StateHandler for the simulation type
+   * @throws InvalidSimulationException Thrown if the simulation type is invalid
+   */
   public StateHandler getStateHandler(String simType) throws InvalidSimulationException {
     Class clazz = null;
     try {
@@ -75,10 +80,8 @@ public class StateHandlerLoader {
     }
 
     StateHandler handler = null;
-
     try {
       handler = (StateHandler) clazz.getDeclaredConstructor().newInstance();
-      ;
     } catch (InstantiationException | IllegalAccessException |
              InvocationTargetException | NoSuchMethodException e) {
       throw new InvalidSimulationException(simType);

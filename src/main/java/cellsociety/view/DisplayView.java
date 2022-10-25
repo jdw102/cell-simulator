@@ -56,7 +56,7 @@ public class DisplayView {
   private ColorPopUp colorPopUp;
   private Scene scene;
   private boolean setDefault;
-  private ResourceBundle settings;
+  private final ResourceBundle settings;
 
   /**
    * Create a new view.

@@ -4,6 +4,9 @@ import cellsociety.State;
 import cellsociety.cellstates.percolationcellstates.PercolationCellState;
 import cellsociety.model.Neighborhood;
 
+/**
+ * StateHandler that implements the transition function rules for the percolation simulation
+ */
 public class PercolationStateHandler extends StateHandler {
 
   private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
@@ -22,6 +25,4 @@ public class PercolationStateHandler extends StateHandler {
       return currNeighborhood.getState();
     }
   }
-
-
 }

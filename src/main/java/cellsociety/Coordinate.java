@@ -4,10 +4,9 @@ public record Coordinate(int x, int y) {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof Coordinate)) {
+    if (!(obj instanceof Coordinate otherCoord)) {
       return false;
     }
-    Coordinate otherCoord = (Coordinate) obj;
     return this.x == otherCoord.x() && this.y == otherCoord.y();
   }
 }

@@ -15,7 +15,5 @@ public class IncorrectInputException extends RuntimeException {
 
   public IncorrectInputException(String fileName, int actual) {
     super(String.format(INCORRECT_INT_MESSAGE, fileName, actual));
-
   }
-
 }

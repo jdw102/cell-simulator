@@ -17,8 +17,8 @@ public class Controller {
 
   public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
+  private final StateHandlerLoader stateHandlerLoader;
   private GridModel gridModel;
-  private StateHandlerLoader stateHandlerLoader;
 
   /**
    * Instantiates a new Controller that handles communication between the model and view
@@ -29,7 +29,6 @@ public class Controller {
   public Controller(DisplayView displayView) {
     this.displayView = displayView;
     this.stateHandlerLoader = new StateHandlerLoader();
-    // initialize default stateHandler
   }
 
   /**
@@ -65,10 +64,6 @@ public class Controller {
              IncorrectInputException e) {
       displayView.showMessage(e);
     }
-  }
-
-  public void changeSimulation(String simulationName) {
-
   }
 
   public void changeCellState(Coordinate coord) {

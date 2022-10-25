@@ -1,8 +1,11 @@
 package cellsociety.model.statehandlers;
 
+/**
+ * Uses reflection to choose the correct Enum containing the states for the current simulation
+ */
 public class SimulationStates {
 
-  private Enum[] states;
+  private final Enum[] states;
 
   public SimulationStates(Class<?> simulationStates) {
     try {
@@ -15,6 +18,7 @@ public class SimulationStates {
 
   /**
    * Cycles to the next Enum in the simulation
+   *
    * @param currState
    * @return
    */
@@ -25,6 +29,7 @@ public class SimulationStates {
 
   /**
    * Gets the index of an Enum in the array of enums
+   *
    * @param state
    * @return
    */
@@ -39,6 +44,7 @@ public class SimulationStates {
 
   /**
    * Gets the corresponding Enum to a string
+   *
    * @param enumCandidate
    * @return
    * @throws RuntimeException

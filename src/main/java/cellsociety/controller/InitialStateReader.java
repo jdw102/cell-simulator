@@ -35,9 +35,10 @@ public class InitialStateReader extends FileParser {
   /**
    * Reads in initial states from CSV, checks for any issues.
    *
-   * @return
+   * @return 2d integer array of the values read from the initial state csv
    * @throws IOException
    * @throws CsvValidationException
+   * @throws IncorrectInputException
    */
   private int[][] parse()
       throws IOException, CsvValidationException, IncorrectInputException {
@@ -85,9 +86,7 @@ public class InitialStateReader extends FileParser {
    * @param myCSVReader
    */
   private void setDimensions(CSVReader myCSVReader) throws IncorrectInputException {
-
     String[] firstLine = null;
-
     try {
       firstLine = myCSVReader.readNext();
     } catch (IOException | CsvValidationException e) {
@@ -141,7 +140,6 @@ public class InitialStateReader extends FileParser {
     return statesAsInts[x][y];
   }
 
-
   /**
    * A method to obtain the length of a cell grid
    *
@@ -159,5 +157,4 @@ public class InitialStateReader extends FileParser {
   public int getNumCols() {
     return myNumCols;
   }
-
 }

@@ -38,12 +38,9 @@ public class CellSpawner {
    * Method to iterate over each cell
    */
   private void initializeGrid() {
-
     for (int row = 0; row < myNumRows; row++) {
       for (int col = 0; col < myNumCols; col++) {
-
         initializeCell(row, col);
-
       }
     }
   }

@@ -105,5 +105,4 @@ public class ColorPopUp {
     dialog.getDialogPane().getStylesheets().clear();
     dialog.getDialogPane().getStylesheets().add(stylesheet);
   }
-
 }

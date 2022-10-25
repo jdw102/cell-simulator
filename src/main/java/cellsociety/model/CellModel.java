@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 public class CellModel implements Observable {
 
+  private final Collection<Observer> myObservers;
   private State myCurrentState;
   private State myNextState;
-  private final Collection<Observer> myObservers;
 
   /**
    * Get a new CellModel
@@ -101,12 +101,12 @@ public class CellModel implements Observable {
       observer.update();
     }
   }
+
   @Override
   public boolean equals(Object obj) {
-    if(!(obj instanceof CellModel)) {
+    if (!(obj instanceof CellModel cellState)) {
       return false;
     }
-    CellModel cellState = (CellModel) obj;
     return this.getCurrentStateEnum().equals(cellState.getCurrentStateEnum());
   }
 }
