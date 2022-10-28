@@ -2,17 +2,20 @@ package cellsociety.view;
 
 import cellsociety.Coordinate;
 import cellsociety.controller.Controller;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.layout.GridPane;
 
 /**
  * A class that contains the array of CellView objects.
  */
-public class GridView {
+public class GridView implements Iterator<CellView> {
 
   private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   private final GridPane grid;
-  private CellView[][] cells;
+  private List<CellView> cells;
   private int numRows;
   private int numCols;
   private double gridWidth;
@@ -43,16 +46,12 @@ public class GridView {
    * A method to resize each pane in the grid pane to fit the new window dimensions.
    */
   public void resizeGrid(double width, double height) {
-    if (cells != null) {
-      gridWidth = width;
-      gridHeight = height;
-      cellWidth = gridWidth / numCols;
-      cellHeight = gridHeight / numRows;
-      for (CellView[] row : cells) {
-        for (CellView c : row) {
-          c.setDimensions(cellWidth, cellHeight);
-        }
-      }
+    gridWidth = width;
+    gridHeight = height;
+    cellWidth = gridWidth / numCols;
+    cellHeight = gridHeight / numRows;
+    for (CellView c : cells) {
+      c.setDimensions(cellWidth, cellHeight);
     }
   }
 
@@ -65,7 +64,7 @@ public class GridView {
     cellHeight = gridHeight / rows;
     numCols = cols;
     numRows = rows;
-    cells = new CellView[rows][cols];
+    cells = new ArrayList<>();
   }
 
   /**
@@ -77,13 +76,15 @@ public class GridView {
    * @param colIdx   the row index
    */
   public void addCell(CellView cellView, int rowIdx, int colIdx) {
+    Coordinate c = new Coordinate(colIdx, rowIdx);
     cellView.setDimensions(cellWidth, cellHeight);
     cellView.setStateColors(stateColors);
     cellView.getCellPane()
-        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(colIdx, rowIdx)));
+        .setOnMouseClicked(event -> controller.changeCellState(c));
     cellView.getRectangle()
         .setId("CellView" + "[" + rowIdx + "]" + "[" + colIdx + "]");
-    cells[rowIdx][colIdx] = cellView;
+    cellView.setCoordinate(c);
+    cells.add(cellView);
     grid.add(cellView.getCellPane(), colIdx, rowIdx);
   }
 
@@ -111,10 +112,8 @@ public class GridView {
    * Updates all the cells to their correct colors.
    */
   public void updateCellColors() {
-    for (CellView[] row : cells) {
-      for (CellView c : row) {
-        c.update();
-      }
+    for (CellView c : cells) {
+      c.update();
     }
   }
 
@@ -123,5 +122,23 @@ public class GridView {
    */
   public void setController(Controller contr) {
     controller = contr;
+  }
+
+  public int getNumCols() {
+    return numCols;
+  }
+
+  public int getNumRows() {
+    return numRows;
+  }
+
+  @Override
+  public boolean hasNext() {
+    return cells.iterator().hasNext();
+  }
+
+  @Override
+  public CellView next() {
+    return cells.iterator().next();
   }
 }

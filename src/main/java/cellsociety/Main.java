@@ -30,6 +30,8 @@ public class Main extends Application {
   public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
   public static final String STYLESHEET_TAG = ".css";
   public static final String SETTINGS_PACKAGE = "Settings";
+  public static final String PROPERTIES_PACKAGE = "statehandlers.";
+  public static final String STATE_HANDLER_TAG = "StateHandler";
 
   /**
    * @see Application#start(Stage)

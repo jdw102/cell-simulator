@@ -8,7 +8,9 @@ import static cellsociety.Main.DEFAULT_RESOURCE_FOLDER;
 import static cellsociety.Main.DEFAULT_RESOURCE_PACKAGE;
 import static cellsociety.Main.DEFAULT_SIM_COLORS_FOLDER;
 import static cellsociety.Main.DEFAULT_STYLESHEET_FOLDER;
+import static cellsociety.Main.PROPERTIES_PACKAGE;
 import static cellsociety.Main.SETTINGS_PACKAGE;
+import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
 
 import cellsociety.GameDisplayInfo;
@@ -46,6 +48,7 @@ public class DisplayView {
   private final InfoText infoText;
   private final InfoPopUp infoPopUp;
   private final Map<String, File> simDefaults;
+  private final ResourceBundle settings;
   private GridInputs gridInputs;
   private GridView cellGrid;
   private Controller controller;
@@ -56,7 +59,7 @@ public class DisplayView {
   private ColorPopUp colorPopUp;
   private Scene scene;
   private boolean setDefault;
-  private final ResourceBundle settings;
+  private ResourceBundle simStates;
 
   /**
    * Create a new view.
@@ -68,6 +71,8 @@ public class DisplayView {
   public DisplayView(String language, Stage stage, EventHandler<ActionEvent> newWindow) {
     settings = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
     currentSimType = settings.getString("DefaultSim");
+    simStates = ResourceBundle.getBundle(
+        DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
     STAGE = stage;
     myResources = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + language);
@@ -108,6 +113,7 @@ public class DisplayView {
     colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
         stylesheet, cellGrid,
         inputFactory);
+    colorPopUp.setStateColors(cellGrid.getStateColors());
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
@@ -143,7 +149,7 @@ public class DisplayView {
     themeSelector.setValue(settings.getString("DefaultTheme"));
     attachTooltip(typeSelector);
     attachTooltip(themeSelector);
-    Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("Save"));
+    Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("test"));
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
     Button resetButton = inputFactory.makeButton("ResetButton",
@@ -222,9 +228,9 @@ public class DisplayView {
       currentSimType = text.type();
       setDefault = false;
       typeSelector.setValue(currentSimType);
-      setDefault = true;
-    } else {
       cellGrid.setSimType(currentSimType);
+      colorPopUp.setStateColors(cellGrid.getStateColors());
+      setDefault = true;
     }
     infoText.setText(text.title(), text.author(), text.description());
     infoPopUp.changeInfoText(infoText);
@@ -255,7 +261,6 @@ public class DisplayView {
     currentSimFile = f;
     cellGrid.clearGrid();
     controller.setupSimulation(currentSimFile);
-    colorPopUp.setStateColors(cellGrid.getStateColors());
   }
 
   /**
@@ -315,4 +320,28 @@ public class DisplayView {
     infoPopUp.changeStyleSheet(newStylesheet);
     colorPopUp.changeStyleSheet(newStylesheet);
   }
+
+//  private void saveFile() {
+//    File f = FILE_CHOOSER.showSaveDialog(STAGE);
+//    writeFile(f);
+//  }
+//
+//  private File csV(File f) {
+//    int numRows = cellGrid.getNumRows();
+//    int numCols = cellGrid.getNumCols();
+//    String dimension = String.format("%s, %s", Integer.toString(numRows),
+//        Integer.toString(numCols));
+//    String[][] initialData = new String[numRows][numCols];
+//    while (cellGrid.hasNext()) {
+//      CellView c = cellGrid.next();
+//      int i = c.getCoordinate().x();
+//      int j = c.getCoordinate().y();
+//      initialData[i][j] = simStates.getString(c.getStateName());
+//    }
+//    String[] csvData = new String[numRows];
+//    for (int k = 0; k < numRows; k++) {
+//      csvData[k] = String.join(",", initialData[k]);
+//    }
+//
+//  }
 }
