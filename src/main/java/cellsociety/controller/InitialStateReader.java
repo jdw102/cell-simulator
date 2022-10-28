@@ -52,7 +52,7 @@ public class InitialStateReader extends FileParser {
     while ((nextLine = myCSVReader.readNext()) != null) {
       for (int col = 0; col < myNumCols; col++) {
         validateCell(nextLine, col);
-        int current_val = Integer.parseInt(nextLine[col]);
+        int current_val = Integer.parseInt(nextLine[col].strip());
         outputArray[row][col] = current_val;
       }
       row += 1;
@@ -70,7 +70,7 @@ public class InitialStateReader extends FileParser {
   private void validateCell(String[] line, int index) throws IncorrectInputException {
     int value;
     try {
-      value = Integer.parseInt(line[index]);
+      value = Integer.parseInt(line[index].strip());
     } catch (NumberFormatException | IndexOutOfBoundsException e) {
       throw new IncorrectInputException(myFile.getName(), line[index]);
     }
@@ -97,12 +97,12 @@ public class InitialStateReader extends FileParser {
     int numCols = 0;
 
     try {
-      numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX]);
+      numRows = Integer.parseInt(firstLine[NUM_ROWS_INDEX].strip());
     } catch (IndexOutOfBoundsException | NumberFormatException e) {
       throw new IncorrectInputException(myFile.getName(), "rows");
     }
     try {
-      numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX]);
+      numCols = Integer.parseInt(firstLine[NUM_COLS_INDEX].strip());
     } catch (IndexOutOfBoundsException | NumberFormatException e) {
       throw new IncorrectInputException(myFile.getName(), "columns");
     }
