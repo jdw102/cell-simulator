@@ -1,18 +1,21 @@
 package cellsociety.model;
 
-import cellsociety.model.statehandlers.GameOfLifeStateHandler;
+import cellsociety.cellstates.segregationcellstates.SegregationCellState;
 import cellsociety.model.statehandlers.StateHandler;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class SegregationGridModel extends DefaultGridModel {
   private NeighborhoodsLoader myNeighborhoodsLoader;
   private StateHandler myStateHandler;
-  private Collection<CellModel> myEmptyStates;
+  private List<Neighborhood> myNeighborhoodsWithEmptyCenter;
 
   public SegregationGridModel(NeighborhoodsLoader neighborhoodsLoader, StateHandler stateHandler) {
     super(neighborhoodsLoader, stateHandler);
     myNeighborhoodsLoader = neighborhoodsLoader;
     myStateHandler = stateHandler;
+    myNeighborhoodsWithEmptyCenter = new ArrayList<>();
   }
 
   @Override
@@ -25,16 +28,20 @@ public class SegregationGridModel extends DefaultGridModel {
       //          method or call updateState
     // get a random empty state
 
+
   }
 
   private void updateEmptyStates() {
-//    myEmptyStates.clear();
-//    for (int i = 0; i < myNeighborhoodsLoader.getNumNeighborhoods(); i++) {
-//      if (myNeighborhoodsLoader.getNeighborhood(i).isState())
-//    }
+    myNeighborhoodsWithEmptyCenter.clear();
+    for (int i = 0; i < myNeighborhoodsLoader.getNumNeighborhoods(); i++) {
+      if (myNeighborhoodsLoader.getNeighborhood(i).isState(SegregationCellState.EMPTY)) {
+        myNeighborhoodsWithEmptyCenter.add(myNeighborhoodsLoader.getNeighborhood(i));
+      }
+    }
   }
 
-  private void getRandomEmptyState() {
-
+  private Neighborhood getRandomNeighborhoodWithEmptyCenter() {
+    Random rand = new Random();
+    return myNeighborhoodsWithEmptyCenter.get(rand.nextInt(0, myNeighborhoodsWithEmptyCenter.size()));
   }
 }
