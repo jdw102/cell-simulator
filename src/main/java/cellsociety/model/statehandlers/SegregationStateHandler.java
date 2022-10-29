@@ -7,6 +7,7 @@ import cellsociety.model.Neighborhood;
 public class SegregationStateHandler extends StateHandler {
   private static final String STATES_PACKAGE = "cellsociety.cellstates.segregationcellstates.";
   private static final String HANDLER_NAME = "SegregationStateHandler";
+  public static final double THRESHOLD = 0.3;
 
   public SegregationStateHandler() {
     super(SegregationCellState.class, STATES_PACKAGE, HANDLER_NAME);
@@ -14,6 +15,35 @@ public class SegregationStateHandler extends StateHandler {
 
   @Override
   public State figureOutNextState(Neighborhood neighborhood) {
-    return null;
+    // return EMPTY if already EMPTY
+    SegregationCellState currStateEnum = (SegregationCellState) neighborhood.getStateEnum();
+    if (currStateEnum.equals(SegregationCellState.EMPTY)) {
+      return neighborhood.getState();
+    }
+
+    // must be either AGENT_X or AGENT_Y
+    int numCurrStateEnum = neighborhood.count(currStateEnum);
+    int numOpposite = neighborhood.count(getOpposite(currStateEnum));
+    int total = numCurrStateEnum + numOpposite;
+
+    if ((double) numCurrStateEnum / total >= THRESHOLD) {
+      return getStateInstance(currStateEnum);
+    }
+    else {
+      return getStateInstance(getOpposite(currStateEnum));
+    }
+
+  }
+
+  private SegregationCellState getOpposite(SegregationCellState cellStateEnum) {
+    if (cellStateEnum.equals(SegregationCellState.AGENT_X)) {
+      return SegregationCellState.AGENT_Y;
+    }
+    else if (cellStateEnum.equals(SegregationCellState.AGENT_Y)) {
+      return SegregationCellState.AGENT_X;
+    }
+    else {
+      throw new RuntimeException("Must pass either AGENT_X or AGENT_Y into this private method");
+    }
   }
 }

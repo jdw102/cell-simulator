@@ -9,13 +9,13 @@ import java.util.Random;
 public class SegregationGridModel extends DefaultGridModel {
   private NeighborhoodsLoader myNeighborhoodsLoader;
   private StateHandler myStateHandler;
-  private List<Neighborhood> myNeighborhoodsWithEmptyCenter;
+  private List<Neighborhood> myNeighborhoodsWithEmptyNextState;
 
   public SegregationGridModel(NeighborhoodsLoader neighborhoodsLoader, StateHandler stateHandler) {
     super(neighborhoodsLoader, stateHandler);
     myNeighborhoodsLoader = neighborhoodsLoader;
     myStateHandler = stateHandler;
-    myNeighborhoodsWithEmptyCenter = new ArrayList<>();
+    myNeighborhoodsWithEmptyNextState = new ArrayList<>();
   }
 
   @Override
@@ -31,17 +31,17 @@ public class SegregationGridModel extends DefaultGridModel {
 
   }
 
-  private void updateEmptyStates() {
-    myNeighborhoodsWithEmptyCenter.clear();
+  private void updateListOfNeighborhoodsWithEmptyNextState() {
+    myNeighborhoodsWithEmptyNextState.clear();
     for (int i = 0; i < myNeighborhoodsLoader.getNumNeighborhoods(); i++) {
       if (myNeighborhoodsLoader.getNeighborhood(i).isState(SegregationCellState.EMPTY)) {
-        myNeighborhoodsWithEmptyCenter.add(myNeighborhoodsLoader.getNeighborhood(i));
+        myNeighborhoodsWithEmptyNextState.add(myNeighborhoodsLoader.getNeighborhood(i));
       }
     }
   }
 
-  private Neighborhood getRandomNeighborhoodWithEmptyCenter() {
+  private Neighborhood getRandomNeighborhoodWithEmptyNextState() {
     Random rand = new Random();
-    return myNeighborhoodsWithEmptyCenter.get(rand.nextInt(0, myNeighborhoodsWithEmptyCenter.size()));
+    return myNeighborhoodsWithEmptyNextState.get(rand.nextInt(0, myNeighborhoodsWithEmptyNextState.size()));
   }
 }
