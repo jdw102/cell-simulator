@@ -87,6 +87,15 @@ public class CellModel implements Observable {
   }
 
   /**
+   * Get the Enum representing this cell's current state
+   *
+   * @return myCurrentState
+   */
+  public Enum getNextStateEnum() {
+    return myNextState.getStateEnum();
+  }
+
+  /**
    * Set next state of this cell
    *
    * @param state this cell's next state

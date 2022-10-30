@@ -4,19 +4,27 @@ import cellsociety.Coordinate;
 import cellsociety.controller.CellSpawner;
 import cellsociety.controller.Spawner;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Responsible for creating neighborhoods of cells
  */
 public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
+  private static final String DEFAULT_EDGE_RULE = "Cardinal";
   private static final int DEFAULT_DISTANCE = 1;
   private  int distance;
   private final Spawner cellSpawner;
   private int numRows;
   private int numCols;
   private Neighborhood[] neighborhoods;
+
+  private Map<String, BiFunction<Coordinate, Coordinate, Boolean>> edgeRules;
+
+  String edgeRule;
 
   /**
    * Generates a list of all neighborhoods that exist in the simulation, one neighborhood for each
@@ -29,9 +37,13 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   public DefaultNeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
     this.cellSpawner = cellSpawner;
     this.distance = DEFAULT_DISTANCE;
+    this.edgeRule = DEFAULT_EDGE_RULE;
 
     setNumRows();
     setNumCols();
+
+    this.edgeRules = new HashMap<>();
+    loadEdgeRules();
 
     loadNeighborhoods();
   }
@@ -39,9 +51,12 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   public DefaultNeighborhoodsLoader(Spawner cellSpawner) {
     this.cellSpawner = cellSpawner;
     this.distance = DEFAULT_DISTANCE;
+    this.edgeRule = DEFAULT_EDGE_RULE;
 
     setNumRows();
     setNumCols();
+
+    loadEdgeRules();
 
     loadNeighborhoods();
   }
@@ -61,6 +76,55 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
         && !centerCoordinate.equals(candidateNeighbor);
   }
 
+  private boolean validCardinalDistance(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+    return closeAboveOrBelow(centerCoordinate, candidateNeighbor) || closeRightOrLeft(centerCoordinate, candidateNeighbor);
+  }
+  private boolean closeAboveOrBelow(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+    return centerCoordinate.x() == candidateNeighbor.x() && validDistance(centerCoordinate, candidateNeighbor);
+  }
+
+  private boolean closeRightOrLeft(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+    return centerCoordinate.y() == candidateNeighbor.y() && validDistance(centerCoordinate,
+        candidateNeighbor);
+  }
+
+  private boolean validDistance(Coordinate centerCoordinate, Coordinate candidateCoordinate) {
+    boolean xPlane = validDistanceOnPlane(centerCoordinate.x(), candidateCoordinate.x());
+    boolean yPlane = validDistanceOnPlane(centerCoordinate.y(), candidateCoordinate.y());
+    return xPlane && yPlane;
+  }
+
+  /**
+   * Given two x or two y values, determine if the difference between the two values is less than
+   * the predefined distance value.
+   * @param val1 first x or y val
+   * @param val2 second x or y val
+   * @return
+   */
+  private boolean validDistanceOnPlane(int val1, int val2) {
+    return Math.abs(val1 - val2) <= distance;
+  }
+
+  private boolean validTorroidalDistance(Coordinate centerCoordinate,
+      Coordinate candidateCoordinate) {
+    boolean xPlane = validDistanceOnTorroidalPlane(centerCoordinate.x(), candidateCoordinate.x(),
+        numCols);
+    boolean yPlane = validDistanceOnTorroidalPlane(centerCoordinate.y(), candidateCoordinate.y(),
+        numRows);
+    return xPlane && yPlane;
+  }
+
+  private boolean validDistanceOnTorroidalPlane(int val1, int val2, int planeLength) {
+    int min = Math.min(val1, val2);
+    int max = Math.max(val1, val2);
+    return  validDistanceOnPlane(min,max) || validDistanceOnPlane(min + planeLength,max);
+  }
+
+//  private boolean invalidTorroidalDistanceOnPlane(int val1, int val2) {
+//    return Math.abs();
+//  }
+
+
   private boolean tooFarHorizontally(int x1, int x2) {
     return Math.abs(x1 - x2) > distance;
   }
@@ -69,11 +133,14 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     return Math.abs(y1 - y2) > distance;
   }
 
-  private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
-    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(
-        centerCoord.x(), candidateNeighbor.x()));
-  }
+//  private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
+//    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(
+//        centerCoord.x(), candidateNeighbor.x()));
+//  }
 
+  private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
+    return edgeRules.get(edgeRule).apply(centerCoord, candidateNeighbor);
+  }
 
   private boolean cellExists(Coordinate coordinate) {
     try {
@@ -149,5 +216,35 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     this.distance = distance;
     loadNeighborhoods();
   }
+
+  public void setEdgeRule(String rule) throws UnrecognizedEdgeRuleException {
+
+    String actualRule = getValidRule(rule);
+
+    this.edgeRule = rule;
+
+    loadNeighborhoods();
+  }
+
+  private String getValidRule(String rule) throws UnrecognizedEdgeRuleException {
+    String validRule = null;
+    for(String key: edgeRules.keySet()) {
+      if(key.equalsIgnoreCase(rule)) {
+        validRule = key;
+      }
+    }
+    if (validRule == null) {
+      throw new UnrecognizedEdgeRuleException(rule);
+    } else {
+      return validRule;
+    }
+  }
+
+  private void loadEdgeRules() {
+    edgeRules.put("Complete", (coord1, coord2) -> validDistance(coord1,coord2));
+    edgeRules.put("Cardinal", (coord1, coord2) -> validCardinalDistance(coord1,coord2));
+    edgeRules.put("Torroidal", (coord1, coord2)->validTorroidalDistance(coord1, coord2));
+  }
+
 
 }

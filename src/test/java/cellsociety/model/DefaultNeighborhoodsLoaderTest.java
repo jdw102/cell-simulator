@@ -132,10 +132,6 @@ class DefaultNeighborhoodsLoaderTest {
     }
   }
 
-  @Test
-  void getsTorroidalNeighborhood() {
-
-  }
 
 
   private boolean inNeighborhood(CellModel cell, Neighborhood neighborhood) {

@@ -26,6 +26,7 @@ public class Main extends Application {
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   public static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
   public static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
+  public static final String GRID_MODEL_CHOOSER_FOLDER = "gridmodel_chooser/";
   public static final String BLANK_SIM_TAG = "Blank.sim";
   public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
   public static final String STYLESHEET_TAG = ".css";
