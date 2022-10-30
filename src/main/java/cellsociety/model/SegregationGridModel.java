@@ -67,7 +67,7 @@ public class SegregationGridModel extends DefaultGridModel {
   private Neighborhood getRandomNeighborhoodWithEmptyNextState(Neighborhood neighborhood) {
     // handle edge case of neighborhood being the only CellModel with state of EMPTY
     if (myNeighborhoodsWithEmptyNextState.size() == 0) {
-      if (neighborhood.nextStateIsState(SegregationCellState.EMPTY)) {
+      if (neighborhood.isNextState(SegregationCellState.EMPTY)) {
         return neighborhood;
       } else {
         // should never happen unless improper usage of method

@@ -38,7 +38,7 @@ public class Neighborhood {
     return (centerCell.getCurrentStateEnum().equals(stateType));
   }
 
-  public boolean nextStateIsState(Enum stateType) {
+  public boolean isNextState(Enum stateType) {
     return (centerCell.getNextStateEnum().equals(stateType));
   }
 
