@@ -7,15 +7,19 @@ import static cellsociety.Main.DEFAULT_LANGUAGE_FOLDER;
 import static cellsociety.Main.DEFAULT_RESOURCE_FOLDER;
 import static cellsociety.Main.DEFAULT_RESOURCE_PACKAGE;
 import static cellsociety.Main.DEFAULT_SIM_COLORS_FOLDER;
+import static cellsociety.Main.DEFAULT_SIZE;
 import static cellsociety.Main.DEFAULT_STYLESHEET_FOLDER;
+import static cellsociety.Main.MIN_SIZE;
 import static cellsociety.Main.PROPERTIES_PACKAGE;
 import static cellsociety.Main.SETTINGS_PACKAGE;
 import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
+import static cellsociety.Main.TITLE;
 
 import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -60,15 +64,17 @@ public class DisplayView {
   private Scene scene;
   private boolean setDefault;
   private ResourceBundle simStates;
+  private Button newWindowButton;
+  private String currLanguage;
 
   /**
    * Create a new view.
    *
-   * @param language  the language displayed by the components
-   * @param stage     the stage displaying the scene
-   * @param newWindow the event to open a new starting window for comparison of multiple sims
+   * @param language the language displayed by the components
+   * @param stage    the stage displaying the scene
    */
-  public DisplayView(String language, Stage stage, EventHandler<ActionEvent> newWindow) {
+  public DisplayView(String language, Stage stage) {
+    currLanguage = language;
     settings = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
     currentSimType = settings.getString("DefaultSim");
     simStates = ResourceBundle.getBundle(
@@ -78,7 +84,7 @@ public class DisplayView {
         DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE_FOLDER + language);
     infoText = new InfoText();
     inputFactory = new InputFactory(myResources);
-    simInputsBox = makeSimInputsBox(newWindow);
+    simInputsBox = makeSimInputsBox();
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
@@ -137,10 +143,9 @@ public class DisplayView {
    * Creates the inputs relating to the loading and saving of simulations, contained within an
    * HBox.
    *
-   * @param newWindow the event handler to open a new window, attaches to new window button
    * @return the HBox containing the inputs
    */
-  private HBox makeSimInputsBox(EventHandler<ActionEvent> newWindow) {
+  private HBox makeSimInputsBox() {
     typeSelector = makeComboBox("SimSelector", DEFAULT_SIM_COLORS_FOLDER,
         event -> changeSimulation(typeSelector.getValue()));
     typeSelector.setValue(currentSimType);
@@ -149,14 +154,14 @@ public class DisplayView {
     themeSelector.setValue(settings.getString("DefaultTheme"));
     attachTooltip(typeSelector);
     attachTooltip(themeSelector);
-    Button saveButton = inputFactory.makeButton("SaveButton", event -> System.out.println("test"));
+    Button saveButton = inputFactory.makeButton("SaveButton", event -> saveFile());
     Button importButton = inputFactory.makeButton("ImportButton", event -> openFile());
     Button infoButton = inputFactory.makeButton("InfoButton", event -> infoPopUp.open());
     Button resetButton = inputFactory.makeButton("ResetButton",
         event -> setupSimulation(currentSimFile));
     Button changeColorButton = inputFactory.makeButton("ChangeColorButton",
         event -> colorPopUp.open());
-    Button newWindowButton = inputFactory.makeButton("NewWindowButton", newWindow);
+    newWindowButton = inputFactory.makeButton("NewWindowButton", event -> openNewWindow());
     attachTooltip(saveButton);
     attachTooltip(importButton);
     attachTooltip(infoButton);
@@ -200,9 +205,12 @@ public class DisplayView {
    * @param s the type of simulation
    */
   private void changeSimulation(String s) {
-    cellGrid.clearGrid();
+    cellGrid.clear();
     currentSimType = s;
+    simStates = ResourceBundle.getBundle(
+        DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
     cellGrid.setSimType(currentSimType);
+    colorPopUp.setStateColors(cellGrid.getStateColors());
     if (setDefault) {
       setupSimulation(simDefaults.get(currentSimType));
     }
@@ -230,6 +238,8 @@ public class DisplayView {
       typeSelector.setValue(currentSimType);
       cellGrid.setSimType(currentSimType);
       colorPopUp.setStateColors(cellGrid.getStateColors());
+      simStates = ResourceBundle.getBundle(
+          DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
       setDefault = true;
     }
     infoText.setText(text.title(), text.author(), text.description());
@@ -259,7 +269,7 @@ public class DisplayView {
    */
   public void setupSimulation(File f) {
     currentSimFile = f;
-    cellGrid.clearGrid();
+    cellGrid.clear();
     controller.setupSimulation(currentSimFile);
   }
 
@@ -321,27 +331,42 @@ public class DisplayView {
     colorPopUp.changeStyleSheet(newStylesheet);
   }
 
-//  private void saveFile() {
-//    File f = FILE_CHOOSER.showSaveDialog(STAGE);
-//    writeFile(f);
-//  }
-//
-//  private File csV(File f) {
-//    int numRows = cellGrid.getNumRows();
-//    int numCols = cellGrid.getNumCols();
-//    String dimension = String.format("%s, %s", Integer.toString(numRows),
-//        Integer.toString(numCols));
-//    String[][] initialData = new String[numRows][numCols];
-//    while (cellGrid.hasNext()) {
-//      CellView c = cellGrid.next();
-//      int i = c.getCoordinate().x();
-//      int j = c.getCoordinate().y();
-//      initialData[i][j] = simStates.getString(c.getStateName());
-//    }
-//    String[] csvData = new String[numRows];
-//    for (int k = 0; k < numRows; k++) {
-//      csvData[k] = String.join(",", initialData[k]);
-//    }
-//
-//  }
+  private void saveFile() {
+    File f = FILE_CHOOSER.showSaveDialog(STAGE);
+    if (f != null) {
+      SimFileWriter simWriter = new SimFileWriter(currentSimType, simStates);
+      try {
+        simWriter.createSim(f, infoText, cellGrid);
+      } catch (FileNotFoundException e) {
+        showMessage(e);
+      }
+    }
+  }
+
+  public File getCurrentStateFile() {
+    File f = new File("data/temp.sim");
+    SimFileWriter simFileWriter = new SimFileWriter(currentSimType, simStates);
+    try {
+      simFileWriter.createSim(f, infoText, cellGrid);
+    } catch (FileNotFoundException e) {
+      showMessage(e);
+    }
+    return f;
+  }
+
+  public void openNewWindow() {
+    gridInputs.getPlayButton().pause();
+    Stage newStage = new Stage();
+    newStage.setTitle(TITLE);
+    DisplayView view = new DisplayView(currLanguage, newStage);
+    Controller controller = new Controller(view);
+    view.setController(controller);
+    newStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));
+    newStage.setMinHeight(MIN_SIZE.height);
+    newStage.setMinWidth(MIN_SIZE.width);
+    newStage.show();
+    File f = getCurrentStateFile();
+    view.setupSimulation(f);
+  }
+
 }

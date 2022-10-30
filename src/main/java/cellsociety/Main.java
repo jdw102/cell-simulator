@@ -24,7 +24,7 @@ public class Main extends Application {
   public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
   public static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  public static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
+  public static final String DEFAULT_BLANK_SIMS_FOLDER = "blank_sims/";
   public static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
   public static final String BLANK_SIM_TAG = "Blank.sim";
   public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
@@ -32,6 +32,8 @@ public class Main extends Application {
   public static final String SETTINGS_PACKAGE = "Settings";
   public static final String PROPERTIES_PACKAGE = "statehandlers.";
   public static final String STATE_HANDLER_TAG = "StateHandler";
+  public static final String CSV_FILE_EXTENSION = ".csv";
+
 
   /**
    * @see Application#start(Stage)
@@ -57,8 +59,7 @@ public class Main extends Application {
     stage.close();
     Stage newStage = new Stage();
     newStage.setTitle(TITLE);
-    DisplayView view = new DisplayView(startView.getStartLanguage(), newStage,
-        event -> openStartView(new Stage()));
+    DisplayView view = new DisplayView(startView.getStartLanguage(), newStage);
     Controller controller = new Controller(view);
     view.setController(controller);
     newStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));

@@ -115,4 +115,8 @@ public class GridInputs {
   public void disableStepButtons(Boolean disable) {
     forwardButton.setDisable(disable);
   }
+
+  public PlayButton getPlayButton() {
+    return playButton;
+  }
 }
