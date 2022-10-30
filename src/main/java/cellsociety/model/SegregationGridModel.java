@@ -2,7 +2,6 @@ package cellsociety.model;
 
 import cellsociety.State;
 import cellsociety.cellstates.segregationcellstates.SegregationCellState;
-import cellsociety.model.statehandlers.SegregationStateHandler;
 import cellsociety.model.statehandlers.StateHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +9,9 @@ import java.util.Random;
 
 public class SegregationGridModel extends DefaultGridModel {
 
-  private NeighborhoodsLoader myNeighborhoodsLoader;
-  private StateHandler myStateHandler;
-  private List<Neighborhood> myNeighborhoodsWithEmptyNextState;
+  private final NeighborhoodsLoader myNeighborhoodsLoader;
+  private final StateHandler myStateHandler;
+  private final List<Neighborhood> myNeighborhoodsWithEmptyNextState;
 
   public SegregationGridModel(NeighborhoodsLoader neighborhoodsLoader, StateHandler stateHandler) {
     super(neighborhoodsLoader, stateHandler);
@@ -48,6 +47,14 @@ public class SegregationGridModel extends DefaultGridModel {
     }
   }
 
+  /**
+   * Updates the list of neighborhoods that have next states set to empty. The reason
+   * myNeighborhoodsWithEmptyNextState is cleared and reloaded during every execution of this method
+   * (called from the loop in determineNextStates) is that the user might toggle the state
+   * of a cell at any given time. Thus, we can't simply modify of the contents of
+   * myNeighborhoodsWithEmptyNextState by removing neighborhoods whose next states become non-empty
+   * in determineNextStates. It's safer to just reload the list every time it's needed.
+   */
   private void updateListOfNeighborhoodsWithEmptyNextState() {
     myNeighborhoodsWithEmptyNextState.clear();
     for (int i = 0; i < myNeighborhoodsLoader.getNumNeighborhoods(); i++) {

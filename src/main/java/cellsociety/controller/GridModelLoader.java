@@ -28,16 +28,16 @@ public class GridModelLoader {
     if (!simTypes.contains(simType)) {
       return new DefaultGridModel(neighborhoodsLoader, stateHandler);
     } else {
-      return getGridModelInstance(mapping, simType, neighborhoodsLoader, stateHandler);
+      return getGridModelInstance(mapping.getString(simType), neighborhoodsLoader, stateHandler);
     }
 
   }
 
-  private GridModel getGridModelInstance(ResourceBundle mapping, String simType,
+  private GridModel getGridModelInstance(String modelType,
       NeighborhoodsLoader neighborhoodsLoader, StateHandler stateHandler) {
     try {
 
-      Class<?> clazz = Class.forName(GRID_MODEL_PACKAGE_PATH + mapping.getString(simType));
+      Class<?> clazz = Class.forName(GRID_MODEL_PACKAGE_PATH + modelType);
       return (GridModel) clazz.getDeclaredConstructor(NeighborhoodsLoader.class,
           StateHandler.class).newInstance(neighborhoodsLoader, stateHandler);
 

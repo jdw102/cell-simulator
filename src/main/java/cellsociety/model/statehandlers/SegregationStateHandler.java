@@ -16,15 +16,13 @@ public class SegregationStateHandler extends StateHandler {
   @Override
   public State figureOutNextState(Neighborhood neighborhood) {
     // return EMPTY if already EMPTY
-    SegregationCellState currStateEnum = (SegregationCellState) neighborhood.getStateEnum();
+    Enum currStateEnum = neighborhood.getStateEnum();
     if (currStateEnum.equals(SegregationCellState.EMPTY)) {
       return getStateInstance(SegregationCellState.EMPTY);
     }
 
-    // must be either AGENT1 or AGENT2
     int numCurrStateEnum = neighborhood.count(currStateEnum);
-    int numOpposite = neighborhood.count(getOpposite(currStateEnum));
-    int total = numCurrStateEnum + numOpposite;
+    int total = countNonEmptyAgents(neighborhood);
 
     if (total == 0 || (double) numCurrStateEnum / total >= THRESHOLD) {
       return getStateInstance(currStateEnum);
@@ -32,19 +30,15 @@ public class SegregationStateHandler extends StateHandler {
     else {
       return getStateInstance(SegregationCellState.EMPTY);
     }
-
   }
 
-  private SegregationCellState getOpposite(SegregationCellState cellStateEnum) {
-    if (cellStateEnum.equals(SegregationCellState.AGENT1)) {
-      return SegregationCellState.AGENT2;
+  private int countNonEmptyAgents(Neighborhood neighborhood) {
+    int count = 0;
+    for (SegregationCellState cellStateEnum : SegregationCellState.values()) {
+      if (!cellStateEnum.equals(SegregationCellState.EMPTY)) {
+        count += neighborhood.count(cellStateEnum);
+      }
     }
-    else if (cellStateEnum.equals(SegregationCellState.AGENT2)) {
-      return SegregationCellState.AGENT1;
-    }
-    else {
-      // protects against improper usage by programmer calling this function
-      throw new RuntimeException("Must pass either AGENT1 or AGENT2 into this private method");
-    }
+    return count;
   }
 }
