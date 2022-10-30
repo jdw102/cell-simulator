@@ -1,10 +1,10 @@
-package cellsociety.cellstates.watorcellstates;
+package cellsociety.cellstates.predatorpreycellstates;
 
 import cellsociety.State;
 
 public class FishState extends Animal implements State {
   @Override
   public Enum getStateEnum() {
-    return WatorCellState.FISH;
+    return PredatorPreyCellState.FISH;
   }
 }
