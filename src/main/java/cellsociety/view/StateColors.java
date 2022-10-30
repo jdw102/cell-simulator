@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.scene.paint.Color;
 
 /**
@@ -49,10 +48,6 @@ public class StateColors implements Iterator {
    */
   public void changeStateColor(String state, Color color) {
     colorMap.put(state, color);
-  }
-
-  public Set<String> getStates() {
-    return colorMap.keySet();
   }
 
   @Override

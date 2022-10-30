@@ -22,6 +22,11 @@
   -fx-min-height: 35;
 }
 
+.data-view-selector {
+  -fx-min-width: 45;
+  -fx-min-height: 35;
+}
+
 .cell-grid-pane {
   -fx-alignment: center;
 }
@@ -107,4 +112,9 @@
 .start-box {
   -fx-alignment: center;
   -fx-spacing: 30;
+}
+
+.histogram-box {
+  -fx-alignment: bottom-center;
+  -fx-spacing: 50;
 }

@@ -1,7 +1,6 @@
 package cellsociety.controller;
 
 import cellsociety.Coordinate;
-import cellsociety.GameDisplayInfo;
 import cellsociety.model.DefaultNeighborhoodsLoader;
 import cellsociety.model.GridModel;
 import cellsociety.model.statehandlers.StateHandler;
@@ -9,6 +8,7 @@ import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * @author Daniel Feinblatt Controller class in the Model-View-Controller design
@@ -48,12 +48,13 @@ public class Controller {
     try {
       simParser = new SimParser(simFile);
       // Give the view the info about the game
-      GameDisplayInfo gameDisplayInfo = simParser.getGameDisplayInfo();
+      Properties gameDisplayInfo = simParser.getGameDisplayInfo();
       displayView.setInfoText(gameDisplayInfo);
 
       File initStateCsv = simParser.getInitStateCsv();
       // Instantiate a CellSpawner
-      StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
+      StateHandler stateHandler = stateHandlerLoader.getStateHandler(
+          gameDisplayInfo.getProperty("Type"));
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView, initialStateReader);
       DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(

@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -25,21 +26,15 @@ public class GridView extends DataView {
     grid.getStyleClass().add("cell-grid-pane");
   }
 
-  public GridPane getGrid() {
-    return grid;
-  }
 
   /**
    * A method to resize each pane in the grid pane to fit the new window dimensions.
    */
-  public void resizeGrid(double width, double height) {
-    super.setGridWidth(width);
-    super.setGridHeight(height);
-    cellWidth = super.getGridWidth() / numCols;
-    cellHeight = super.getGridHeight() / numRows;
-//    for (CellView c : super.cells) {
-//      c.setDimensions(cellWidth, cellHeight);
-//    }
+  @Override
+  public void resize(double width, double height) {
+    super.resize(width, height);
+    cellWidth = super.getWidth() / numCols;
+    cellHeight = super.getHeight() / numRows;
     while (this.hasNext()) {
       CellView c = this.next();
       c.setDimensions(cellWidth, cellHeight);
@@ -52,8 +47,8 @@ public class GridView extends DataView {
    * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
-    cellWidth = super.getGridWidth() / cols;
-    cellHeight = super.getGridHeight() / rows;
+    cellWidth = super.getWidth() / cols;
+    cellHeight = super.getHeight() / rows;
     numCols = cols;
     numRows = rows;
   }
@@ -88,5 +83,10 @@ public class GridView extends DataView {
 
   public int getNumRows() {
     return numRows;
+  }
+
+  @Override
+  public Node getNode() {
+    return grid;
   }
 }

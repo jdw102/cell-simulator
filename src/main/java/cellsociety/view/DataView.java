@@ -5,14 +5,14 @@ import cellsociety.controller.Controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 
 public abstract class DataView implements Iterator<CellView> {
 
-  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   public List<CellView> cells;
-  private double gridWidth;
-  private double gridHeight;
+  private double width;
+  private double height;
   private StateColors stateColors;
   private Controller controller;
   private Iterator<CellView> iterator;
@@ -24,13 +24,9 @@ public abstract class DataView implements Iterator<CellView> {
    * @param height the height of the grid
    */
   public DataView(double width, double height) {
-    gridWidth = width;
-    gridHeight = height;
+    this.width = width;
+    this.height = height;
     cells = new ArrayList<>();
-  }
-
-  public void setSimType(String type) {
-    stateColors = new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
   }
 
   public void clear() {
@@ -41,6 +37,9 @@ public abstract class DataView implements Iterator<CellView> {
     return stateColors;
   }
 
+  public void setStateColors(StateColors colors) {
+    stateColors = colors;
+  }
 
   /**
    * Sets the controller of the grid view.
@@ -49,6 +48,10 @@ public abstract class DataView implements Iterator<CellView> {
     controller = contr;
   }
 
+  public void resize(double width, double height) {
+    this.width = width;
+    this.height = height;
+  }
 
   @Override
   public boolean hasNext() {
@@ -85,19 +88,23 @@ public abstract class DataView implements Iterator<CellView> {
     }
   }
 
-  public double getGridWidth() {
-    return gridWidth;
+  public double getWidth() {
+    return width;
   }
 
-  public void setGridWidth(double width) {
-    gridWidth = width;
+  public void setWidth(double width) {
+    this.width = width;
   }
 
-  public double getGridHeight() {
-    return gridHeight;
+  public double getHeight() {
+    return height;
   }
 
-  public void setGridHeight(double height) {
-    gridHeight = height;
+  public void setHeight(double height) {
+    this.height = height;
+  }
+
+  public Node getNode() {
+    return new HBox();
   }
 }

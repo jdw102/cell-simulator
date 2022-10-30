@@ -1,5 +1,7 @@
 package cellsociety;
 
-public record GameDisplayInfo(String type, String title, String author, String description) {
+import java.util.Properties;
+
+public record GameDisplayInfo(Properties properties) {
 
 }

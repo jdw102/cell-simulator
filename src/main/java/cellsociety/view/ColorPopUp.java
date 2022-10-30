@@ -7,6 +7,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * Creates a pop-up that allows colors of cell states to be edited.
@@ -16,6 +17,7 @@ public class ColorPopUp {
   private final Dialog<ResourceBundle> dialog;
   private final GridView gridView;
   private final InputFactory inputFactory;
+  private final BarView barView;
 
   /**
    * Creates new color pop up instance
@@ -25,8 +27,10 @@ public class ColorPopUp {
    * @param grid       the grid view that will have its colors edited
    * @param factory    an input factory
    */
-  public ColorPopUp(String title, String styleSheet, GridView grid, InputFactory factory) {
+  public ColorPopUp(String title, String styleSheet, GridView grid, InputFactory factory,
+      BarView bar) {
     inputFactory = factory;
+    barView = bar;
     gridView = grid;
     dialog = new Dialog<>();
     dialog.getDialogPane().getStylesheets()
@@ -86,10 +90,7 @@ public class ColorPopUp {
     colorLabel.getStyleClass().add("info-text-label");
     ColorPicker cp = new ColorPicker();
     cp.setValue(colors.getColor(state));
-    cp.setOnAction(event -> {
-      colors.changeStateColor(state, cp.getValue());
-      gridView.updateCellColors();
-    });
+    cp.setOnAction(event -> changeColors(cp.getValue(), state, colors));
     cp.setId(state + "ColorPicker");
     cp.getStyleClass().add("state-color-picker");
     HBox colorBox = new HBox(colorLabel, cp);
@@ -105,5 +106,11 @@ public class ColorPopUp {
   public void changeStyleSheet(String stylesheet) {
     dialog.getDialogPane().getStylesheets().clear();
     dialog.getDialogPane().getStylesheets().add(stylesheet);
+  }
+
+  private void changeColors(Color val, String state, StateColors colors) {
+    colors.changeStateColor(state, val);
+    gridView.updateCellColors();
+    barView.updateColors();
   }
 }

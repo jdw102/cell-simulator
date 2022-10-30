@@ -1,4 +1,4 @@
-Type=Percolation
+Type=GameOfLife
 InitialStates=data/temp.csv
 Title=Blank Simulation
 Author=Enter Name

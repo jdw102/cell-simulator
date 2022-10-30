@@ -16,12 +16,15 @@ import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
 import static cellsociety.Main.TITLE;
 
-import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +45,7 @@ import javafx.stage.Stage;
  */
 public class DisplayView {
 
+  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   private final ResourceBundle myResources;
   private final double HEIGHT_BUFFER = 170;
   private final double WIDTH_BUFFER = 50;
@@ -68,6 +72,7 @@ public class DisplayView {
   private String currLanguage;
   private BarView barView;
   private BorderPane root;
+  private Map<String, DataView> dataViewMap;
 
   /**
    * Create a new view.
@@ -114,8 +119,10 @@ public class DisplayView {
   public Scene makeScene(int width, int height) {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     barView = new BarView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
-    cellGrid.setSimType(currentSimType);
-    barView.setSimType(currentSimType);
+    makeDataViewMap(new ArrayList<>(Arrays.asList(cellGrid, barView)));
+    StateColors stateColors = getNewColors(currentSimType);
+    cellGrid.setStateColors(stateColors);
+    barView.setStateColors(stateColors);
     barView.setController(controller);
     cellGrid.setController(controller);
     gridInputs.setHistogram(barView);
@@ -124,19 +131,24 @@ public class DisplayView {
             + STYLESHEET_TAG;
     colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
         stylesheet, cellGrid,
-        inputFactory);
+        inputFactory, barView);
     colorPopUp.setStateColors(cellGrid.getStateColors());
     STAGE.heightProperty().addListener(
-        (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
+        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
     STAGE.widthProperty().addListener(
-        (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
+        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
     root = new BorderPane();
-    root.setCenter(cellGrid.getGrid());
     root.setBottom(gridInputs.getContainer());
     root.setTop(simInputsBox);
+    String defaultViewName = settings.getString("DefaultDataView");
+    root.setCenter(dataViewMap.get(defaultViewName).getNode());
+    ComboBox<String> viewSelector = inputFactory.makeDataViewComboBox(dataViewMap, root);
+    simInputsBox.getChildren().add(0, viewSelector);
+    attachTooltip(viewSelector);
     scene = new Scene(root, width, height);
+    viewSelector.setValue(defaultViewName);
     scene.getStylesheets()
         .add(getClass().getResource(
                 stylesheet)
@@ -152,10 +164,10 @@ public class DisplayView {
    * @return the HBox containing the inputs
    */
   private HBox makeSimInputsBox() {
-    typeSelector = makeComboBox("SimSelector", DEFAULT_SIM_COLORS_FOLDER,
+    typeSelector = makeComboBoxFromFolder("SimSelector", DEFAULT_SIM_COLORS_FOLDER,
         event -> changeSimulation(typeSelector.getValue()));
     typeSelector.setValue(currentSimType);
-    themeSelector = makeComboBox("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
+    themeSelector = makeComboBoxFromFolder("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
         event -> changeStyleSheet(themeSelector.getValue()));
     themeSelector.setValue(settings.getString("DefaultTheme"));
     attachTooltip(typeSelector);
@@ -174,7 +186,8 @@ public class DisplayView {
     attachTooltip(resetButton);
     attachTooltip(changeColorButton);
     attachTooltip(newWindowButton);
-    HBox b = new HBox(themeSelector, newWindowButton, changeColorButton, saveButton, importButton,
+    HBox b = new HBox(themeSelector, newWindowButton, changeColorButton, saveButton,
+        importButton,
         infoButton,
         typeSelector,
         resetButton);
@@ -215,7 +228,9 @@ public class DisplayView {
     currentSimType = s;
     simStates = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
-    cellGrid.setSimType(currentSimType);
+    StateColors stateColors = getNewColors(currentSimType);
+    cellGrid.setStateColors(stateColors);
+    barView.setStateColors(stateColors);
     colorPopUp.setStateColors(cellGrid.getStateColors());
     if (setDefault) {
       setupSimulation(simDefaults.get(currentSimType));
@@ -234,22 +249,24 @@ public class DisplayView {
   /**
    * Sets the info text displayed by the pop-up and the type displayed by the combo box.
    *
-   * @param text the record that contains the information read from the sim file, passed from the
-   *             controller
+   * @param properties the record that contains the information read from the sim file, passed from
+   *                   the controller
    */
-  public void setInfoText(GameDisplayInfo text) {
-    if (!currentSimType.equals(text.type())) {
-      currentSimType = text.type();
+  public void setInfoText(Properties properties) {
+    if (!currentSimType.equals(properties.getProperty("Type"))) {
+      currentSimType = properties.getProperty("Type");
       setDefault = false;
       typeSelector.setValue(currentSimType);
-      cellGrid.setSimType(currentSimType);
-      barView.setSimType(currentSimType);
+      StateColors stateColors = getNewColors(currentSimType);
+      cellGrid.setStateColors(stateColors);
+      barView.setStateColors(stateColors);
       colorPopUp.setStateColors(cellGrid.getStateColors());
       simStates = ResourceBundle.getBundle(
           DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
       setDefault = true;
     }
-    infoText.setText(text.title(), text.author(), text.description());
+    infoText.setText(properties.getProperty("Title"), properties.getProperty("Author"),
+        properties.getProperty("Description"));
     infoPopUp.changeInfoText(infoText);
   }
 
@@ -280,7 +297,6 @@ public class DisplayView {
     barView.clear();
     controller.setupSimulation(currentSimFile);
     barView.makeHistogramBars();
-    root.setCenter(barView.getHistogram());
   }
 
   /**
@@ -299,12 +315,12 @@ public class DisplayView {
    * @param folder  the path to the folder to be read
    * @param handler the event triggered on item selection
    */
-  private ComboBox<String> makeComboBox(String id, String folder,
+  private ComboBox<String> makeComboBoxFromFolder(String id, String folder,
       EventHandler<ActionEvent> handler) {
     ComboBox<String> comboBox = new ComboBox<>();
     comboBox.getStyleClass().add("sim-selector");
     comboBox.setId("ThemeSelector");
-    addComboBoxItems(folder, comboBox);
+    addComboBoxItemsFromFolder(folder, comboBox);
     comboBox.setOnAction(handler);
     comboBox.setId(id);
     return comboBox;
@@ -316,7 +332,7 @@ public class DisplayView {
    * @param folder the path to the folder to be read
    * @param c      the combobox to which items are added
    */
-  private void addComboBoxItems(String folder, ComboBox<String> c) {
+  private void addComboBoxItemsFromFolder(String folder, ComboBox<String> c) {
     File directory = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + folder).getPath());
     String[] files = directory.list();
@@ -382,5 +398,23 @@ public class DisplayView {
   public void addCellView(CellView cell, int row, int col) {
     cellGrid.addCell(cell, row, col);
     barView.addCell(cell, row, col);
+  }
+
+  private StateColors getNewColors(String type) {
+    return new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
+  }
+
+  private void resizeDataViews(double width, double height) {
+    for (String s : dataViewMap.keySet()) {
+      dataViewMap.get(s).resize(width, height);
+    }
+  }
+
+  private void makeDataViewMap(List<DataView> views) {
+    dataViewMap = new HashMap<>();
+    for (DataView d : views) {
+      String key = String.format("%sName", d.getClass().getSimpleName());
+      dataViewMap.put(myResources.getString(key), d);
+    }
   }
 }
