@@ -1,7 +1,7 @@
 package cellsociety.cellstates.segregationcellstates;
 
 public enum SegregationCellState {
-  AGENT_X,
-  AGENT_Y,
+  AGENT1,
+  AGENT2,
   EMPTY
 }

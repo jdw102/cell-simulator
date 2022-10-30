@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class GridModelLoader {
 
   public static final String RESOURCE_FILE_NAME = "gridmodel_chooser";
-  public static final String GRID_MODEL_PACKAGE_PATH = DEFAULT_RESOURCE_PACKAGE + ".model";
+  public static final String GRID_MODEL_PACKAGE_PATH = DEFAULT_RESOURCE_PACKAGE + "model.";
 
   public GridModel getGridModel(String simType, NeighborhoodsLoader neighborhoodsLoader,
       StateHandler stateHandler) {

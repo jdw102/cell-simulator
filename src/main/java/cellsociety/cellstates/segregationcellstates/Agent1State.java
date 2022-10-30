@@ -2,9 +2,9 @@ package cellsociety.cellstates.segregationcellstates;
 
 import cellsociety.State;
 
-public class AgentYState implements State {
+public class Agent1State implements State {
   @Override
   public Enum getStateEnum() {
-    return SegregationCellState.AGENT_Y;
+    return SegregationCellState.AGENT1;
   }
 }

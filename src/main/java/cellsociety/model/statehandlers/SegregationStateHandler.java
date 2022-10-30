@@ -36,11 +36,11 @@ public class SegregationStateHandler extends StateHandler {
   }
 
   private SegregationCellState getOpposite(SegregationCellState cellStateEnum) {
-    if (cellStateEnum.equals(SegregationCellState.AGENT_X)) {
-      return SegregationCellState.AGENT_Y;
+    if (cellStateEnum.equals(SegregationCellState.AGENT1)) {
+      return SegregationCellState.AGENT2;
     }
-    else if (cellStateEnum.equals(SegregationCellState.AGENT_Y)) {
-      return SegregationCellState.AGENT_X;
+    else if (cellStateEnum.equals(SegregationCellState.AGENT2)) {
+      return SegregationCellState.AGENT1;
     }
     else {
       // protects against improper usage by programmer calling this function
