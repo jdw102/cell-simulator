@@ -18,6 +18,7 @@ public class Controller {
   public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
   private final StateHandlerLoader stateHandlerLoader;
+  private final GridModelLoader gridModelLoader;
   private GridModel gridModel;
 
   /**
@@ -29,6 +30,7 @@ public class Controller {
   public Controller(DisplayView displayView) {
     this.displayView = displayView;
     this.stateHandlerLoader = new StateHandlerLoader();
+    this.gridModelLoader = new GridModelLoader();
   }
 
   /**
@@ -59,7 +61,8 @@ public class Controller {
       DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
           cellSpawner,
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
-      gridModel = new GridModel(defaultNeighborhoodsLoader, stateHandler);
+      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
+          stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
              IncorrectInputException e) {
       displayView.showMessage(e);

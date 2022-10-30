@@ -35,7 +35,11 @@ public class Neighborhood {
   }
 
   public boolean isState(Enum stateType) {
-    return (centerCell.getCurrentStateEnum()).equals(stateType);
+    return (centerCell.getCurrentStateEnum().equals(stateType));
+  }
+
+  public boolean isNextState(Enum stateType) {
+    return (centerCell.getNextStateEnum().equals(stateType));
   }
 
   public void updateCellState() {
@@ -55,7 +59,15 @@ public class Neighborhood {
     return centerCell.getCurrentStateEnum();
   }
 
+  public Enum getNextStateEnum() {
+    return centerCell.getNextStateEnum();
+  }
+
   public State getState() {
     return centerCell.getCurrentState();
+  }
+
+  public State getNextState() {
+    return centerCell.getNextState();
   }
 }
