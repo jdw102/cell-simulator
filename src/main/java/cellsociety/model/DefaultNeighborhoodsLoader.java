@@ -2,6 +2,7 @@ package cellsociety.model;
 
 import cellsociety.Coordinate;
 import cellsociety.controller.CellSpawner;
+import cellsociety.controller.Spawner;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,12 @@ import java.util.List;
  */
 public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
-  private final int myDistance;
-  private final CellSpawner myCellSpawner;
-  private int myNumRows;
-  private int myNumCols;
-  private Neighborhood[] myNeighborhoods;
+  private static final int DEFAULT_DISTANCE = 1;
+  private  int distance;
+  private final Spawner cellSpawner;
+  private int numRows;
+  private int numCols;
+  private Neighborhood[] neighborhoods;
 
   /**
    * Generates a list of all neighborhoods that exist in the simulation, one neighborhood for each
@@ -25,8 +27,8 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
    *                    neighborhood
    */
   public DefaultNeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
-    myCellSpawner = cellSpawner;
-    myDistance = distance;
+    this.cellSpawner = cellSpawner;
+    this.distance = DEFAULT_DISTANCE;
 
     setNumRows();
     setNumCols();
@@ -34,14 +36,18 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     loadNeighborhoods();
   }
 
+  public DefaultNeighborhoodsLoader(Spawner cellSpawner) {
+    this.cellSpawner = cellSpawner;
+  }
+
   @Override
   public Neighborhood getNeighborhood(int flattenedIdx) {
-    return myNeighborhoods[flattenedIdx];
+    return neighborhoods[flattenedIdx];
   }
 
   @Override
   public Neighborhood getNeighborhood(Coordinate coordinate) {
-    return myNeighborhoods[getFlattenedIdx(coordinate)];
+    return neighborhoods[getFlattenedIdx(coordinate)];
   }
 
   private boolean validNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
@@ -50,11 +56,11 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   }
 
   private boolean tooFarHorizontally(int x1, int x2) {
-    return Math.abs(x1 - x2) > myDistance;
+    return Math.abs(x1 - x2) > distance;
   }
 
   private boolean tooFarVertically(int y1, int y2) {
-    return Math.abs(y1 - y2) > myDistance;
+    return Math.abs(y1 - y2) > distance;
   }
 
   private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
@@ -65,7 +71,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   private boolean cellExists(Coordinate coordinate) {
     try {
-      myCellSpawner.getCell(coordinate);
+      cellSpawner.getCell(coordinate);
       return true;
     } catch (Exception e) {
       return false;
@@ -74,8 +80,8 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   private <T> List<T> iterateRowsAndColsGenerateList(GridIterator<T> gridIterator) {
     List<T> cells = new ArrayList<>();
-    for (int row = 0; row < myNumRows; row++) {
-      for (int col = 0; col < myNumCols; col++) {
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
         Coordinate coord = new Coordinate(row, col);
         T obj = gridIterator.create(coord);
         if (obj != null) {
@@ -97,7 +103,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   private CellModel getIfNeighbor(Coordinate coord1, Coordinate coord2) {
     CellModel retCell = null;
     if (validNeighbor(coord1, coord2)) {
-      retCell = myCellSpawner.getCell(coord2);
+      retCell = cellSpawner.getCell(coord2);
     }
     return retCell;
   }
@@ -105,11 +111,11 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   private void loadNeighborhoods() {
     GridIterator<Neighborhood> gridIterator = (coordinate) -> createNeighborhood(coordinate);
     List<Neighborhood> neighborhoods = iterateRowsAndColsGenerateList(gridIterator);
-    myNeighborhoods = neighborhoods.toArray(new Neighborhood[0]);
+    this.neighborhoods = neighborhoods.toArray(new Neighborhood[0]);
   }
 
   private Neighborhood createNeighborhood(Coordinate centerCoordinate) {
-    CellModel currCell = myCellSpawner.getCell(centerCoordinate);
+    CellModel currCell = cellSpawner.getCell(centerCoordinate);
     CellModel[] neighbors = getNeighbors(centerCoordinate);
     Neighborhood currNeighborhood = new Neighborhood(currCell, neighbors);
     return currNeighborhood;
@@ -117,19 +123,23 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
 
   private int getFlattenedIdx(Coordinate coordinate) {
-    return coordinate.y() * myNumCols + coordinate.x();
+    return coordinate.y() * numCols + coordinate.x();
   }
 
   private void setNumRows() {
-    myNumRows = myCellSpawner.getNumRows();
+    numRows = cellSpawner.getNumRows();
   }
 
   private void setNumCols() {
-    myNumCols = myCellSpawner.getNumCols();
+    numCols = cellSpawner.getNumCols();
   }
 
   @Override
   public int getNumNeighborhoods() {
-    return myNeighborhoods.length;
+    return neighborhoods.length;
+  }
+
+  public void setDistance(int distance) {
+    this.distance = distance;
   }
 }
