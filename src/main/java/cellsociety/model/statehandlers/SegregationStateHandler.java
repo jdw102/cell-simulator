@@ -9,8 +9,8 @@ public class SegregationStateHandler extends StateHandler {
   private static final String HANDLER_NAME = "SegregationStateHandler";
   public static final double THRESHOLD = 0.3;   // TODO: Read this in from SIM params!
 
-  public SegregationStateHandler() {
-    super(SegregationCellState.class, STATES_PACKAGE, HANDLER_NAME);
+  public SegregationStateHandler() throws RuntimeException {
+    super(SegregationCellState.class, HANDLER_NAME, STATES_PACKAGE);
   }
 
   @Override

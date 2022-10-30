@@ -51,7 +51,7 @@ public class GridModelLoader {
     Enumeration<String> en = mapping.getKeys();
     Collection<String> simTypes = new HashSet<>();
     while (en.hasMoreElements()) {
-      simTypes.add(mapping.getKeys().nextElement());
+      simTypes.add(en.nextElement());
     }
 
     return simTypes;
