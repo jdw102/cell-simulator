@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   // kind of data files to look for
+  public static final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
+
   public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);

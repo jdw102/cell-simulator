@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.GameDisplayInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,8 +41,20 @@ public class SimParser extends FileParser {
    *
    * @return GameInfo Record
    */
-  public Properties getGameDisplayInfo() {
-    return properties;
+  public GameDisplayInfo getGameDisplayInfo() {
+    String type = properties.getProperty(SimFileKeys.TYPE.getSimFileKeyName());
+    String title = properties.getProperty(SimFileKeys.TITLE.getSimFileKeyName());
+    String author = properties.getProperty(SimFileKeys.AUTHOR.getSimFileKeyName());
+    String description = properties.getProperty(SimFileKeys.DESCRIPTION.getSimFileKeyName());
+    String colorString = properties.getProperty(SimFileKeys.STATECOLORS.getSimFileKeyName());
+    String[] colors = new String[0];
+    if (colorString != null) {
+      colors = colorString.split(",");
+      for (String s : colors) {
+        s.strip();
+      }
+    }
+    return new GameDisplayInfo(type, title, author, description, colors);
   }
 
   /**

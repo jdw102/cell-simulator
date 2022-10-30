@@ -3,6 +3,7 @@ package cellsociety.view;
 import static cellsociety.Main.BLANK_SIM_TAG;
 import static cellsociety.Main.DATA_FILE_SIM_EXTENSION;
 import static cellsociety.Main.DEFAULT_BLANK_SIMS_FOLDER;
+import static cellsociety.Main.DEFAULT_COLORS_PACKAGE;
 import static cellsociety.Main.DEFAULT_LANGUAGE_FOLDER;
 import static cellsociety.Main.DEFAULT_RESOURCE_FOLDER;
 import static cellsociety.Main.DEFAULT_RESOURCE_PACKAGE;
@@ -16,6 +17,7 @@ import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
 import static cellsociety.Main.TITLE;
 
+import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +26,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,6 +37,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -45,7 +47,6 @@ import javafx.stage.Stage;
  */
 public class DisplayView {
 
-  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   private final ResourceBundle myResources;
   private final double HEIGHT_BUFFER = 170;
   private final double WIDTH_BUFFER = 50;
@@ -73,6 +74,7 @@ public class DisplayView {
   private BarView barView;
   private BorderPane root;
   private Map<String, DataView> dataViewMap;
+  private StateColors currentStateColors;
 
   /**
    * Create a new view.
@@ -120,9 +122,9 @@ public class DisplayView {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     barView = new BarView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     makeDataViewMap(new ArrayList<>(Arrays.asList(cellGrid, barView)));
-    StateColors stateColors = getNewColors(currentSimType);
-    cellGrid.setStateColors(stateColors);
-    barView.setStateColors(stateColors);
+    currentStateColors = getNewColors(currentSimType);
+    cellGrid.setStateColors(currentStateColors);
+    barView.setStateColors(currentStateColors);
     barView.setController(controller);
     cellGrid.setController(controller);
     gridInputs.setHistogram(barView);
@@ -132,7 +134,7 @@ public class DisplayView {
     colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
         stylesheet, cellGrid,
         inputFactory, barView);
-    colorPopUp.setStateColors(cellGrid.getStateColors());
+    colorPopUp.setStateColors(currentStateColors);
     STAGE.heightProperty().addListener(
         (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
@@ -228,9 +230,9 @@ public class DisplayView {
     currentSimType = s;
     simStates = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
-    StateColors stateColors = getNewColors(currentSimType);
-    cellGrid.setStateColors(stateColors);
-    barView.setStateColors(stateColors);
+    currentStateColors = getNewColors(currentSimType);
+    cellGrid.setStateColors(currentStateColors);
+    barView.setStateColors(currentStateColors);
     colorPopUp.setStateColors(cellGrid.getStateColors());
     if (setDefault) {
       setupSimulation(simDefaults.get(currentSimType));
@@ -249,24 +251,25 @@ public class DisplayView {
   /**
    * Sets the info text displayed by the pop-up and the type displayed by the combo box.
    *
-   * @param properties the record that contains the information read from the sim file, passed from
-   *                   the controller
+   * @param info the record that contains the information read from the sim file, passed from the
+   *             controller
    */
-  public void setInfoText(Properties properties) {
-    if (!currentSimType.equals(properties.getProperty("Type"))) {
-      currentSimType = properties.getProperty("Type");
+  public void setInfoText(GameDisplayInfo info) {
+    if (!currentSimType.equals(info.type())) {
+      currentSimType = info.type();
       setDefault = false;
       typeSelector.setValue(currentSimType);
-      StateColors stateColors = getNewColors(currentSimType);
-      cellGrid.setStateColors(stateColors);
-      barView.setStateColors(stateColors);
-      colorPopUp.setStateColors(cellGrid.getStateColors());
+      currentStateColors = getNewColors(currentSimType);
+      cellGrid.setStateColors(currentStateColors);
+      barView.setStateColors(currentStateColors);
+      colorPopUp.setStateColors(currentStateColors);
       simStates = ResourceBundle.getBundle(
           DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
       setDefault = true;
     }
-    infoText.setText(properties.getProperty("Title"), properties.getProperty("Author"),
-        properties.getProperty("Description"));
+    readStateColors(info.colors(), info.title());
+    infoText.setText(info.title(), info.author(),
+        info.description());
     infoPopUp.changeInfoText(infoText);
   }
 
@@ -416,5 +419,24 @@ public class DisplayView {
       String key = String.format("%sName", d.getClass().getSimpleName());
       dataViewMap.put(myResources.getString(key), d);
     }
+  }
+
+  private void readStateColors(String[] colors, String title) {
+    for (String s : colors) {
+      Color c;
+      try {
+        c = Color.valueOf(s);
+        if (currentStateColors.hasNext()) {
+          String state = currentStateColors.next();
+          currentStateColors.changeStateColor(state, c);
+        } else {
+          break;
+        }
+      } catch (IllegalArgumentException | NullPointerException e) {
+        showMessage(new StateColorsFormatException(title));
+      }
+    }
+    currentStateColors.resetIterator();
+    colorPopUp.setStateColors(currentStateColors);
   }
 }
