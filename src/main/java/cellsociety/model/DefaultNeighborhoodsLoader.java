@@ -38,6 +38,12 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   public DefaultNeighborhoodsLoader(Spawner cellSpawner) {
     this.cellSpawner = cellSpawner;
+    this.distance = DEFAULT_DISTANCE;
+
+    setNumRows();
+    setNumCols();
+
+    loadNeighborhoods();
   }
 
   @Override
@@ -141,5 +147,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   public void setDistance(int distance) {
     this.distance = distance;
+    loadNeighborhoods();
   }
+
 }

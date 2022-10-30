@@ -58,4 +58,28 @@ public class Neighborhood {
   public State getState() {
     return centerCell.getCurrentState();
   }
+
+  /**
+   * For testing purposes, enables access to specific instances of a cells neighbor to verify
+   * correctness
+   */
+  protected int getNumNeighbors() {
+    return myNeighboringCells.length;
+  }
+
+  /**
+   * For testing purposes, enables access to specific instances of a cells neighbor to verify
+   * correctness
+   */
+  protected CellModel getNeighbor(int i) {
+    return myNeighboringCells[i];
+  }
+
+  /**
+   * For testing purposes, enables access to specific instances of a cells neighbor to verify
+   * correctness
+   */
+  protected CellModel getCenterCell() {
+    return centerCell;
+  }
 }
