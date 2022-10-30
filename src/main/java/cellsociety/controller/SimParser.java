@@ -54,9 +54,11 @@ public class SimParser extends FileParser {
    *
    * @return File of init state csv
    */
-  public File getInitStateCsv() {
+  public File getInitStateCsv() throws WrongFileTypeException {
     String initStatesCsvName = properties.getProperty(
         SimFileKeys.INITIALSTATES.getSimFileKeyName());
-    return new File(pathToFiles, initStatesCsvName);
+    File csvFile = new File(pathToFiles, initStatesCsvName);
+    isFileTypeCorrect(csvFile, "csv");
+    return csvFile;
   }
 }

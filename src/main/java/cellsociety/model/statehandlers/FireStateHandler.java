@@ -3,6 +3,7 @@ package cellsociety.model.statehandlers;
 import cellsociety.State;
 import cellsociety.cellstates.firecellstates.FireCellState;
 import cellsociety.model.Neighborhood;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -18,13 +19,14 @@ public class FireStateHandler extends StateHandler {
 
   public FireStateHandler() throws RuntimeException {
     super(FireCellState.class, HANDLER_NAME, STATES_PACKAGE);
-    nextStateMap = Map.of(
-        FireCellState.FIRE, neighborhood -> getStateInstance(FireCellState.EMPTY),
-        // Doesn't need to use neighborhood to figure out next state
-        FireCellState.EMPTY, neighborhood -> chooseStateAfterEmpty(),
-        // Doesn't need to use neighborhood to figure out next state
-        FireCellState.TREE, neighborhood -> chooseStateAfterTree(neighborhood)
-    );
+    nextStateMap = new HashMap<>();
+    populateNextStateMap();
+  }
+
+  private void populateNextStateMap() {
+    nextStateMap.put(FireCellState.FIRE, neighborhood -> getStateInstance(FireCellState.EMPTY));
+    nextStateMap.put(FireCellState.EMPTY, neighborhood -> chooseStateAfterEmpty());
+    nextStateMap.put(FireCellState.TREE, neighborhood -> chooseStateAfterTree(neighborhood));
   }
 
   private State chooseStateAfterEmpty() {
