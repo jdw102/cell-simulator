@@ -63,7 +63,6 @@ public class Controller {
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
       gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
           stateHandler);
-      System.out.println(gridModel);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
              IncorrectInputException e) {
       displayView.showMessage(e);

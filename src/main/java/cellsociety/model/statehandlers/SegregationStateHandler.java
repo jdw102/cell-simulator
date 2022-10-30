@@ -21,12 +21,12 @@ public class SegregationStateHandler extends StateHandler {
       return getStateInstance(SegregationCellState.EMPTY);
     }
 
-    // must be either AGENT_X or AGENT_Y
+    // must be either AGENT1 or AGENT2
     int numCurrStateEnum = neighborhood.count(currStateEnum);
     int numOpposite = neighborhood.count(getOpposite(currStateEnum));
     int total = numCurrStateEnum + numOpposite;
 
-    if ((double) numCurrStateEnum / total >= THRESHOLD) {
+    if (total == 0 || (double) numCurrStateEnum / total >= THRESHOLD) {
       return getStateInstance(currStateEnum);
     }
     else {
@@ -44,7 +44,7 @@ public class SegregationStateHandler extends StateHandler {
     }
     else {
       // protects against improper usage by programmer calling this function
-      throw new RuntimeException("Must pass either AGENT_X or AGENT_Y into this private method");
+      throw new RuntimeException("Must pass either AGENT1 or AGENT2 into this private method");
     }
   }
 }
