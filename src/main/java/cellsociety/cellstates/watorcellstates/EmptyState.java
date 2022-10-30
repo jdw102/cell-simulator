@@ -1,4 +1,4 @@
-package cellsociety.cellstates.wator;
+package cellsociety.cellstates.watorcellstates;
 
 import cellsociety.State;
 
