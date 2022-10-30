@@ -3,7 +3,6 @@ package cellsociety.controller;
 import cellsociety.Coordinate;
 import cellsociety.GameDisplayInfo;
 import cellsociety.model.DefaultNeighborhoodsLoader;
-import cellsociety.model.DefaultGridModel;
 import cellsociety.model.GridModel;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
@@ -62,7 +61,8 @@ public class Controller {
       DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
           cellSpawner,
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
-      gridModel = gridModelLoader.getGridModel(defaultNeighborhoodsLoader, stateHandler);
+      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
+          stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
              IncorrectInputException e) {
       displayView.showMessage(e);
