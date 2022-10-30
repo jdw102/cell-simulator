@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class SimParserTest {
 
   @Test
-  void SimParserThrowsWrongFileTypeExceptionTest() {
+  void constructorThrowsWrongFileTypeExceptionTest() {
     File blinkerCsvFile = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.csv").getPath());
     String expectedMessage = "Must provide a file of type sim, but was provided a file of type csv";
@@ -24,7 +24,7 @@ class SimParserTest {
   }
 
   @Test
-  void SimParserThrowsIOExceptionTest() {
+  void constructorThrowsIOExceptionTest() {
     File randomFile = new File("/thisFileDoesNotExist.sim");
     String expectedMessage = "\\thisFileDoesNotExist.sim (The system cannot find the file specified)";
 
@@ -33,7 +33,7 @@ class SimParserTest {
   }
 
   @Test
-  void SimFileParserReadsAllRequiredFieldsTest() throws IOException, WrongFileTypeException {
+  void constructorReadsAllRequiredFieldsTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.sim").getPath());
@@ -52,7 +52,7 @@ class SimParserTest {
   }
 
   @Test
-  void SimFileParserGetInitStateCsvTest() throws IOException, WrongFileTypeException {
+  void getInitStateCsvTest() throws IOException, WrongFileTypeException {
     // Arrange
     File blinkerSimFile = new File(
         getClass().getResource(DEFAULT_RESOURCE_FOLDER + "game_of_life/blinkers.sim").getPath());
@@ -64,5 +64,19 @@ class SimParserTest {
 
     // Assert
     assertTrue(actualCsvFile.getPath().endsWith(expectedCsvFilePath));
+  }
+
+  @Test
+  void getInitStateCsvNotCsvTest() throws IOException {
+    // Arrange
+    File simFile = new File(
+        getClass().getResource("/badinputfiles/spreadingfirebadcsvfile.sim").getPath());
+    String expectedExceptionMessage = "Must provide a file of type csv, but was provided a file of type html";
+
+    // Act
+    SimParser simParser = new SimParser(simFile);
+    WrongFileTypeException wrongFileTypeException = assertThrows(WrongFileTypeException.class, () -> simParser.getInitStateCsv());
+
+    assertEquals(expectedExceptionMessage, wrongFileTypeException.getMessage());
   }
 }

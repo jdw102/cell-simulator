@@ -21,10 +21,7 @@ public class CellModel implements Observable {
    *
    * @param startingState the starting state of this CellModel.
    */
-  public CellModel(State startingState) throws NullStartingStateException {
-    if (startingState == null) {
-      throw new NullStartingStateException();
-    }
+  public CellModel(State startingState) {
     myObservers = new ArrayList<>();
     myCurrentState = startingState;
     myNextState = startingState;
@@ -84,6 +81,15 @@ public class CellModel implements Observable {
    */
   public State getNextState() {
     return myNextState;
+  }
+
+  /**
+   * Get the Enum representing this cell's current state
+   *
+   * @return myCurrentState
+   */
+  public Enum getNextStateEnum() {
+    return myNextState.getStateEnum();
   }
 
   /**
