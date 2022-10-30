@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SegregationGridModel extends DefaultGridModel {
+
   private NeighborhoodsLoader myNeighborhoodsLoader;
   private StateHandler myStateHandler;
   private List<Neighborhood> myNeighborhoodsWithEmptyNextState;
@@ -22,25 +23,6 @@ public class SegregationGridModel extends DefaultGridModel {
 
   @Override
   protected void determineNextStates() {
-    // keep list of all empty states
-      // options: - loop through NeighborhoodsLoader and see which states are empty
-      //          - have functionality in NeighborhoodsLoader to keep list of all empty states,
-      //          then get a random state
-      //          - keep list of empty slots and update it based on when you call the toggle
-      //          method or call updateState
-    // get a random empty state
-
-    /*
-    loop through myNeighborhoods
-    updateListOf...
-    get the current state
-    if current state is empty, continue
-    nextState = figureOutNextState()
-    setNextState
-    if current state is not empty and next state is empty
-      get a random neighborhood that will be empty next
-      set that random neighborhoods next state to currentState
-     */
 
     int numNeighborhoods = myNeighborhoodsLoader.getNumNeighborhoods();
     for (int i = 0; i < numNeighborhoods; i++) {
@@ -63,9 +45,7 @@ public class SegregationGridModel extends DefaultGridModel {
         Neighborhood targetNeighborhood = getRandomNeighborhoodWithEmptyNextState(currNeighborhood);
         targetNeighborhood.updateCellNextState(currState);
       }
-
     }
-
   }
 
   private void updateListOfNeighborhoodsWithEmptyNextState() {
@@ -82,15 +62,16 @@ public class SegregationGridModel extends DefaultGridModel {
     if (myNeighborhoodsWithEmptyNextState.size() == 0) {
       if (neighborhood.nextStateIsState(SegregationCellState.EMPTY)) {
         return neighborhood;
-      }
-      else {
+      } else {
         // should never happen unless improper usage of method
-        throw new RuntimeException("There are no neighborhoods with a nextState of EMPTY in this grid");
+        throw new RuntimeException(
+            "There are no neighborhoods with a nextState of EMPTY in this grid");
       }
     }
 
     // typical case
     Random rand = new Random();
-    return myNeighborhoodsWithEmptyNextState.get(rand.nextInt(0, myNeighborhoodsWithEmptyNextState.size()));
+    return myNeighborhoodsWithEmptyNextState.get(
+        rand.nextInt(0, myNeighborhoodsWithEmptyNextState.size()));
   }
 }
