@@ -53,6 +53,7 @@ public class ColorPopUp {
       HBox colorBox = makeColorPickerBox(colors.next(), colors);
       box.getChildren().add(colorBox);
     }
+    colors.resetIterator();
     box.getStyleClass().add("pop-up-content");
     return box;
   }

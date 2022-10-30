@@ -66,6 +66,8 @@ public class DisplayView {
   private ResourceBundle simStates;
   private Button newWindowButton;
   private String currLanguage;
+  private BarView barView;
+  private BorderPane root;
 
   /**
    * Create a new view.
@@ -111,8 +113,12 @@ public class DisplayView {
    */
   public Scene makeScene(int width, int height) {
     cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
+    barView = new BarView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     cellGrid.setSimType(currentSimType);
+    barView.setSimType(currentSimType);
+    barView.setController(controller);
     cellGrid.setController(controller);
+    gridInputs.setHistogram(barView);
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
@@ -126,7 +132,7 @@ public class DisplayView {
     STAGE.widthProperty().addListener(
         (obs, oldval, newVal) -> cellGrid.resizeGrid(STAGE.getWidth() - WIDTH_BUFFER,
             STAGE.getHeight() - HEIGHT_BUFFER));
-    BorderPane root = new BorderPane();
+    root = new BorderPane();
     root.setCenter(cellGrid.getGrid());
     root.setBottom(gridInputs.getContainer());
     root.setTop(simInputsBox);
@@ -237,6 +243,7 @@ public class DisplayView {
       setDefault = false;
       typeSelector.setValue(currentSimType);
       cellGrid.setSimType(currentSimType);
+      barView.setSimType(currentSimType);
       colorPopUp.setStateColors(cellGrid.getStateColors());
       simStates = ResourceBundle.getBundle(
           DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
@@ -270,7 +277,10 @@ public class DisplayView {
   public void setupSimulation(File f) {
     currentSimFile = f;
     cellGrid.clear();
+    barView.clear();
     controller.setupSimulation(currentSimFile);
+    barView.makeHistogramBars();
+    root.setCenter(barView.getHistogram());
   }
 
   /**
@@ -369,4 +379,8 @@ public class DisplayView {
     view.setupSimulation(f);
   }
 
+  public void addCellView(CellView cell, int row, int col) {
+    cellGrid.addCell(cell, row, col);
+    barView.addCell(cell, row, col);
+  }
 }

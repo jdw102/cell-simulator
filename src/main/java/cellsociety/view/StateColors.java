@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 public class StateColors implements Iterator {
 
   private final Map<String, Color> colorMap;
-  private final Iterator<String> iterator;
+  private Iterator<String> iterator;
 
   /**
    * Creates new instance of the state colors object.
@@ -63,5 +63,9 @@ public class StateColors implements Iterator {
   @Override
   public String next() {
     return iterator.next();
+  }
+
+  public void resetIterator() {
+    iterator = colorMap.keySet().iterator();
   }
 }

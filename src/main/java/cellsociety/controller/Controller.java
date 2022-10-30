@@ -55,7 +55,7 @@ public class Controller {
       // Instantiate a CellSpawner
       StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
-      CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
+      CellSpawner cellSpawner = new CellSpawner(displayView, initialStateReader);
       DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
           cellSpawner,
           DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this

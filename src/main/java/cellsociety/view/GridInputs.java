@@ -29,6 +29,7 @@ public class GridInputs {
   private final double DEFAULT_SPEED;
   private final double FRAMES_PER_SECOND;
   private final double SECOND_DELAY;
+  private BarView histogram;
 
 
   /**
@@ -104,6 +105,7 @@ public class GridInputs {
    */
   private void stepForward() {
     controller.updateState();
+    histogram.updateHistogram();
   }
 
 
@@ -118,5 +120,9 @@ public class GridInputs {
 
   public PlayButton getPlayButton() {
     return playButton;
+  }
+
+  public void setHistogram(BarView barView) {
+    histogram = barView;
   }
 }
