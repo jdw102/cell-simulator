@@ -21,10 +21,7 @@ public class CellModel implements Observable {
    *
    * @param startingState the starting state of this CellModel.
    */
-  public CellModel(State startingState) throws NullStartingStateException {
-    if (startingState == null) {
-      throw new NullStartingStateException();
-    }
+  public CellModel(State startingState) {
     myObservers = new ArrayList<>();
     myCurrentState = startingState;
     myNextState = startingState;

@@ -46,8 +46,7 @@ class InitialStateReaderTest {
       InitialStateReader stateReaderTester = null;
 
       try {
-        stateReaderTester = new InitialStateReader(stateHandlerTester,
-            myFile);
+        stateReaderTester = new InitialStateReader(stateHandlerTester, myFile);
       } catch (Exception e) {
         // do nothing
       }
@@ -58,11 +57,11 @@ class InitialStateReaderTest {
 
           Coordinate myCoord = new Coordinate(row, col);
           String expectedString =
-              mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col + " = " +
-                  expected[row][col];
+              mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col + " = "
+                  + expected[row][col];
           String actualString =
-              mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col + " = " +
-                  stateReaderTester.getStateValue(myCoord);
+              mySimType + ", expectedGrids[" + i + "], " + "row: " + row + " col: " + col + " = "
+                  + stateReaderTester.getStateValue(myCoord);
           assertEquals(expectedString, actualString);
         }
       }
@@ -121,6 +120,17 @@ class InitialStateReaderTest {
     File file = new File("src/test/resources/badinputfiles/gameoflifebadinput2.csv");
     String expected = "Incorrect value passed in file gameoflifebadinput2.csv: 4.\n"
         + "Integer out of bounds for the simulation. Review properties file for this simulation to see valid inputs.";
+    String actual = assertThrows(IncorrectInputException.class,
+        () -> new InitialStateReader(myStateHandler, file)).getMessage();
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void throwsIncorrectInputExceptionTest() {
+    StateHandler myStateHandler = new GameOfLifeStateHandler();
+    File file = new File("src/test/resources/badinputfiles/gameoflifebadinput3.csv");
+    String expected = "Incorrect or missing information in file gameoflifebadinput3.csv. Could not interpret potato data";
     String actual = assertThrows(IncorrectInputException.class,
         () -> new InitialStateReader(myStateHandler, file)).getMessage();
 
