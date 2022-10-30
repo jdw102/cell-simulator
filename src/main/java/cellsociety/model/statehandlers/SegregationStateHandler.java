@@ -18,7 +18,7 @@ public class SegregationStateHandler extends StateHandler {
     // return EMPTY if already EMPTY
     SegregationCellState currStateEnum = (SegregationCellState) neighborhood.getStateEnum();
     if (currStateEnum.equals(SegregationCellState.EMPTY)) {
-      return neighborhood.getState();
+      return getStateInstance(SegregationCellState.EMPTY);
     }
 
     // must be either AGENT_X or AGENT_Y
@@ -30,7 +30,7 @@ public class SegregationStateHandler extends StateHandler {
       return getStateInstance(currStateEnum);
     }
     else {
-      return getStateInstance(getOpposite(currStateEnum));
+      return getStateInstance(SegregationCellState.EMPTY);
     }
 
   }
@@ -43,6 +43,7 @@ public class SegregationStateHandler extends StateHandler {
       return SegregationCellState.AGENT_X;
     }
     else {
+      // protects against improper usage by programmer calling this function
       throw new RuntimeException("Must pass either AGENT_X or AGENT_Y into this private method");
     }
   }
