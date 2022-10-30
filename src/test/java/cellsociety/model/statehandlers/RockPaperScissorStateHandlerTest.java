@@ -1,15 +1,13 @@
 package cellsociety.model.statehandlers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cellsociety.State;
 import cellsociety.cellstates.rockpaperscissorcellstates.PaperState;
-import cellsociety.cellstates.rockpaperscissorcellstates.RockPaperScissorCellState;
 import cellsociety.cellstates.rockpaperscissorcellstates.RockState;
 import cellsociety.cellstates.rockpaperscissorcellstates.ScissorState;
 import cellsociety.model.CellModel;
 import cellsociety.model.Neighborhood;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RockPaperScissorStateHandlerTest {

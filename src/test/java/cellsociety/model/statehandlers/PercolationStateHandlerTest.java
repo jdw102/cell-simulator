@@ -1,11 +1,9 @@
 package cellsociety.model.statehandlers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cellsociety.State;
 import cellsociety.cellstates.firecellstates.EmptyState;
-import cellsociety.cellstates.gameoflifecellstates.AliveState;
-import cellsociety.cellstates.gameoflifecellstates.DeadState;
 import cellsociety.cellstates.percolationcellstates.BlockedState;
 import cellsociety.cellstates.percolationcellstates.OpenState;
 import cellsociety.cellstates.percolationcellstates.PercolatedState;
