@@ -1,6 +1,0 @@
-Type=GameOfLife
-InitialStates=data/temp.csv
-Title=Glider Gun
-Author=Bill Gosper
-Description=
-StateColors=00FF00,FF00FF

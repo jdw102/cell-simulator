@@ -84,7 +84,7 @@ public class InitialStateReader extends FileParser {
     int value;
     try {
       value = Integer.parseInt(line[index].strip());
-    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+    } catch (NumberFormatException | IndexOutOfBoundsException | NullPointerException e) {
       throw new IncorrectInputException(myFile.getName(), line[index]);
     }
     Enum stateChecker = myStateHandler.getMapping(value);

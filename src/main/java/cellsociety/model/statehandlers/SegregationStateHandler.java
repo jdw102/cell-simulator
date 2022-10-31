@@ -12,7 +12,7 @@ import cellsociety.model.Neighborhood;
 public class SegregationStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Segregation";
-  public double THRESHOLD;
+  private double THRESHOLD;
 
   /**
    * Get a new SegregationStateHandler
