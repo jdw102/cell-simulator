@@ -28,17 +28,23 @@ public class WatorWorldGridModel extends DefaultGridModel {
 
   private void setNextStateForFish() {
     int numNeighborhoods = myNeighborhoodsLoader.getNumNeighborhoods();
+
+    // loop through all Neighborhoods
     for (int i = 0; i < numNeighborhoods; i++) {
       Neighborhood currNeighborhood = myNeighborhoodsLoader.getNeighborhood(i);
       State currState = currNeighborhood.getState();
 
+      // Only figure out next states for fish
       if (currNeighborhood.getStateEnum().equals(WatorWorldCellState.FISH)) {
         FishState fishState = (FishState) currState;
         State nextState = myStateHandler.figureOutNextState(currNeighborhood);
 
+        // Only move fish if this currNeighborhood's next state is EMPTY, meaning the
+        // fish is moving out of its current spot
         if (nextState.getStateEnum().equals(WatorWorldCellState.EMPTY)) {
-          // better practice to use getter for this. Getter could return coordinate of this cell and its
-          // state (really basic getter). Either returns something immutable or just basic info
+
+          // Move the fish into a neighbor with an EMPTY next state. If not possible,
+          // set the current neighborhood's next state back to the current Fish state
           boolean fishMoved = currNeighborhood.setNextStateOfRandomNeighborWithNextState(
               WatorWorldCellState.EMPTY, currState);
           if (!fishMoved) {
@@ -46,13 +52,14 @@ public class WatorWorldGridModel extends DefaultGridModel {
           }
           else {
 
+            // If the fish is ready to reproduce, leave behind a new fish in the current
+            // neighborhood
             if (fishState.getReproductionCounter() > REPRODUCTION_THRESHOLD) {
               currNeighborhood.updateCellNextState(new FishState());
               fishState.setReproductionCounter(-1);
             } else {
               currNeighborhood.updateCellNextState(new EmptyState());
             }
-
           }
         }
 
@@ -63,19 +70,30 @@ public class WatorWorldGridModel extends DefaultGridModel {
 
   private void setNextStateForSharks() {
     int numNeighborhoods = myNeighborhoodsLoader.getNumNeighborhoods();
+
+    // loop through all Neighborhoods
     for (int i = 0; i < numNeighborhoods; i++) {
       Neighborhood currNeighborhood = myNeighborhoodsLoader.getNeighborhood(i);
       State currState = currNeighborhood.getState();
 
+      // Only figure out next states for fish
       if (currNeighborhood.getStateEnum().equals(WatorWorldCellState.SHARK)) {
         SharkState sharkState = (SharkState) currState;
+
+        // If shark's energy threshold is less than min threshold, it dies
         if (sharkState.getEnergyCounter() <= ENERGY_THRESHOLD) {
           currNeighborhood.updateCellNextState(new EmptyState());
           continue;
         }
+
+        // Shark stays alive
         else {
           State nextState = myStateHandler.figureOutNextState(currNeighborhood);
+
+          // Only move shark if this currNeighborhood's next state is EMPTY, meaning the
+          // shark is moving out of its current spot
           if (nextState.getStateEnum().equals(WatorWorldCellState.EMPTY)) {
+
 
             boolean ateFish = currNeighborhood.setNextStateOfRandomNeighborWithNextState(
                 WatorWorldCellState.FISH, sharkState);
@@ -91,6 +109,8 @@ public class WatorWorldGridModel extends DefaultGridModel {
           }
         }
 
+        // If the fish is ready to reproduce, leave behind a new fish in the current
+        // neighborhood
         if (sharkState.getReproductionCounter() > REPRODUCTION_THRESHOLD) {
           currNeighborhood.updateCellNextState(new SharkState());
           sharkState.setReproductionCounter(-1);
@@ -101,4 +121,5 @@ public class WatorWorldGridModel extends DefaultGridModel {
       }
     }
   }
+
 }
