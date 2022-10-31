@@ -10,8 +10,8 @@ import java.util.function.Function;
 public class FireStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Fire";
-  private static final double PROBABILITY_FIRE = 0.1;
-  private static final double PROBABILITY_TREE = 0.02;
+  private static final double probFire = 1;
+  private double probTree;
 
   private Map<FireCellState, Function<Neighborhood, State>> nextStateMap;
 
@@ -29,26 +29,31 @@ public class FireStateHandler extends StateHandler {
   }
 
   private State chooseStateAfterEmpty() {
-    if (Math.random() < PROBABILITY_TREE) {
+    if (Math.random() < probTree) {
       return getStateInstance(FireCellState.TREE);
     }
     return getStateInstance(FireCellState.EMPTY);
   }
 
   private State chooseStateAfterTree(Neighborhood neighborhood) {
-    if (neighborhood.contains(FireCellState.FIRE) || Math.random() < PROBABILITY_FIRE) {
+    if (neighborhood.contains(FireCellState.FIRE) || Math.random() < probFire) {
       return getStateInstance(FireCellState.FIRE);
     }
     return getStateInstance(FireCellState.TREE);
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {
+    updateParameters();
     Enum currState = currNeighborhood.getStateEnum();
     return nextStateMap.get(currState).apply(currNeighborhood);
   }
 
+  private void updateParameters() {
+    double parameterRatio = getParameter();
+    probTree = parameterRatio;
+  }
   @Override
   public void setParameter(double parameter) {
-
+    overwriteParameter(parameter);
   }
 }

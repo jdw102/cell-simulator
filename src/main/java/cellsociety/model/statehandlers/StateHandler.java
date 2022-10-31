@@ -144,4 +144,12 @@ public abstract class StateHandler {
     }
   }
 
+  protected double getParameter() {
+    return parameter;
+  }
+
+  protected void overwriteParameter(double parameter) {
+    this.parameter = parameter;
+  }
+
 }

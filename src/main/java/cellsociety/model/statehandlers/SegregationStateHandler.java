@@ -10,7 +10,7 @@ import cellsociety.model.Neighborhood;
 public class SegregationStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Segregation";
-  public static final double THRESHOLD = 0.3;   // TODO: Read this in from SIM params!
+  public double THRESHOLD;   // TODO: Read this in from SIM params!
 
   /**
    * Get a new SegregationStateHandler
@@ -27,6 +27,7 @@ public class SegregationStateHandler extends StateHandler {
    */
   @Override
   public State figureOutNextState(Neighborhood neighborhood) {
+    updateParameters();
     // return EMPTY if already EMPTY
     Enum currStateEnum = neighborhood.getStateEnum();
     if (currStateEnum.equals(SegregationCellState.EMPTY)) {
@@ -53,5 +54,15 @@ public class SegregationStateHandler extends StateHandler {
       }
     }
     return count;
+  }
+
+  private void updateParameters() {
+    double parameterRatio = getParameter();
+    THRESHOLD= parameterRatio;
+  }
+
+  @Override
+  public void setParameter(double parameter) {
+    overwriteParameter(parameter);
   }
 }
