@@ -34,15 +34,6 @@ public class CellSpawner implements Spawner {
   }
 
   /**
-   * Protected constructor for testing purposes
-   * @param initialStateReader
-   */
-  protected CellSpawner(InitialStateReader initialStateReader) {
-
-  }
-
-
-  /**
    * Method to iterate over each cell
    */
   private void initializeGrid() {
