@@ -48,6 +48,11 @@ public class CellView implements Observer {
     return cellPane;
   }
 
+  /**
+   * Link an event handler to the cell view to be run when the cell view is clicked
+   *
+   * @param handler
+   */
   public void attachOnClick(EventHandler<MouseEvent> handler) {
     rectangle.setOnMouseClicked(handler);
   }
@@ -86,10 +91,21 @@ public class CellView implements Observer {
     return stateName;
   }
 
+  /**
+   * Called in the simFileWriter in order to know where to write this cell's state value to the CSV
+   *
+   * @return The location coordinate of the cell
+   */
   public Coordinate getCoordinate() {
     return coordinate;
   }
 
+  /**
+   * Used to assign the coordinate location for this cell view so that it can correspond with its
+   * model state
+   *
+   * @param coord
+   */
   public void setCoordinate(Coordinate coord) {
     coordinate = coord;
   }

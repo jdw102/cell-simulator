@@ -45,7 +45,7 @@ public class GridView extends DataView {
   }
 
   /**
-   * A method to change the number of rows and columns of the grid, calculate the width and height
+   * Used to change the number of rows and columns of the grid, calculate the width and height
    * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
