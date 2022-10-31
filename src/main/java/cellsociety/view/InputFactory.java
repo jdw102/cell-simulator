@@ -1,17 +1,20 @@
 package cellsociety.view;
 
 import java.io.File;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
@@ -131,5 +134,18 @@ public class InputFactory {
     result.getExtensionFilters()
         .setAll(new FileChooser.ExtensionFilter("sim Files", extensionAccepted));
     return result;
+  }
+
+  public ComboBox<String> makeDataViewComboBox(Map<String, DataView> map, BorderPane borderPane) {
+    ComboBox<String> comboBox = new ComboBox<>();
+    for (String s : map.keySet()) {
+      comboBox.getItems().add(s);
+    }
+    comboBox.setOnAction(event -> {
+      borderPane.setCenter(map.get(comboBox.getValue()).getNode());
+    });
+    comboBox.getStyleClass().add("data-view-selector");
+    comboBox.setId("DataViewSelector");
+    return comboBox;
   }
 }

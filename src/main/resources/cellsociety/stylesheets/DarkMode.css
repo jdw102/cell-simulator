@@ -17,7 +17,7 @@
   -fx-background-color: darkgray;
 }
 
-.sim-selector {
+.combo-box {
   -fx-min-width: 45;
   -fx-min-height: 35;
 }
@@ -69,7 +69,7 @@
   -fx-max-width: 100;
 }
 
-.speed-text-field:disabled {
+.slider-text-field:disabled {
   -fx-background-color: #F0F0F0;
   -fx-max-width: 45;
   -fx-opacity: 1.0;
@@ -107,4 +107,19 @@
 .start-box {
   -fx-alignment: center;
   -fx-spacing: 30;
+}
+
+.histogram-box {
+  -fx-alignment: bottom-center;
+  -fx-spacing: 50;
+}
+
+.grid-settings-box {
+  -fx-alignment: center;
+  -fx-spacing: 50;
+}
+
+.slider {
+  -fx-max-width: 150;
+  -fx-min-width: 150;
 }

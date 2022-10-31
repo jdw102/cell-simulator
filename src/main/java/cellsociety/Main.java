@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   // kind of data files to look for
+  public static final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
+
   public static final String INTERNAL_CONFIGURATION = "cellsociety.Configuration";
   public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
   public static final Dimension MIN_SIZE = new Dimension(300, 300);
@@ -24,13 +26,19 @@ public class Main extends Application {
   public static final String DEFAULT_LANGUAGE_FOLDER = "languages/";
   public static final String DEFAULT_STYLESHEET_FOLDER = "stylesheets/";
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  public static final String DEFAULT_BLANK_SIMS_FOLDER = "/blank_sims/";
+  public static final String DEFAULT_BLANK_SIMS_FOLDER = "blank_sims/";
   public static final String DEFAULT_SIM_COLORS_FOLDER = "/sim_colors";
   public static final String GRID_MODEL_CHOOSER_FOLDER = "gridmodel_chooser/";
   public static final String BLANK_SIM_TAG = "Blank.sim";
   public static final String DATA_FILE_SIM_EXTENSION = "*.sim";
   public static final String STYLESHEET_TAG = ".css";
   public static final String SETTINGS_PACKAGE = "Settings";
+  public static final String PROPERTIES_PACKAGE = "statehandlers.";
+  public static final String STATE_HANDLER_TAG = "StateHandler";
+  public static final String CSV_FILE_EXTENSION = ".csv";
+  public static final ResourceBundle settings = ResourceBundle.getBundle(
+      DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
+
 
   /**
    * @see Application#start(Stage)
@@ -56,8 +64,7 @@ public class Main extends Application {
     stage.close();
     Stage newStage = new Stage();
     newStage.setTitle(TITLE);
-    DisplayView view = new DisplayView(startView.getStartLanguage(), newStage,
-        event -> openStartView(new Stage()));
+    DisplayView view = new DisplayView(startView.getStartLanguage(), newStage);
     Controller controller = new Controller(view);
     view.setController(controller);
     newStage.setScene(view.makeScene(DEFAULT_SIZE.width, DEFAULT_SIZE.height));

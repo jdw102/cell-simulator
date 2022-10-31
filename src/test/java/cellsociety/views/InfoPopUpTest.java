@@ -32,8 +32,7 @@ public class InfoPopUpTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage primaryStage) {
-    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage,
-        event -> System.out.println("New Window"));
+    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
     Controller controller = new Controller(view);
     view.setController(controller);
     // give the window a title

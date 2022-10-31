@@ -66,7 +66,7 @@ public class PlayButton {
   /**
    * Pauses the animation and changes the button to show a play graphic and tooltip.
    */
-  private void pause() {
+  public void pause() {
     animation.pause();
     changeGraphic("PlayButton", "PlayButtonTooltip");
   }

@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.scene.paint.Color;
 
 /**
- * Class to hold a string representing the state name of a cell and the color associated with it.
+ * Data class to hold a string representing the state name of a cell and the color associated with
+ * it.
  */
 public class StateColors implements Iterator {
 
   private final Map<String, Color> colorMap;
-  private final Iterator<String> iterator;
+  private Iterator<String> iterator;
 
   /**
    * Creates new instance of the state colors object.
@@ -50,10 +50,6 @@ public class StateColors implements Iterator {
     colorMap.put(state, color);
   }
 
-  public Set<String> getStates() {
-    return colorMap.keySet();
-  }
-
   @Override
   public boolean hasNext() {
     return iterator.hasNext();
@@ -62,5 +58,9 @@ public class StateColors implements Iterator {
   @Override
   public String next() {
     return iterator.next();
+  }
+
+  public void resetIterator() {
+    iterator = colorMap.keySet().iterator();
   }
 }

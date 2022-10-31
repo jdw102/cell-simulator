@@ -4,6 +4,7 @@ import cellsociety.Coordinate;
 import cellsociety.GameDisplayInfo;
 import cellsociety.model.DefaultNeighborhoodsLoader;
 import cellsociety.model.GridModel;
+import cellsociety.model.UnrecognizedEdgeRuleException;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
@@ -19,6 +20,7 @@ public class Controller {
   private final StateHandlerLoader stateHandlerLoader;
   private final GridModelLoader gridModelLoader;
   private GridModel gridModel;
+  private DefaultNeighborhoodsLoader neighborhoodsLoader;
 
   /**
    * Instantiates a new Controller that handles communication between the model and view
@@ -54,17 +56,30 @@ public class Controller {
 
       File initStateCsv = simParser.getInitStateCsv();
       // Instantiate a CellSpawner
-      StateHandler stateHandler = stateHandlerLoader.getStateHandler(gameDisplayInfo.type());
+      StateHandler stateHandler = stateHandlerLoader.getStateHandler(
+          gameDisplayInfo.type());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
-      CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
-      DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
+      CellSpawner cellSpawner = new CellSpawner(displayView, initialStateReader);
+      neighborhoodsLoader = new DefaultNeighborhoodsLoader(
           cellSpawner);
-      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
+      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), neighborhoodsLoader,
           stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
              IncorrectInputException e) {
       displayView.showMessage(e);
     }
+  }
+
+  public void setGridPolicy(String policy) {
+    try {
+      neighborhoodsLoader.setEdgeRule(policy);
+    } catch (UnrecognizedEdgeRuleException e) {
+      displayView.showMessage(e);
+    }
+  }
+
+  public void setRadius(int radius) {
+    neighborhoodsLoader.setDistance(radius);
   }
 
   public void changeCellState(Coordinate coord) {

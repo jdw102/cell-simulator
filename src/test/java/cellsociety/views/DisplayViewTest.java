@@ -33,8 +33,7 @@ public class DisplayViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage primaryStage) {
-    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage,
-        event -> System.out.println("New Window"));
+    view = new DisplayView(DEFAULT_LANGUAGE, primaryStage);
     Controller controller = new Controller(view);
     view.setController(controller);
     // give the window a title
@@ -118,7 +117,7 @@ public class DisplayViewTest extends DukeApplicationTest {
     clickOn(resetButton);
     sleep(500);
     Rectangle cell = lookup("#CellView[3][1]").query();
-    Paint expected = Paint.valueOf("#FFFFFF");
+    Paint expected = Paint.valueOf("#FF00FF");
     assertEquals(expected, cell.getFill());
   }
 

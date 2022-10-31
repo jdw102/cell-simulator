@@ -1,7 +1,10 @@
 package cellsociety.view;
 
+import cellsociety.Coordinate;
 import cellsociety.Observer;
 import cellsociety.model.CellModel;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -15,6 +18,8 @@ public class CellView implements Observer {
   private final Rectangle rectangle;
   private final CellModel model;
   private StateColors stateColors;
+  private String stateName;
+  private Coordinate coordinate;
 
   /**
    * Create a new instance of a cell view.
@@ -28,15 +33,20 @@ public class CellView implements Observer {
 
   @Override
   public void update() {
-    rectangle.setFill(stateColors.getColor(model.getCurrentStateEnum().toString()));
+    stateName = model.getCurrentStateEnum().toString();
+    rectangle.setFill(stateColors.getColor(stateName));
   }
 
   public Pane getCellPane() {
     return cellPane;
   }
 
-  public Rectangle getRectangle() {
-    return rectangle;
+  public void attachOnClick(EventHandler<MouseEvent> handler) {
+    rectangle.setOnMouseClicked(handler);
+  }
+
+  public void attachId(String id) {
+    rectangle.setId(id);
   }
 
   /**
@@ -57,5 +67,23 @@ public class CellView implements Observer {
    */
   public void setStateColors(StateColors colors) {
     stateColors = colors;
+  }
+
+  /**
+   * Required to create CSV file on saving. Called by display view on each cell view currently
+   * contained in the grid view.
+   *
+   * @return the state name
+   */
+  public String getStateName() {
+    return stateName;
+  }
+
+  public Coordinate getCoordinate() {
+    return coordinate;
+  }
+
+  public void setCoordinate(Coordinate coord) {
+    coordinate = coord;
   }
 }

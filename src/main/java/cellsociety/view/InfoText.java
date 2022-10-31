@@ -8,17 +8,20 @@ public class InfoText {
   private String title;
   private String author;
   private String description;
+  private String param;
 
   public InfoText() {
     title = "";
     author = "";
     description = "";
+    param = "";
   }
 
-  public void setText(String title, String author, String description) {
+  public void setText(String title, String author, String description, String param) {
     this.title = title;
     this.author = author;
     this.description = description;
+    this.param = param;
   }
 
   public String getTitle() {

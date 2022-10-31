@@ -4,14 +4,13 @@ import cellsociety.Coordinate;
 import cellsociety.State;
 import cellsociety.model.CellModel;
 import cellsociety.view.CellView;
-import cellsociety.view.GridView;
+import cellsociety.view.DisplayView;
 
 
 public class CellSpawner implements Spawner {
 
   private final CellModel[][] myCellModels;
   private final CellView[][] myCellViews;
-  private final GridView myGridView;
   private final InitialStateReader myInitialStateReader;
   private int myNumRows;
   private int myNumCols;
@@ -19,9 +18,8 @@ public class CellSpawner implements Spawner {
   /**
    * Initializes parallel cell model/view data structures for a given simulation
    */
-  public CellSpawner(GridView gridView, InitialStateReader initialStateReader) {
+  public CellSpawner(DisplayView displayView, InitialStateReader initialStateReader) {
     myInitialStateReader = initialStateReader;
-    myGridView = gridView;
 
     setNumCols();
     setNumRows();
@@ -29,17 +27,17 @@ public class CellSpawner implements Spawner {
     myCellModels = new CellModel[myNumRows][myNumCols];
     myCellViews = new CellView[myNumRows][myNumCols];
 
-    myGridView.setDimensions(myNumRows, myNumCols);
-    initializeGrid();
+    displayView.setGridDimensions(myNumRows, myNumCols);
+    initializeGrid(displayView);
   }
 
   /**
    * Method to iterate over each cell
    */
-  private void initializeGrid() {
+  private void initializeGrid(DisplayView displayView) {
     for (int row = 0; row < myNumRows; row++) {
       for (int col = 0; col < myNumCols; col++) {
-        initializeCell(row, col);
+        initializeCell(displayView, row, col);
       }
     }
   }
@@ -51,13 +49,13 @@ public class CellSpawner implements Spawner {
    * @param row the x value in the [x][y] coordinate of the data structure
    * @param col the y value in the [x][y] coordinate of the data structure
    */
-  private void initializeCell(int row, int col) {
+  private void initializeCell(DisplayView displayView, int row, int col) {
     Coordinate cellCoord = new Coordinate(row, col);
 
     State cellState = getState(cellCoord);
     myCellModels[row][col] = new CellModel(cellState);
     myCellViews[row][col] = new CellView(myCellModels[row][col]);
-    myGridView.addCell(myCellViews[row][col], row, col);
+    displayView.addCellView(myCellViews[row][col], row, col);
     myCellModels[row][col].addObserver(myCellViews[row][col]);
     myCellModels[row][col].setCurrentState(cellState);
   }
