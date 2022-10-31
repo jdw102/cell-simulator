@@ -1,50 +1,60 @@
 package cellsociety.model.statehandlers;
 
+import static cellsociety.Main.SETTINGS;
+
 import cellsociety.State;
+import cellsociety.controller.IncorrectInputException;
 import cellsociety.model.Neighborhood;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public abstract class StateHandler {
 
   private static final String STATE_SUFFIX = "State";
-  private static final String PROPERTIES_PACKAGE = "cellsociety.statehandlers.";
+  private static final String PROPERTIES_PACKAGE_FORMAT = "cellsociety.statehandlers.%s";
+
+  private static final String CELL_STATES_PACKAGE_FORMAT = "cellsociety.cellstates.%scellstates.";
+
+  private static final String HANDLER_NAME_FORMAT = "%sStateHandler";
+
+  private static final String DEFAULT_PARAMATER_FORMAT_KEY = "%sDefaultParameter";
+  private final String defaultParameterKey;
   private final String statesPackage;
   private final String handlerName;
+  private final String simulationName;
+  private final String propertiesPackage;
   private final SimulationStates states;
   private Map<Integer, Enum> statesNumMap;
 
+  private double parameter;
+
   /**
-   * @param states        The class of the Enum that has the states for the specific simulation
-   *                      type
-   * @param handler       Name of the specific concrete state handler
-   * @param statesPackage Package where the Enum of states for the simulation is located to be
-   *                      accessed
+   * @param states  The class of the Enum that has the states for the specific simulation type
+   * @param simType Name of the corresponding simulation
    * @throws RuntimeException
    */
-  StateHandler(Class<?> states, String handler, String statesPackage) throws RuntimeException {
-    this.handlerName = handler;
+  StateHandler(Class<?> states, String simType) {
+    this.handlerName = String.format(HANDLER_NAME_FORMAT, simType);
     this.states = new SimulationStates(states);
-    this.statesPackage = statesPackage;
-    try {
-      loadStates();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    this.simulationName = simType;
+    this.statesPackage = String.format(CELL_STATES_PACKAGE_FORMAT, simType.toLowerCase());
+    this.propertiesPackage = String.format(PROPERTIES_PACKAGE_FORMAT, handlerName);
+    this.defaultParameterKey = String.format(DEFAULT_PARAMATER_FORMAT_KEY, simType);
   }
 
-  private void loadStates() throws Exception {
+  private void loadStates() throws IncorrectInputException {
     statesNumMap = new HashMap<>();
-    ResourceBundle myResources = ResourceBundle.getBundle(PROPERTIES_PACKAGE + handlerName);
+    ResourceBundle myResources = ResourceBundle.getBundle(propertiesPackage);
     for (String key : myResources.keySet()) {
       Enum currEnum = states.getEnum(key);
       int val;
       try {
         val = Integer.parseInt(myResources.getString(key));
-      } catch (Exception e) {
-        throw new Exception(e);
+      } catch (NumberFormatException | IndexOutOfBoundsException e) {
+        throw new IncorrectInputException(handlerName, states.getEnum(key).toString());
       }
       statesNumMap.put(val, currEnum);
     }
@@ -104,9 +114,42 @@ public abstract class StateHandler {
     String myState = state.toString();
     String simpleName = (myState.toLowerCase()).split(STATE_SUFFIX.toLowerCase())[0];
 
-    String outputName = simpleName.substring(0, 1).toUpperCase()
-        + simpleName.substring(1);
+    String outputName = simpleName.substring(0, 1).toUpperCase() + simpleName.substring(1);
 
     return outputName + STATE_SUFFIX;
   }
+
+  public void setParameter(double parameter) throws InvalidParameterException {
+    throw new InvalidParameterException(simulationName, String.valueOf(parameter));
+  }
+
+  public void loadDefaults() throws IncorrectInputException, InvalidParameterException,
+      MissingParameterException {
+    String parameterString = null;
+    try {
+      parameterString = SETTINGS.getString(defaultParameterKey).strip();
+    } catch (NullPointerException | MissingResourceException | ClassCastException e) {
+      throw new MissingParameterException(simulationName);
+    }
+    try {
+      parameter = Double.parseDouble(parameterString);
+    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+      throw new InvalidParameterException(parameterString, simulationName);
+    } finally {
+      try {
+        loadStates();
+      } catch (IncorrectInputException e) {
+        throw e;
+      }
+    }
+  }
+
+  protected double getParameter() {
+    return parameter;
+  }
+
+  protected void overwriteParameter(double parameter) {
+    this.parameter = parameter;
+  }
+
 }

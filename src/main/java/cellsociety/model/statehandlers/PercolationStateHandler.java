@@ -9,11 +9,10 @@ import cellsociety.model.Neighborhood;
  */
 public class PercolationStateHandler extends StateHandler {
 
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
-  private static final String HANDLER_NAME = "PercolationStateHandler";
+  private static final String SIM_TYPE = "Percolation";
 
-  public PercolationStateHandler() throws RuntimeException {
-    super(PercolationCellState.class, HANDLER_NAME, STATES_PACKAGE);
+  public PercolationStateHandler()  {
+    super(PercolationCellState.class, SIM_TYPE);
   }
 
   public State figureOutNextState(Neighborhood currNeighborhood) {

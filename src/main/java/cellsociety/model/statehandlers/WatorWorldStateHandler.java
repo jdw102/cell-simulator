@@ -6,11 +6,10 @@ import cellsociety.cellstates.watorworldcellstates.WatorWorldCellState;
 import cellsociety.model.Neighborhood;
 
 public class WatorWorldStateHandler extends StateHandler {
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.watorworldcellstates.";
-  private static final String HANDLER_NAME = "WatorWorldStateHandler";
+  private static final String SIM_TYPE = "WatorWorld";
 
   public WatorWorldStateHandler() throws RuntimeException {
-    super(WatorWorldCellState.class, HANDLER_NAME, STATES_PACKAGE);
+    super(WatorWorldCellState.class, SIM_TYPE);
   }
 
   @Override
