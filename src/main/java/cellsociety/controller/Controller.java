@@ -15,7 +15,6 @@ import java.io.IOException;
  */
 public class Controller {
 
-  public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
   private final StateHandlerLoader stateHandlerLoader;
   private final GridModelLoader gridModelLoader;
@@ -59,8 +58,7 @@ public class Controller {
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView.getGridView(), initialStateReader);
       DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
-          cellSpawner,
-          DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
+          cellSpawner);
       gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
           stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |

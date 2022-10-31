@@ -7,7 +7,7 @@ import cellsociety.view.CellView;
 import cellsociety.view.GridView;
 
 
-public class CellSpawner {
+public class CellSpawner implements Spawner {
 
   private final CellModel[][] myCellModels;
   private final CellView[][] myCellViews;
@@ -32,7 +32,6 @@ public class CellSpawner {
     myGridView.setDimensions(myNumRows, myNumCols);
     initializeGrid();
   }
-
 
   /**
    * Method to iterate over each cell
@@ -68,6 +67,7 @@ public class CellSpawner {
    *
    * @param coord Coordinate of the cell to be retrieved
    */
+  @Override
   public CellModel getCell(Coordinate coord) {
     return myCellModels[coord.x()][coord.y()];
   }
@@ -84,6 +84,7 @@ public class CellSpawner {
   /**
    * Method to obtain the length of the cell model/view grid
    */
+  @Override
   public int getNumRows() {
     return myNumRows;
   }
@@ -91,6 +92,7 @@ public class CellSpawner {
   /**
    * Method to obtain the width of the cell model/view grid
    */
+  @Override
   public int getNumCols() {
     return myNumCols;
   }
