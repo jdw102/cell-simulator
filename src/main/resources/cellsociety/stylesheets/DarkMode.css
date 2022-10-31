@@ -1,29 +1,77 @@
+.root {
+  -fx-background-color: #363535;
+}
+
 .button {
   -fx-min-width: 45;
   -fx-min-height: 35;
+  -fx-text-fill: #ffffcc;
+  -fx-background-color: #23252a;
+}
+
+.button:hover {
+  -fx-background-color: #3a3e45;
+}
+
+.combo-box:hover {
+  -fx-background-color: #3a3e45;
+}
+
+.color-picker:hover {
+  -fx-background-color: #3a3e45;
+}
+
+.button:pressed {
+  -fx-background-color: #747c8b;
+}
+
+.combo-box:pressed {
+  -fx-background-color: #747c8b;
+}
+
+.color-picker:pressed {
+  -fx-background-color: #747c8b;
 }
 
 .grid-inputs-container {
   -fx-padding: 5;
   -fx-spacing: 50;
   -fx-alignment: center;
-  -fx-background-color: darkgray;
+  -fx-background-color: #5e5c5c;
 }
 
 .sim-inputs-container {
   -fx-padding: 5;
   -fx-spacing: 10;
   -fx-alignment: center-right;
-  -fx-background-color: darkgray;
+  -fx-background-color: #5e5c5c;
 }
 
 .combo-box {
   -fx-min-width: 45;
   -fx-min-height: 35;
+  -fx-background-color: #23252a;
+}
+
+.list-view .list-cell:hover {
+  -fx-background-color: #434343;
+}
+
+.list-view .list-cell {
+  -fx-background-color: gray;
+  -fx-text-fill: #ffffcc;
+}
+
+.list-view .label {
+  -fx-text-fill: #ffffcc;
 }
 
 .cell-grid-pane {
   -fx-alignment: center;
+}
+
+.combo-box .list-cell {
+  -fx-text-fill: #ffffcc;
 }
 
 .cell-pane {
@@ -34,6 +82,7 @@
 
 .info-header {
   -fx-font-size: 20;
+  -fx-text-fill: #ffffcc;
 }
 
 .info-header-container {
@@ -43,11 +92,12 @@
   -fx-border-width: 1;
   -fx-border-style: solid;
   -fx-border-color: darkgray;
-  -fx-background-color: lightgray;
+  -fx-background-color: #5e5c5c;
   -fx-border-radius: 5;
 }
 
 .info-text-label {
+  -fx-text-fill: #ffffcc;
   -fx-font-size: 15;
 }
 

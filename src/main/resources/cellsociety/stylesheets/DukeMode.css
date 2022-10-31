@@ -1,3 +1,7 @@
+.root {
+  -fx-background-color: #012169;
+}
+
 .button {
   -fx-min-width: 45;
   -fx-min-height: 35;
@@ -17,10 +21,15 @@
   -fx-background-color: #00539B;
 }
 
+.list-view .list-cell:hover {
+  -fx-background-color: #00539B;
+}
+
 .combo-box {
   -fx-min-width: 45;
   -fx-min-height: 35;
 }
+
 
 .cell-grid-pane {
   -fx-alignment: center;
@@ -34,6 +43,7 @@
 
 .info-header {
   -fx-font-size: 20;
+  -fx-text-fill: white;
 }
 
 .info-header-container {
@@ -43,24 +53,32 @@
   -fx-border-width: 1;
   -fx-border-style: solid;
   -fx-border-color: darkgray;
-  -fx-background-color: lightgray;
+  -fx-background-color: #00539B;
   -fx-border-radius: 5;
 }
 
 .info-text-label {
   -fx-font-size: 15;
+  -fx-text-fill: white;
+}
+
+.list-view .list-cell:hover {
+  -fx-background-color: #00539B;
+  -fx-text-fill: white;
 }
 
 .info-text-field {
   -fx-max-width: 200;
   -fx-alignment: center;
   -fx-font-size: 15;
+  -fx-text-fill: black;
 }
 
 .info-text-area {
   -fx-max-width: 300;
   -fx-max-height: 300;
   -fx-font-size: 15;
+  -fx-text-fill: black;
 }
 
 .info-grid-pane {
