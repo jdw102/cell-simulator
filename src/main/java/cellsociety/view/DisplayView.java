@@ -144,7 +144,7 @@ public class DisplayView {
     root = new BorderPane();
     root.setBottom(gridInputs.getContainer());
     root.setTop(simInputsBox);
-    String defaultViewName = settings.getString("DefaultDataView");
+    String defaultViewName = myResources.getString("DefaultDataView");
     root.setCenter(dataViewMap.get(defaultViewName).getNode());
     ComboBox<String> viewSelector = inputFactory.makeDataViewComboBox(dataViewMap, root);
     simInputsBox.getChildren().add(0, viewSelector);
