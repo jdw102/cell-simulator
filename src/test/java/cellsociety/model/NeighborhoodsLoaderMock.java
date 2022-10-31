@@ -8,14 +8,14 @@ import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameOfLifeNeighborhoodsLoaderMock implements NeighborhoodsLoader {
+public class NeighborhoodsLoaderMock implements NeighborhoodsLoader {
 
   Neighborhood[] myNeighborhoods;
-  GameOfLifeCellState myInitStates;
+  private State myInitStates;
   public static final int NUM_ROWS = 20;
   public static final int NUM_COLS = 30;
 
-  public GameOfLifeNeighborhoodsLoaderMock(GameOfLifeCellState initStateOfAllCellModels) {
+  public NeighborhoodsLoaderMock(State initStateOfAllCellModels) {
     myInitStates = initStateOfAllCellModels;
     loadNeighborhoods();
   }
@@ -24,14 +24,9 @@ public class GameOfLifeNeighborhoodsLoaderMock implements NeighborhoodsLoader {
     return myNeighborhoods;
   }
 
-  private State getInitState() {
-    if (myInitStates == GameOfLifeCellState.ALIVE) {
-      return new AliveState();
-    }
-    else {
-      return new DeadState();
-    }
-  }
+  protected State getInitState() {
+    return myInitStates;
+  };
 
   private void loadNeighborhoods() {
     CellModel[][] grid = genCellModelGrid(NUM_ROWS, NUM_COLS);
@@ -103,7 +98,7 @@ public class GameOfLifeNeighborhoodsLoaderMock implements NeighborhoodsLoader {
     return myNeighborhoods[getFlattenedIdx(coordinate)];
   }
 
-  private int getFlattenedIdx(Coordinate coordinate) {
+  public int getFlattenedIdx(Coordinate coordinate) {
     return coordinate.y() * NUM_COLS + coordinate.x();
   }
 }

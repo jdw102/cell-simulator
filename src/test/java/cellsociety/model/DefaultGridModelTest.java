@@ -3,6 +3,7 @@ package cellsociety.model;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import cellsociety.Coordinate;
+import cellsociety.cellstates.gameoflifecellstates.AliveState;
 import cellsociety.cellstates.gameoflifecellstates.GameOfLifeCellState;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ class DefaultGridModelTest {
 
   @Test
   void testUpdateState() {
-    NeighborhoodsLoader loaderMock = new GameOfLifeNeighborhoodsLoaderMock(GameOfLifeCellState.ALIVE);
+    NeighborhoodsLoader loaderMock = new NeighborhoodsLoaderMock(new AliveState());
     DefaultGridModel defaultGridModel = new DefaultGridModel(loaderMock, new GameOfLifeStateHandlerMock());
     defaultGridModel.updateState();
 
@@ -22,7 +23,7 @@ class DefaultGridModelTest {
 
   @Test
   void testChangeCellState() {
-    NeighborhoodsLoader loaderMock = new GameOfLifeNeighborhoodsLoaderMock(GameOfLifeCellState.ALIVE);
+    NeighborhoodsLoader loaderMock = new NeighborhoodsLoaderMock(new AliveState());
     DefaultGridModel defaultGridModel = new DefaultGridModel(loaderMock, new GameOfLifeStateHandlerMock());
     defaultGridModel.changeCellState(new Coordinate(5, 5));
     assertTrue(loaderMock.getNeighborhood(new Coordinate(5, 5)).isState(GameOfLifeCellState.DEAD));
