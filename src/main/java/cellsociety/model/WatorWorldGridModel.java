@@ -102,32 +102,3 @@ public class WatorWorldGridModel extends DefaultGridModel {
     }
   }
 }
-
-    /*
-    Loop through all neighborhoods:
-      if fish:
-        nextState = figureOutNextState
-        if nextState is EMPTY:
-          if fish.counter > THRESHOLD:
-            set neighborhood next state = new Fish
-            counter = -1
-          else:
-            set neighborhood next state = empty
-
-      counter += 1
-
-
-     Loop through all neighborhoods:
-      if shark:
-        if energy < THRESHOLD_ENERGY:
-          nextState = empty
-        else:
-          nextState = figureOutNextState:
-          if nextState = empty:
-            neighborhoodsLoader.setNextStateOfRandomNeighborOfType(Enum, CellState)
-            // get random neighbor that happens to have a nextState of fish
-            //  change that neighbor's state to SHARK
-            // if none exist,
-            // get random neighbor that happens to have nextState of empty
-            //  change that neighbor's state to SHARK
-     */
