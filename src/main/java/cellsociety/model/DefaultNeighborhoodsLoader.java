@@ -14,7 +14,7 @@ import java.util.function.BiFunction;
  */
 public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
-  private static final String DEFAULT_EDGE_RULE = "Cardinal";
+  private static final String DEFAULT_EDGE_RULE = "Complete";
   private static final int DEFAULT_DISTANCE = 1;
   private  int distance;
   private final Spawner cellSpawner;
@@ -31,23 +31,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
    * cell
    *
    * @param cellSpawner Responsible for creating the cells that are placed into neighborhoods
-   * @param distance    The number of cells in radius that constitutes being part of a cell's
-   *                    neighborhood
    */
-  public DefaultNeighborhoodsLoader(CellSpawner cellSpawner, int distance) {
-    this.cellSpawner = cellSpawner;
-    this.distance = DEFAULT_DISTANCE;
-    this.edgeRule = DEFAULT_EDGE_RULE;
-
-    setNumRows();
-    setNumCols();
-
-    this.edgeRules = new HashMap<>();
-    loadEdgeRules();
-
-    loadNeighborhoods();
-  }
-
   public DefaultNeighborhoodsLoader(Spawner cellSpawner) {
     this.cellSpawner = cellSpawner;
     this.distance = DEFAULT_DISTANCE;
@@ -56,6 +40,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     setNumRows();
     setNumCols();
 
+    this.edgeRules = new HashMap<>();
     loadEdgeRules();
 
     loadNeighborhoods();
@@ -105,38 +90,20 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
     return Math.abs(val1 - val2) <= distance;
   }
 
-  private boolean validTorroidalDistance(Coordinate centerCoordinate,
+  private boolean validToroidalDistance(Coordinate centerCoordinate,
       Coordinate candidateCoordinate) {
-    boolean xPlane = validDistanceOnTorroidalPlane(centerCoordinate.x(), candidateCoordinate.x(),
+    boolean xPlane = validDistanceOnToroidalPlane(centerCoordinate.x(), candidateCoordinate.x(),
         numCols);
-    boolean yPlane = validDistanceOnTorroidalPlane(centerCoordinate.y(), candidateCoordinate.y(),
+    boolean yPlane = validDistanceOnToroidalPlane(centerCoordinate.y(), candidateCoordinate.y(),
         numRows);
     return xPlane && yPlane;
   }
 
-  private boolean validDistanceOnTorroidalPlane(int val1, int val2, int planeLength) {
+  private boolean validDistanceOnToroidalPlane(int val1, int val2, int planeLength) {
     int min = Math.min(val1, val2);
     int max = Math.max(val1, val2);
     return  validDistanceOnPlane(min,max) || validDistanceOnPlane(min + planeLength,max);
   }
-
-//  private boolean invalidTorroidalDistanceOnPlane(int val1, int val2) {
-//    return Math.abs();
-//  }
-
-
-  private boolean tooFarHorizontally(int x1, int x2) {
-    return Math.abs(x1 - x2) > distance;
-  }
-
-  private boolean tooFarVertically(int y1, int y2) {
-    return Math.abs(y1 - y2) > distance;
-  }
-
-//  private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
-//    return !(tooFarVertically(centerCoord.y(), candidateNeighbor.y()) || tooFarHorizontally(
-//        centerCoord.x(), candidateNeighbor.x()));
-//  }
 
   private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
     return edgeRules.get(edgeRule).apply(centerCoord, candidateNeighbor);
@@ -243,7 +210,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   private void loadEdgeRules() {
     edgeRules.put("Complete", (coord1, coord2) -> validDistance(coord1,coord2));
     edgeRules.put("Cardinal", (coord1, coord2) -> validCardinalDistance(coord1,coord2));
-    edgeRules.put("Torroidal", (coord1, coord2)->validTorroidalDistance(coord1, coord2));
+    edgeRules.put("Toroidal", (coord1, coord2)-> validToroidalDistance(coord1, coord2));
   }
 
 
