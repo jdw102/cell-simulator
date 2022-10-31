@@ -35,4 +35,8 @@ public class InfoText {
   public String getDescription() {
     return description;
   }
+
+  public String getParam() {
+    return param;
+  }
 }

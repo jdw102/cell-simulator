@@ -33,6 +33,7 @@ public class SimFileWriter {
     String title = String.format("Title=%s", infoText.getTitle());
     String author = String.format("Author=%s", infoText.getAuthor());
     String description = String.format("Description=%s", infoText.getDescription());
+    String param = infoText.getParam();
     List<String> list = new ArrayList<>(
         Arrays.asList(type, initialStates, title, author, description));
     PrintWriter printWriter = new PrintWriter(f);
@@ -44,6 +45,9 @@ public class SimFileWriter {
       String s = stateColors.getColor(stateColors.next()).toString();
       String fin = s.substring(s.indexOf('x') + 1, s.length() - 2).toUpperCase();
       colors.add(fin);
+    }
+    if(param != null && param.length() > 0) {
+      printWriter.println(String.format("Parameters=%s", param));
     }
     stateColors.resetIterator();
     String colorString = String.join(",", colors);

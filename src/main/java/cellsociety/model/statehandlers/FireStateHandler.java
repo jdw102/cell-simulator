@@ -50,7 +50,7 @@ public class FireStateHandler extends StateHandler {
 
   private void updateParameters() {
     double parameterRatio = getParameter();
-    probTree = probFire/parameterRatio;
+    probTree = probFire*parameterRatio;
   }
   @Override
   public void setParameter(double parameter) {

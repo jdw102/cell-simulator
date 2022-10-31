@@ -7,7 +7,7 @@ public enum SimFileKeys {
   DESCRIPTION("Description"),
   INITIALSTATES("InitialStates"),
   STATECOLORS("StateColors"),
-  PARAMS("Params");
+  PARAMS("Parameters");
 
   private final String simFileKeyName;
 

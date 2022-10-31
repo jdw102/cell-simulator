@@ -279,7 +279,7 @@ public class DisplayView {
     }
     readStateColors(info.colors(), info.title());
     infoText.setText(info.title(), info.author(),
-        info.description(), "");
+        info.description(), info.params());
     infoPopUp.changeInfoText(infoText);
   }
 
