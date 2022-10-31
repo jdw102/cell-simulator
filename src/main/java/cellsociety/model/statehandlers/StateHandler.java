@@ -11,6 +11,12 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Abstract class for shared functionality amongst state handlers
+ *
+ * @author Mazen Selim
+ * @author Daniel Feinblatt
+ */
 public abstract class StateHandler {
 
   private static final String STATE_SUFFIX = "State";

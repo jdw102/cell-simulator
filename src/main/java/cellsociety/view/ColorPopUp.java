@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 
 /**
  * Creates a pop-up that allows colors of cell states to be edited.
+ *
+ * @author Jerry Worthy
  */
 public class ColorPopUp {
 

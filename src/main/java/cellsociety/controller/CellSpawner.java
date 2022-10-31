@@ -6,7 +6,10 @@ import cellsociety.model.CellModel;
 import cellsociety.view.CellView;
 import cellsociety.view.DisplayView;
 
-
+/**
+ * @author Mazen Selim
+ * @author Daniel Feinblatt
+ */
 public class CellSpawner implements Spawner {
 
   private final CellModel[][] myCellModels;
@@ -17,6 +20,9 @@ public class CellSpawner implements Spawner {
 
   /**
    * Initializes parallel cell model/view data structures for a given simulation
+   *
+   * @param gridView           Responsible for holding the views corresponding to each cell
+   * @param initialStateReader Reads in the initial state csv specified in the sim file
    */
   public CellSpawner(DisplayView displayView, InitialStateReader initialStateReader) {
     myInitialStateReader = initialStateReader;

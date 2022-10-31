@@ -2,6 +2,7 @@ package cellsociety.model.statehandlers;
 
 /**
  * Uses reflection to choose the correct Enum containing the states for the current simulation
+ * @author Mazen Selim
  */
 public class SimulationStates {
 

@@ -7,6 +7,13 @@ import cellsociety.model.statehandlers.MissingParameterException;
 import cellsociety.model.statehandlers.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Loads in the corresponding state handler, which defines the logic of the simulation, for the
+ * simulation being shown
+ *
+ * @author Mazen Selim
+ * @author Daniel Feinblatt
+ */
 public class StateHandlerLoader {
 
   private static final String STATE_HANDLER_SUFFIX = "StateHandler";

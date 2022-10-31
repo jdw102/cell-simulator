@@ -33,6 +33,11 @@ public abstract class DataView implements Iterator<CellView> {
     cells.clear();
   }
 
+  /**
+   * Used in other view classes to determine what colors they should make the states they display
+   *
+   * @return
+   */
   public StateColors getStateColors() {
     return stateColors;
   }

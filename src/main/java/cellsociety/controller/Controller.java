@@ -14,7 +14,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Daniel Feinblatt Controller class in the Model-View-Controller design
+ * The main controller in the MVC design pattern
+ *
+ * @author Daniel Feinblatt
+ * @author Ryan Wolfram
  */
 public class Controller {
 

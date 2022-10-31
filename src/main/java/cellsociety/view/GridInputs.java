@@ -15,6 +15,8 @@ import javafx.util.Duration;
 
 /**
  * A class that contains all the inputs that control the grid views animation.
+ *
+ * @author Jerry Worthy
  */
 public class GridInputs {
 

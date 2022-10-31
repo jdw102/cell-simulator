@@ -29,7 +29,8 @@ public class StartViewTest extends DukeApplicationTest {
   @ParameterizedTest
   @CsvSource({
       "English",
-      "PigLatin"
+      "Spanish",
+      "Italian"
   })
   void testLanguageSelector(String language) {
     ComboBox<String> languages = lookup("#LanguageSelector").query();

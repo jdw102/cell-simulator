@@ -6,14 +6,26 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Reads the contents of a sim file
+ *
+ * @author Daniel Feinblatt
+ */
 public class SimParser extends FileParser {
 
   public static final String SIM_FILE_TYPE = "sim";
   private final String pathToFiles;
   private Properties properties;
 
+  /**
+   * Checks if file is a sim file, then reads the contents of the sim file
+   *
+   * @param simFile The sim file describing the simulation to be read
+   * @throws IOException
+   * @throws WrongFileTypeException
+   */
   public SimParser(File simFile)
-      throws IOException, WrongFileTypeException { // catch this in controller and tell view
+      throws IOException, WrongFileTypeException {
     properties = null;
     pathToFiles = new File(simFile.getParent()).getParent();
     // Check if it is a .sim file

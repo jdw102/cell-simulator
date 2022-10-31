@@ -19,9 +19,11 @@ import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
 /**
- * A utils class that contains general methods to create certain UI components.
+ * Utility class that contains general methods to create certain UI components.
+ *
+ * @author Jerry Worthy
  */
-public class InputFactory {
+public final class InputFactory {
 
   // default to start in the data folder to make it easy on the user to find
   private final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";

@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 
 /**
  * A class that contains the play button and handles the logic of toggling between play and pause.
+ *
+ * @author Jerry Worthy
  */
 public class PlayButton {
 
@@ -29,6 +31,8 @@ public class PlayButton {
   /**
    * Sets the function of the button to either play or pause and either disable or enable the step
    * buttons.
+   *
+   * @param inputs Buttons to disable/enable on usage
    */
   private void togglePlay(GridInputs inputs) {
     if (playState) {
