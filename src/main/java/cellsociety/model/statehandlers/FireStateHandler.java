@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Defines the logic for the spreading fire simulation
+ *
+ * @author Daniel Feinblatt
+ * @author Mazen Selim
+ */
 public class FireStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Fire";
@@ -15,7 +21,12 @@ public class FireStateHandler extends StateHandler {
 
   private Map<FireCellState, Function<Neighborhood, State>> nextStateMap;
 
-
+  /**
+   * Populates a map, mapping the potential cell states to the logic to determine the next cell
+   * state
+   *
+   * @throws RuntimeException
+   */
   public FireStateHandler() {
     super(FireCellState.class, SIM_TYPE);
     nextStateMap = new HashMap<>();
@@ -42,6 +53,12 @@ public class FireStateHandler extends StateHandler {
     return getStateInstance(FireCellState.TREE);
   }
 
+  /**
+   * Determines the next state of the cell whose neighborhood is specified
+   *
+   * @param currNeighborhood The current neighborhood being examined to determine next state of
+   * @return The next state of the cell
+   */
   public State figureOutNextState(Neighborhood currNeighborhood) {
     updateParameters();
     Enum currState = currNeighborhood.getStateEnum();

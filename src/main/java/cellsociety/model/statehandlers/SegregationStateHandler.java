@@ -6,14 +6,17 @@ import cellsociety.model.Neighborhood;
 
 /**
  * StateHandler that implements the transition function rules for the Segregation simulation
+ *
+ * @author Ryan Wolfram
  */
 public class SegregationStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Segregation";
-  public double THRESHOLD;   // TODO: Read this in from SIM params!
+  public double THRESHOLD;
 
   /**
    * Get a new SegregationStateHandler
+   *
    * @throws RuntimeException
    */
   public SegregationStateHandler()  {
@@ -22,6 +25,7 @@ public class SegregationStateHandler extends StateHandler {
 
   /**
    * Return the next state of this neighborhood
+   *
    * @param neighborhood The current neighborhood being examined to determine next state of
    * @return
    */
@@ -39,8 +43,7 @@ public class SegregationStateHandler extends StateHandler {
 
     if (total == 0 || (double) numCurrStateEnum / total >= THRESHOLD) {
       return getStateInstance(currStateEnum);
-    }
-    else {
+    } else {
       return getStateInstance(SegregationCellState.EMPTY);
     }
   }

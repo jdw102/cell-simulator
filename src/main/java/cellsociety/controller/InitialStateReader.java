@@ -12,6 +12,9 @@ import java.io.IOException;
 
 /**
  * Class in charge of reading in initial states (as ints)
+ *
+ * @author Mazen Selim
+ * @author Daniel Feinblatt
  */
 public class InitialStateReader extends FileParser {
 
@@ -24,6 +27,16 @@ public class InitialStateReader extends FileParser {
   private int myNumRows;
   private int myNumCols;
 
+  /**
+   * Checks that the file received is a csv, then parses the file
+   *
+   * @param stateHandler Defines how the rules of interaction of the simulation
+   * @param f            The file to read the initial state from
+   * @throws CsvValidationException
+   * @throws IOException
+   * @throws WrongFileTypeException
+   * @throws IncorrectInputException
+   */
   public InitialStateReader(StateHandler stateHandler, File f)
       throws CsvValidationException, IOException, WrongFileTypeException, IncorrectInputException {
     this.myStateHandler = stateHandler;

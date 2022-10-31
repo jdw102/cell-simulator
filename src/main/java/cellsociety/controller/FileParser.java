@@ -2,6 +2,11 @@ package cellsociety.controller;
 
 import java.io.File;
 
+/**
+ * Parent class for specific parsers made to read specific types of files
+ *
+ * @author Daniel Feinblatt
+ */
 public class FileParser {
 
   /**

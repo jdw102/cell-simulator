@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 
 /**
- * Loads the correct GridModel for this simulation type. The pairings between simulation
- * types and GridModels are located in gridmodel_chooser.properties in the resources folder
+ * Loads the correct GridModel for this simulation type. The pairings between simulation types and
+ * GridModels are located in gridmodel_chooser.properties in the resources folder
  *
  * @author Ryan Wolfram
  */
@@ -25,13 +25,13 @@ public class GridModelLoader {
   public static final String GRID_MODEL_PACKAGE_PATH = DEFAULT_RESOURCE_PACKAGE + "model.";
 
   /**
-   * Returns the correct GridModel for this simulation type. The pairings between simulation
-   * types and GridModels are located in a properties file in the resources folder. If no
-   * pairing for this simulation type exists in the properties file, return a DefaultGridModel.
+   * Returns the correct GridModel for this simulation type. The pairings between simulation types
+   * and GridModels are located in a properties file in the resources folder. If no pairing for this
+   * simulation type exists in the properties file, return a DefaultGridModel.
    *
-   * @param simType the type of simulation
+   * @param simType             the type of simulation
    * @param neighborhoodsLoader the NeighborhoodsLoader passed to new GridModel
-   * @param stateHandler the StateHandler passed to the new GridModel
+   * @param stateHandler        the StateHandler passed to the new GridModel
    * @return GridModel
    */
   public GridModel getGridModel(String simType, NeighborhoodsLoader neighborhoodsLoader,

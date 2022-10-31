@@ -1,5 +1,11 @@
 package cellsociety.controller;
 
+/**
+ * The posible keys in a sim file. To add more possible entries, can simply add them as options
+ * here
+ *
+ * @author Daniel Feinblatt
+ */
 public enum SimFileKeys {
   TYPE("Type"),
   TITLE("Title"),
