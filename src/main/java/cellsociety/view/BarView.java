@@ -13,11 +13,11 @@ public class BarView extends DataView {
 
   private final double BUFFER = 50;
   private final double HOVER_SCALE = 1.01;
+  private final HBox histogramBox;
+  private final BorderPane borderPane;
   private Map<String, Integer> count = new HashMap<>();
   private Map<String, Rectangle> rectangleMap = new HashMap<>();
   private int total;
-  private HBox histogramBox;
-  private BorderPane borderPane;
 
   /**
    * Create a new view for the grid of cell.

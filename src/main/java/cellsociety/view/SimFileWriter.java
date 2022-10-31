@@ -12,12 +12,14 @@ import java.util.ResourceBundle;
 
 public class SimFileWriter {
 
-  private String currentSimType;
-  private ResourceBundle simStates;
+  private final String currentSimType;
+  private final ResourceBundle simStates;
+  private final StateColors stateColors;
 
-  public SimFileWriter(String simType, ResourceBundle states) {
+  public SimFileWriter(String simType, ResourceBundle states, StateColors colors) {
     currentSimType = simType;
     simStates = states;
+    stateColors = colors;
   }
 
   public void createSim(File f, InfoText infoText, GridView cellGrid) throws FileNotFoundException {
@@ -37,6 +39,15 @@ public class SimFileWriter {
     for (String s : list) {
       printWriter.println(s);
     }
+    List<String> colors = new ArrayList<>();
+    while (stateColors.hasNext()) {
+      String s = stateColors.getColor(stateColors.next()).toString();
+      String fin = s.substring(s.indexOf('x') + 1, s.length() - 2).toUpperCase();
+      colors.add(fin);
+    }
+    stateColors.resetIterator();
+    String colorString = String.join(",", colors);
+    printWriter.println(String.format("StateColors=%s", colorString));
     printWriter.close();
   }
 
@@ -44,8 +55,8 @@ public class SimFileWriter {
       throws FileNotFoundException {
     int numRows = cellGrid.getNumRows();
     int numCols = cellGrid.getNumCols();
-    String dimension = String.format("%s,%s", Integer.toString(numRows),
-        Integer.toString(numCols));
+    String dimension = String.format("%s,%s", numRows,
+        numCols);
     String[][] initialData = readInitialData(cellGrid);
     String[] csvData = createCSVData(initialData);
     File f = new File(String.format("%s/%s%s", folder, name, CSV_FILE_EXTENSION));

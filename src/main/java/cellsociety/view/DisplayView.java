@@ -58,6 +58,7 @@ public class DisplayView {
   private final InfoPopUp infoPopUp;
   private final Map<String, File> simDefaults;
   private final ResourceBundle settings;
+  private final String currLanguage;
   private GridInputs gridInputs;
   private GridView cellGrid;
   private Controller controller;
@@ -70,7 +71,6 @@ public class DisplayView {
   private boolean setDefault;
   private ResourceBundle simStates;
   private Button newWindowButton;
-  private String currLanguage;
   private BarView barView;
   private BorderPane root;
   private Map<String, DataView> dataViewMap;
@@ -363,7 +363,7 @@ public class DisplayView {
   private void saveFile() {
     File f = FILE_CHOOSER.showSaveDialog(STAGE);
     if (f != null) {
-      SimFileWriter simWriter = new SimFileWriter(currentSimType, simStates);
+      SimFileWriter simWriter = new SimFileWriter(currentSimType, simStates, currentStateColors);
       try {
         simWriter.createSim(f, infoText, cellGrid);
       } catch (FileNotFoundException e) {
@@ -374,7 +374,7 @@ public class DisplayView {
 
   public File getCurrentStateFile() {
     File f = new File("data/temp.sim");
-    SimFileWriter simFileWriter = new SimFileWriter(currentSimType, simStates);
+    SimFileWriter simFileWriter = new SimFileWriter(currentSimType, simStates, currentStateColors);
     try {
       simFileWriter.createSim(f, infoText, cellGrid);
     } catch (FileNotFoundException e) {
