@@ -1,0 +1,6 @@
+Type=GameOfLife
+InitialStates=data/temp.csv
+Title=Blank Simulation
+Author=Enter Name
+Description=A blank simulation... Feel free to change!
+StateColors=00FFFF,FFFFFF

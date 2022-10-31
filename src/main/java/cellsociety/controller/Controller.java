@@ -4,6 +4,7 @@ import cellsociety.Coordinate;
 import cellsociety.GameDisplayInfo;
 import cellsociety.model.DefaultNeighborhoodsLoader;
 import cellsociety.model.GridModel;
+import cellsociety.model.UnrecognizedEdgeRuleException;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
@@ -15,11 +16,11 @@ import java.io.IOException;
  */
 public class Controller {
 
-  public static final int DEFAULT_NEIGHBOR_DISTANCE = 1;
   private final DisplayView displayView;
   private final StateHandlerLoader stateHandlerLoader;
   private final GridModelLoader gridModelLoader;
   private GridModel gridModel;
+  private DefaultNeighborhoodsLoader neighborhoodsLoader;
 
   /**
    * Instantiates a new Controller that handles communication between the model and view
@@ -59,15 +60,26 @@ public class Controller {
           gameDisplayInfo.type());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView, initialStateReader);
-      DefaultNeighborhoodsLoader defaultNeighborhoodsLoader = new DefaultNeighborhoodsLoader(
-          cellSpawner,
-          DEFAULT_NEIGHBOR_DISTANCE); // for now use default, but later allow user to choose this
-      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), defaultNeighborhoodsLoader,
+      neighborhoodsLoader = new DefaultNeighborhoodsLoader(
+          cellSpawner);
+      gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), neighborhoodsLoader,
           stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
              IncorrectInputException e) {
       displayView.showMessage(e);
     }
+  }
+
+  public void setGridPolicy(String policy) {
+    try {
+      neighborhoodsLoader.setEdgeRule(policy);
+    } catch (UnrecognizedEdgeRuleException e) {
+      displayView.showMessage(e);
+    }
+  }
+
+  public void setRadius(int radius) {
+    neighborhoodsLoader.setDistance(radius);
   }
 
   public void changeCellState(Coordinate coord) {

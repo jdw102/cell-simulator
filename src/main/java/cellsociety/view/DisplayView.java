@@ -55,9 +55,9 @@ public class DisplayView {
   private final InputFactory inputFactory;
   private final HBox simInputsBox;
   private final InfoText infoText;
-  private final InfoPopUp infoPopUp;
   private final Map<String, File> simDefaults;
   private final String currLanguage;
+  private InfoPopUp infoPopUp;
   private GridInputs gridInputs;
   private GridView cellGrid;
   private Controller controller;
@@ -95,9 +95,6 @@ public class DisplayView {
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
-    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
-        stylesheet,
-        inputFactory);
     simDefaults = makeDefaultFileMap();
     currentSimFile = simDefaults.get(currentSimType);
     setDefault = true;
@@ -121,6 +118,9 @@ public class DisplayView {
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
+    infoPopUp = new InfoPopUp(infoText, myResources.getString("InfoPopUpTitle"),
+        stylesheet,
+        inputFactory, controller);
     initializeColors(stylesheet);
     addSizeListener();
     root = new BorderPane();
@@ -310,6 +310,7 @@ public class DisplayView {
     barView.clear();
     controller.setupSimulation(currentSimFile);
     barView.makeHistogramBars();
+    infoPopUp.setVals(Math.max(cellGrid.getNumCols(), cellGrid.getNumRows()));
   }
 
   /**

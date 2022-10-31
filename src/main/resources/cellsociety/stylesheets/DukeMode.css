@@ -17,12 +17,7 @@
   -fx-background-color: #00539B;
 }
 
-.sim-selector {
-  -fx-min-width: 45;
-  -fx-min-height: 35;
-}
-
-.data-view-selector {
+.combo-box {
   -fx-min-width: 45;
   -fx-min-height: 35;
 }
@@ -74,7 +69,7 @@
   -fx-max-width: 100;
 }
 
-.speed-text-field:disabled {
+.slider-text-field:disabled {
   -fx-background-color: #F0F0F0;
   -fx-max-width: 45;
   -fx-opacity: 1.0;
@@ -117,4 +112,14 @@
 .histogram-box {
   -fx-alignment: bottom-center;
   -fx-spacing: 50;
+}
+
+.grid-settings-box {
+  -fx-alignment: center;
+  -fx-spacing: 50;
+}
+
+.slider {
+  -fx-max-width: 150;
+  -fx-min-width: 150;
 }

@@ -78,7 +78,7 @@ public class GridInputs {
     Slider s = new Slider(MIN_SPEED, MAX_SPEED, DEFAULT_SPEED);
     s.valueProperty().addListener((obs, oldval, newVal) -> {
       s.setValue(Math.round(newVal.doubleValue() * 2) / 2.0);
-      speedLabel.setText("x" + s.getValue());
+      speedLabel.setText(String.format("x%s", s.getValue()));
       animation.setRate(s.getValue());
     });
     s.setId("SpeedSlider");
@@ -90,10 +90,10 @@ public class GridInputs {
    * @return VBox containing the slider and label
    */
   private VBox makeSliderBox() {
-    TextField speedLabel = new TextField("x" + DEFAULT_SPEED);
+    TextField speedLabel = new TextField(String.format("x%s", DEFAULT_SPEED));
     speedLabel.setDisable(true);
     speedLabel.setId("SpeedLabel");
-    speedLabel.getStyleClass().add("speed-text-field");
+    speedLabel.getStyleClass().add("slider-text-field");
     Slider speedSlider = makeSpeedSlider(speedLabel);
     VBox box = new VBox(speedSlider, speedLabel);
     box.setAlignment(Pos.CENTER);
