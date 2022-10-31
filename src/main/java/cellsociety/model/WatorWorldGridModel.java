@@ -8,6 +8,7 @@ import cellsociety.cellstates.watorworldcellstates.SharkState;
 import cellsociety.model.statehandlers.StateHandler;
 
 public class WatorWorldGridModel extends DefaultGridModel {
+
   public static final int REPRODUCTION_THRESHOLD = 10;
   public static final int ENERGY_THRESHOLD = 0;
   public static final int ENERGY_PER_FISH_EATEN = 3;
@@ -49,8 +50,7 @@ public class WatorWorldGridModel extends DefaultGridModel {
               WatorWorldCellState.EMPTY, currState);
           if (!fishMoved) {
             currNeighborhood.updateCellNextState(fishState);
-          }
-          else {
+          } else {
 
             // If the fish is ready to reproduce, leave behind a new fish in the current
             // neighborhood
@@ -94,14 +94,12 @@ public class WatorWorldGridModel extends DefaultGridModel {
           // shark is moving out of its current spot
           if (nextState.getStateEnum().equals(WatorWorldCellState.EMPTY)) {
 
-
             boolean ateFish = currNeighborhood.setNextStateOfRandomNeighborWithNextState(
                 WatorWorldCellState.FISH, sharkState);
             if (!ateFish) {
               currNeighborhood.setNextStateOfRandomNeighborWithNextState(
                   WatorWorldCellState.EMPTY, sharkState);
-            }
-            else {
+            } else {
               sharkState.setEnergyCounter(sharkState.getEnergyCounter() + ENERGY_PER_FISH_EATEN);
             }
 
