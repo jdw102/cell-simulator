@@ -55,7 +55,6 @@ public class Controller {
       // Give the view the info about the game
       GameDisplayInfo gameDisplayInfo = simParser.getGameDisplayInfo();
       displayView.setInfoText(gameDisplayInfo);
-f
       File initStateCsv = simParser.getInitStateCsv();
       // Instantiate a CellSpawner
       StateHandler stateHandler = stateHandlerLoader.getStateHandler(
