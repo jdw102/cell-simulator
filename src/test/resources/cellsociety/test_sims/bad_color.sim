@@ -1,6 +1,6 @@
 Type=GameOfLife
-InitialStates=data/temp.csv
 Title=DisplayTest
 Author=Jerry Worthy
 Description=A simple pattern to test the display.
-StateColors=00FF00,FF00FF
+InitialStates=test_sims/display_test.csv
+StateColors=00FsssF00,FF00FF

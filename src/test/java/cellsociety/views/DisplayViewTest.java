@@ -6,7 +6,11 @@ import cellsociety.controller.Controller;
 import cellsociety.view.DisplayView;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
@@ -132,4 +136,30 @@ public class DisplayViewTest extends DukeApplicationTest {
     assertEquals(expected, errorMessage);
   }
 
+  @Test
+  void testBadColorInput() {
+    File f = new File(getClass().getResource("/cellsociety/test_sims/bad_color.sim").getPath());
+    runAsJFXAction(() -> view.setupSimulation(f));
+    String expected = "Incorrect color formatting in simulation with title DisplayTest";
+    DialogPane pane = lookup("#AlertPane").query();
+    String errorMessage = pane.getContentText();
+    sleep(500);
+    assertEquals(expected, errorMessage);
+  }
+
+  @Test
+  void testNewWindowButton() {
+    File f = new File(getClass().getResource("/cellsociety/test_sims/display_test.sim").getPath());
+    runAsJFXAction(() -> view.setupSimulation(f));
+    Button newWindowButton = lookup("#NewWindowButton").query();
+    clickOn(newWindowButton);
+    sleep(500);
+    Set<Node> set = lookup("#CellView[3][1]").queryAll();
+    List<Rectangle> list = new ArrayList<>();
+    for (Node n : set) {
+      list.add((Rectangle) n);
+    }
+    sleep(500);
+    assertEquals(list.get(0).getFill(), list.get(1).getFill());
+  }
 }
