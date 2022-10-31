@@ -65,7 +65,8 @@ public class Controller {
       gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), neighborhoodsLoader,
           stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
-             IncorrectInputException e) {
+             IncorrectInputException | InvalidSimulationException e) {
+      System.out.println(e.getMessage());
       displayView.showMessage(e);
     }
   }
