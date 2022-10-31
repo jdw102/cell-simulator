@@ -36,16 +36,6 @@ public class Neighborhood {
     return retCounter;
   }
 
-//  private int count(Enum targetState, <CellModel> predicate) {
-//    int retCounter = 0;
-//    for (CellModel cellModel : myNeighboringCells) {
-//      if (sameState(targetState, predicate.test(cellModel))) {
-//        retCounter += 1;
-//      }
-//    }
-//    return retCounter;
-//  }
-
   public boolean contains(Enum targetState) {
     return count(targetState) >= 1;
   }
