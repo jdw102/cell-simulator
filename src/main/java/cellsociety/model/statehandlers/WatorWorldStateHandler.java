@@ -3,7 +3,6 @@ package cellsociety.model.statehandlers;
 import cellsociety.State;
 import cellsociety.cellstates.watorworldcellstates.EmptyState;
 import cellsociety.cellstates.watorworldcellstates.WatorWorldCellState;
-import cellsociety.cellstates.rockpaperscissorcellstates.RockPaperScissorCellState;
 import cellsociety.model.Neighborhood;
 
 public class WatorWorldStateHandler extends StateHandler {
