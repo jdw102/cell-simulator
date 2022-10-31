@@ -10,7 +10,7 @@ import java.util.function.Function;
 public class FireStateHandler extends StateHandler {
 
   private static final String SIM_TYPE = "Fire";
-  private static final double probFire = 1;
+  private static final double probFire = 0.5;
   private double probTree;
 
   private Map<FireCellState, Function<Neighborhood, State>> nextStateMap;
@@ -50,7 +50,7 @@ public class FireStateHandler extends StateHandler {
 
   private void updateParameters() {
     double parameterRatio = getParameter();
-    probTree = parameterRatio;
+    probTree = probFire/parameterRatio;
   }
   @Override
   public void setParameter(double parameter) {
