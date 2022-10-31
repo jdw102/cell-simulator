@@ -55,8 +55,8 @@ public class SimFileWriter {
       throws FileNotFoundException {
     int numRows = cellGrid.getNumRows();
     int numCols = cellGrid.getNumCols();
-    String dimension = String.format("%s,%s", numRows,
-        numCols);
+    String dimension = String.format("%s,%s", numCols,
+        numRows);
     String[][] initialData = readInitialData(cellGrid);
     String[] csvData = createCSVData(initialData);
     File f = new File(String.format("%s/%s%s", folder, name, CSV_FILE_EXTENSION));
