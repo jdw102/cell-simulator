@@ -3,6 +3,8 @@ package cellsociety.view;
 import cellsociety.Coordinate;
 import cellsociety.Observer;
 import cellsociety.model.CellModel;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -35,13 +37,16 @@ public class CellView implements Observer {
     rectangle.setFill(stateColors.getColor(stateName));
   }
 
-  /// get rid of these two getters, replace with methods that perform their use function.
   public Pane getCellPane() {
     return cellPane;
   }
 
-  public Rectangle getRectangle() {
-    return rectangle;
+  public void attachOnClick(EventHandler<MouseEvent> handler) {
+    rectangle.setOnMouseClicked(handler);
+  }
+
+  public void attachId(String id) {
+    rectangle.setId(id);
   }
 
   /**

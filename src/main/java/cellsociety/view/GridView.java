@@ -33,10 +33,10 @@ public class GridView extends DataView {
   @Override
   public void resize(double width, double height) {
     super.resize(width, height);
-    cellWidth = super.getWidth() / numCols;
-    cellHeight = super.getHeight() / numRows;
-    while (this.hasNext()) {
-      CellView c = this.next();
+    cellWidth = getWidth() / numCols;
+    cellHeight = getHeight() / numRows;
+    while (hasNext()) {
+      CellView c = next();
       c.setDimensions(cellWidth, cellHeight);
     }
     this.resetIterator();
@@ -47,8 +47,8 @@ public class GridView extends DataView {
    * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
-    cellWidth = super.getWidth() / cols;
-    cellHeight = super.getHeight() / rows;
+    cellWidth = getWidth() / cols;
+    cellHeight = getHeight() / rows;
     numCols = cols;
     numRows = rows;
   }

@@ -70,10 +70,9 @@ public abstract class DataView implements Iterator<CellView> {
   public void addCell(CellView cellView, int rowIdx, int colIdx) {
     Coordinate c = new Coordinate(colIdx, rowIdx);
     cellView.setStateColors(stateColors);
-    cellView.getRectangle()
-        .setId("CellView" + "[" + rowIdx + "]" + "[" + colIdx + "]");
-    cellView.getCellPane()
-        .setOnMouseClicked(event -> controller.changeCellState(c));
+    cellView.attachId(
+        String.format("CellView[%s][%s]", Integer.toString(rowIdx), Integer.toString(colIdx)));
+    cellView.attachOnClick(event -> controller.changeCellState(c));
     cellView.setCoordinate(c);
     cells.add(cellView);
     iterator = cells.iterator();

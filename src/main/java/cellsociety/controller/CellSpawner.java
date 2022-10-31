@@ -11,7 +11,6 @@ public class CellSpawner {
 
   private final CellModel[][] myCellModels;
   private final CellView[][] myCellViews;
-  //  private final GridView myGridView;
   private final InitialStateReader myInitialStateReader;
   private int myNumRows;
   private int myNumCols;
@@ -21,7 +20,6 @@ public class CellSpawner {
    */
   public CellSpawner(DisplayView displayView, InitialStateReader initialStateReader) {
     myInitialStateReader = initialStateReader;
-//    myGridView = gridView;
 
     setNumCols();
     setNumRows();
@@ -29,7 +27,7 @@ public class CellSpawner {
     myCellModels = new CellModel[myNumRows][myNumCols];
     myCellViews = new CellView[myNumRows][myNumCols];
 
-    displayView.getGridView().setDimensions(myNumRows, myNumCols);
+    displayView.setGridDimensions(myNumRows, myNumCols);
     initializeGrid(displayView);
   }
 

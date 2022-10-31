@@ -15,8 +15,8 @@ public class BarView extends DataView {
   private final double HOVER_SCALE = 1.01;
   private final HBox histogramBox;
   private final BorderPane borderPane;
-  private Map<String, Integer> count = new HashMap<>();
-  private Map<String, Rectangle> rectangleMap = new HashMap<>();
+  private Map<String, Integer> count;
+  private Map<String, Rectangle> rectangleMap;
   private int total;
 
   /**
@@ -77,12 +77,12 @@ public class BarView extends DataView {
 
   private void calculateCount() {
     count.clear();
-    while (super.getStateColors().hasNext()) {
-      count.put(super.getStateColors().next(), 0);
+    while (getStateColors().hasNext()) {
+      count.put(getStateColors().next(), 0);
     }
-    super.getStateColors().resetIterator();
-    while (super.hasNext()) {
-      CellView c = super.next();
+    getStateColors().resetIterator();
+    while (hasNext()) {
+      CellView c = next();
       String state = c.getStateName();
       count.put(state, count.get(state) + 1);
     }
@@ -107,12 +107,12 @@ public class BarView extends DataView {
   }
 
   public void updateColors() {
-    while (super.getStateColors().hasNext()) {
-      String state = super.getStateColors().next();
+    while (getStateColors().hasNext()) {
+      String state = getStateColors().next();
       Rectangle r = rectangleMap.get(state);
-      r.setFill(super.getStateColors().getColor(state));
+      r.setFill(getStateColors().getColor(state));
     }
-    super.getStateColors().resetIterator();
+    getStateColors().resetIterator();
 
   }
 

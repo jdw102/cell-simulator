@@ -17,10 +17,11 @@ public class InfoText {
     param = "";
   }
 
-  public void setText(String title, String author, String description) {
+  public void setText(String title, String author, String description, String param) {
     this.title = title;
     this.author = author;
     this.description = description;
+    this.param = param;
   }
 
   public String getTitle() {

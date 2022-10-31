@@ -1,7 +1,10 @@
 package cellsociety.view;
 
+import static cellsociety.Main.settings;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -144,7 +147,7 @@ public class InfoPopUp {
    * Updates the text fields' text.
    */
   private void updateText() {
-    infoText.setText(titleField.getText(), authorField.getText(), descriptionField.getText());
+    infoText.setText(titleField.getText(), authorField.getText(), descriptionField.getText(), "");
   }
 
   /**
@@ -164,6 +167,14 @@ public class InfoPopUp {
   public void changeStyleSheet(String stylesheet) {
     dialog.getDialogPane().getStylesheets().clear();
     dialog.getDialogPane().getStylesheets().add(stylesheet);
+  }
+
+
+  private ComboBox<String> makeNeighborPolicyComboBox() {
+    String[] options = settings.getString("NeighborPolicies").split(",");
+    ComboBox<String> comboBox = new ComboBox<>();
+
+    return comboBox;
   }
 }
 

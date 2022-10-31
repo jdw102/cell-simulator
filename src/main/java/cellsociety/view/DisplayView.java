@@ -12,10 +12,10 @@ import static cellsociety.Main.DEFAULT_SIZE;
 import static cellsociety.Main.DEFAULT_STYLESHEET_FOLDER;
 import static cellsociety.Main.MIN_SIZE;
 import static cellsociety.Main.PROPERTIES_PACKAGE;
-import static cellsociety.Main.SETTINGS_PACKAGE;
 import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
 import static cellsociety.Main.TITLE;
+import static cellsociety.Main.settings;
 
 import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
@@ -57,7 +57,6 @@ public class DisplayView {
   private final InfoText infoText;
   private final InfoPopUp infoPopUp;
   private final Map<String, File> simDefaults;
-  private final ResourceBundle settings;
   private final String currLanguage;
   private GridInputs gridInputs;
   private GridView cellGrid;
@@ -84,7 +83,6 @@ public class DisplayView {
    */
   public DisplayView(String language, Stage stage) {
     currLanguage = language;
-    settings = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
     currentSimType = settings.getString("DefaultSim");
     simStates = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
@@ -119,28 +117,12 @@ public class DisplayView {
    * @return the scene
    */
   public Scene makeScene(int width, int height) {
-    cellGrid = new GridView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
-    barView = new BarView(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
-    makeDataViewMap(new ArrayList<>(Arrays.asList(cellGrid, barView)));
-    currentStateColors = getNewColors(currentSimType);
-    cellGrid.setStateColors(currentStateColors);
-    barView.setStateColors(currentStateColors);
-    barView.setController(controller);
-    cellGrid.setController(controller);
-    gridInputs.setHistogram(barView);
+    initializeDataViews(width - WIDTH_BUFFER, height - HEIGHT_BUFFER);
     String stylesheet =
         DEFAULT_RESOURCE_FOLDER + DEFAULT_STYLESHEET_FOLDER + themeSelector.getValue()
             + STYLESHEET_TAG;
-    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
-        stylesheet, cellGrid,
-        inputFactory, barView);
-    colorPopUp.setStateColors(currentStateColors);
-    STAGE.heightProperty().addListener(
-        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
-            STAGE.getHeight() - HEIGHT_BUFFER));
-    STAGE.widthProperty().addListener(
-        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
-            STAGE.getHeight() - HEIGHT_BUFFER));
+    initializeColors(stylesheet);
+    addSizeListener();
     root = new BorderPane();
     root.setBottom(gridInputs.getContainer());
     root.setTop(simInputsBox);
@@ -157,6 +139,34 @@ public class DisplayView {
             .toExternalForm());
     setupSimulation(currentSimFile);
     return scene;
+  }
+
+  private void initializeDataViews(double width, double height) {
+    cellGrid = new GridView(width, height);
+    barView = new BarView(width, height);
+    makeDataViewMap(new ArrayList<>(Arrays.asList(cellGrid, barView)));
+  }
+
+  private void addSizeListener() {
+    STAGE.heightProperty().addListener(
+        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
+            STAGE.getHeight() - HEIGHT_BUFFER));
+    STAGE.widthProperty().addListener(
+        (obs, oldval, newVal) -> resizeDataViews(STAGE.getWidth() - WIDTH_BUFFER,
+            STAGE.getHeight() - HEIGHT_BUFFER));
+  }
+
+  private void initializeColors(String stylesheet) {
+    currentStateColors = getNewColors(currentSimType);
+    cellGrid.setStateColors(currentStateColors);
+    barView.setStateColors(currentStateColors);
+    barView.setController(controller);
+    cellGrid.setController(controller);
+    gridInputs.setHistogram(barView);
+    colorPopUp = new ColorPopUp(myResources.getString("ColorPopUpTitle"),
+        stylesheet, cellGrid,
+        inputFactory, barView);
+    colorPopUp.setStateColors(currentStateColors);
   }
 
   /**
@@ -269,7 +279,7 @@ public class DisplayView {
     }
     readStateColors(info.colors(), info.title());
     infoText.setText(info.title(), info.author(),
-        info.description());
+        info.description(), "");
     infoPopUp.changeInfoText(infoText);
   }
 
@@ -438,5 +448,9 @@ public class DisplayView {
     }
     currentStateColors.resetIterator();
     colorPopUp.setStateColors(currentStateColors);
+  }
+
+  public void setGridDimensions(int numRows, int numCols) {
+    cellGrid.setDimensions(numRows, numCols);
   }
 }
