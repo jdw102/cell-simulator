@@ -1,7 +1,6 @@
 package cellsociety.model;
 
 import cellsociety.Coordinate;
-import cellsociety.controller.CellSpawner;
 import cellsociety.controller.Spawner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,15 +15,14 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   private static final String DEFAULT_EDGE_RULE = "Complete";
   private static final int DEFAULT_DISTANCE = 1;
-  private  int distance;
   private final Spawner cellSpawner;
+  private int distance;
   private int numRows;
   private int numCols;
   private Neighborhood[] neighborhoods;
-
   private Map<String, BiFunction<Coordinate, Coordinate, Boolean>> edgeRules;
 
-  String edgeRule;
+  private String edgeRule;
 
   /**
    * Generates a list of all neighborhoods that exist in the simulation, one neighborhood for each
@@ -62,13 +60,16 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   }
 
   private boolean validCardinalDistance(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
-    return closeAboveOrBelow(centerCoordinate, candidateNeighbor) || closeRightOrLeft(centerCoordinate, candidateNeighbor);
-  }
-  private boolean closeAboveOrBelow(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
-    return centerCoordinate.x() == candidateNeighbor.x() && validDistance(centerCoordinate, candidateNeighbor);
+    return isVerticalNeighbor(centerCoordinate, candidateNeighbor) || isHorizontalNeighbor(
+        centerCoordinate, candidateNeighbor);
   }
 
-  private boolean closeRightOrLeft(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+  private boolean isVerticalNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
+    return centerCoordinate.x() == candidateNeighbor.x() && validDistance(centerCoordinate,
+        candidateNeighbor);
+  }
+
+  private boolean isHorizontalNeighbor(Coordinate centerCoordinate, Coordinate candidateNeighbor) {
     return centerCoordinate.y() == candidateNeighbor.y() && validDistance(centerCoordinate,
         candidateNeighbor);
   }
@@ -82,6 +83,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   /**
    * Given two x or two y values, determine if the difference between the two values is less than
    * the predefined distance value.
+   *
    * @param val1 first x or y val
    * @param val2 second x or y val
    * @return
@@ -102,7 +104,7 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   private boolean validDistanceOnToroidalPlane(int val1, int val2, int planeLength) {
     int min = Math.min(val1, val2);
     int max = Math.max(val1, val2);
-    return  validDistanceOnPlane(min,max) || validDistanceOnPlane(min + planeLength,max);
+    return validDistanceOnPlane(min, max) || validDistanceOnPlane(min + planeLength, max);
   }
 
   private boolean inNeighborhood(Coordinate centerCoord, Coordinate candidateNeighbor) {
@@ -195,8 +197,8 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
 
   private String getValidRule(String rule) throws UnrecognizedEdgeRuleException {
     String validRule = null;
-    for(String key: edgeRules.keySet()) {
-      if(key.equalsIgnoreCase(rule)) {
+    for (String key : edgeRules.keySet()) {
+      if (key.equalsIgnoreCase(rule)) {
         validRule = key;
       }
     }
@@ -208,9 +210,12 @@ public class DefaultNeighborhoodsLoader implements NeighborhoodsLoader {
   }
 
   private void loadEdgeRules() {
-    edgeRules.put("Complete", (coord1, coord2) -> validDistance(coord1,coord2));
-    edgeRules.put("Cardinal", (coord1, coord2) -> validCardinalDistance(coord1,coord2));
-    edgeRules.put("Toroidal", (coord1, coord2)-> validToroidalDistance(coord1, coord2));
+//    DefaultNeighborhoodsLoader.class.getDeclaredMethod("validDistance", Coordinate.class,
+//        Coordinate.class);
+    edgeRules.put("Complete", (coord1, coord2) -> validDistance(coord1, coord2));
+    edgeRules.put("Cardinal", (coord1, coord2) -> validCardinalDistance(coord1, coord2));
+    edgeRules.put("Toroidal", (coord1, coord2) -> validToroidalDistance(coord1, coord2));
+
   }
 
 
