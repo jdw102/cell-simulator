@@ -8,8 +8,7 @@ import java.util.Map;
 public class RockPaperScissorStateHandler extends StateHandler {
   private static final int THRESHOLD = 3;
 
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.rockpaperscissorcellstates.";
-  private static final String HANDLER_NAME = "RockPaperScissorStateHandler";
+  private static final String SIM_TYPE = "RockPaperScissor";
 
   private static final Map<RockPaperScissorCellState, RockPaperScissorCellState> enemiesMap = Map.of(
       RockPaperScissorCellState.SCISSOR, RockPaperScissorCellState.ROCK,
@@ -17,8 +16,8 @@ public class RockPaperScissorStateHandler extends StateHandler {
       RockPaperScissorCellState.PAPER, RockPaperScissorCellState.SCISSOR
   );
 
-  public RockPaperScissorStateHandler() throws RuntimeException {
-    super(RockPaperScissorCellState.class, HANDLER_NAME, STATES_PACKAGE);
+  public RockPaperScissorStateHandler()  {
+    super(RockPaperScissorCellState.class, SIM_TYPE);
   }
 
   private State play(Enum currState, int numEnemiesSurrounding) {

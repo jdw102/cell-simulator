@@ -67,4 +67,9 @@ public class SimParser extends FileParser {
     isFileTypeCorrect(csvFile, "csv");
     return csvFile;
   }
+
+  public String getParams() {
+    String params = properties.getProperty(SimFileKeys.PARAMS.getSimFileKeyName());
+    return params;
+  }
 }

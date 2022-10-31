@@ -9,16 +9,15 @@ import java.util.function.Function;
 
 public class FireStateHandler extends StateHandler {
 
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.firecellstates.";
-  private static final String HANDLER_NAME = "FireStateHandler";
-
+  private static final String SIM_TYPE = "Fire";
   private static final double PROBABILITY_FIRE = 0.1;
   private static final double PROBABILITY_TREE = 0.02;
 
   private Map<FireCellState, Function<Neighborhood, State>> nextStateMap;
 
-  public FireStateHandler() throws RuntimeException {
-    super(FireCellState.class, HANDLER_NAME, STATES_PACKAGE);
+
+  public FireStateHandler() {
+    super(FireCellState.class, SIM_TYPE);
     nextStateMap = new HashMap<>();
     populateNextStateMap();
   }
@@ -46,5 +45,10 @@ public class FireStateHandler extends StateHandler {
   public State figureOutNextState(Neighborhood currNeighborhood) {
     Enum currState = currNeighborhood.getStateEnum();
     return nextStateMap.get(currState).apply(currNeighborhood);
+  }
+
+  @Override
+  public void setParameter(double parameter) {
+
   }
 }

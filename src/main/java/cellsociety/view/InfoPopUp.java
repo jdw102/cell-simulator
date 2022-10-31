@@ -1,6 +1,6 @@
 package cellsociety.view;
 
-import static cellsociety.Main.settings;
+import static cellsociety.Main.SETTINGS;
 
 import cellsociety.controller.Controller;
 import javafx.geometry.Pos;
@@ -46,8 +46,8 @@ public class InfoPopUp {
    */
   public InfoPopUp(InfoText text, String title, String styleSheet, InputFactory utils,
       Controller controller) {
-    DEFAULT_POLICY = settings.getString("DefaultPolicy");
-    DEFAULT_RADIUS = Integer.parseInt(settings.getString("DefaultRadius"));
+    DEFAULT_POLICY = SETTINGS.getString("DefaultPolicy");
+    DEFAULT_RADIUS = Integer.parseInt(SETTINGS.getString("DefaultRadius"));
     this.controller = controller;
     inputFactory = utils;
     infoText = text;
@@ -195,7 +195,7 @@ public class InfoPopUp {
   }
 
   private ComboBox<String> makeNeighborPolicyComboBox() {
-    String[] options = settings.getString("NeighborPolicies").split(",");
+    String[] options = SETTINGS.getString("NeighborPolicies").split(",");
     ComboBox<String> comboBox = new ComboBox<>();
     comboBox.getItems().addAll(options);
     comboBox.setValue(DEFAULT_POLICY);
@@ -208,7 +208,7 @@ public class InfoPopUp {
   }
 
   private VBox makeRadiusSliderBox() {
-    int defaultVal = Integer.parseInt(settings.getString("DefaultRadius"));
+    int defaultVal = Integer.parseInt(SETTINGS.getString("DefaultRadius"));
     slider = new Slider(MIN_RADIUS, defaultVal, maxRadius);
     TextField label = new TextField(Long.toString(Math.round(slider.getValue())));
     label.setId("RadiusSliderLabel");

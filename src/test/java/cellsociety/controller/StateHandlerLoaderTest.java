@@ -37,7 +37,7 @@ class StateHandlerLoaderTest {
 
     for(String variation: validVariations) {
       try {
-        stateHandler = myStateHandlerLoader.getStateHandler(variation);
+        stateHandler = myStateHandlerLoader.getStateHandler(variation, "");
       } catch (Exception e) {
         Assertions.fail();
       }
@@ -63,7 +63,7 @@ class StateHandlerLoaderTest {
 
     String expected = "lame simulation not recognized.";
     String actual = assertThrows(InvalidSimulationException.class,
-        ()-> myLoader.getStateHandler(simType)).getMessage();
+        ()-> myLoader.getStateHandler(simType, "")).getMessage();
 
     assertEquals(expected, actual);
   }

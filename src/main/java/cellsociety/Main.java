@@ -36,7 +36,7 @@ public class Main extends Application {
   public static final String PROPERTIES_PACKAGE = "statehandlers.";
   public static final String STATE_HANDLER_TAG = "StateHandler";
   public static final String CSV_FILE_EXTENSION = ".csv";
-  public static final ResourceBundle settings = ResourceBundle.getBundle(
+  public static final ResourceBundle SETTINGS = ResourceBundle.getBundle(
       DEFAULT_RESOURCE_PACKAGE + SETTINGS_PACKAGE);
 
 

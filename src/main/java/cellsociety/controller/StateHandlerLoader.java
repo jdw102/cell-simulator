@@ -2,6 +2,8 @@ package cellsociety.controller;
 
 import static java.lang.Character.isLetter;
 
+import cellsociety.model.statehandlers.InvalidParameterException;
+import cellsociety.model.statehandlers.MissingParameterException;
 import cellsociety.model.statehandlers.StateHandler;
 import java.lang.reflect.InvocationTargetException;
 
@@ -71,7 +73,8 @@ public class StateHandlerLoader {
    * @return The StateHandler for the simulation type
    * @throws InvalidSimulationException Thrown if the simulation type is invalid
    */
-  public StateHandler getStateHandler(String simType) throws InvalidSimulationException {
+  public StateHandler getStateHandler(String simType, String paramter)
+      throws InvalidSimulationException, InvalidParameterException, MissingParameterException {
     Class clazz = null;
     try {
       clazz = Class.forName(STATE_HANDLER_PACKAGE + simType + STATE_HANDLER_SUFFIX);
@@ -87,8 +90,30 @@ public class StateHandlerLoader {
       throw new InvalidSimulationException(simType);
     }
 
-    return handler;
+    try {
+      handler.loadDefaults();
+    } catch(IncorrectInputException | InvalidParameterException |
+        MissingParameterException e) {
+      throw e;
+    }
 
+    setParameter(handler, simType, paramter);
+
+    return handler;
+  }
+
+  private void setParameter(StateHandler myHandler, String simType, String parameter)
+      throws InvalidParameterException {
+    if (parameter != null && parameter.strip().length() > 0) {
+      parameter = parameter.strip();
+      double parameterVal;
+      try {
+        parameterVal = Double.parseDouble(parameter);
+      } catch (NumberFormatException | IndexOutOfBoundsException e) {
+        throw new InvalidParameterException(simType, parameter);
+      }
+      myHandler.setParameter(parameterVal);
+    }
   }
 
   private Class attemptCorrectClass(String simType) throws InvalidSimulationException {
