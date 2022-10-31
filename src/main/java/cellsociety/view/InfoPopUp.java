@@ -1,9 +1,15 @@
 package cellsociety.view;
 
+import static cellsociety.Main.settings;
+
+import cellsociety.controller.Controller;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -18,11 +24,18 @@ public class InfoPopUp {
 
   private final Dialog<InfoText> dialog;
   private final InputFactory inputFactory;
+  private final int MIN_RADIUS = 1;
+  private final int DEFAULT_RADIUS;
+  private final String DEFAULT_POLICY;
   private TextField titleField;
   private TextField authorField;
   private TextArea descriptionField;
   private Button editInfoButton;
   private InfoText infoText;
+  private Controller controller;
+  private int maxRadius;
+  private Slider slider;
+  private ComboBox<String> policySelector;
 
   /**
    * Create the scene to display the view components.
@@ -31,7 +44,11 @@ public class InfoPopUp {
    * @param title      the title of the pop-up dialog
    * @param styleSheet the CSS styling of the pop-up
    */
-  public InfoPopUp(InfoText text, String title, String styleSheet, InputFactory utils) {
+  public InfoPopUp(InfoText text, String title, String styleSheet, InputFactory utils,
+      Controller controller) {
+    DEFAULT_POLICY = settings.getString("DefaultPolicy");
+    DEFAULT_RADIUS = Integer.parseInt(settings.getString("DefaultRadius"));
+    this.controller = controller;
     inputFactory = utils;
     infoText = text;
     dialog = new Dialog<>();
@@ -122,9 +139,12 @@ public class InfoPopUp {
     titleLabel.getStyleClass().add("info-text-label");
     authorLabel.getStyleClass().add("info-text-label");
     descriptionLabel.getStyleClass().add("info-text-label");
-
+    policySelector = makeNeighborPolicyComboBox();
+    VBox sliderBox = makeRadiusSliderBox();
+    HBox gridSettingsBox = new HBox(policySelector, sliderBox);
+    gridSettingsBox.getStyleClass().add("grid-settings-box");
     VBox box = new VBox(topBox, titleLabel, titleField, authorLabel, authorField, descriptionLabel,
-        descriptionField);
+        descriptionField, gridSettingsBox);
     box.getStyleClass().add("pop-up-content");
     return box;
   }
@@ -144,7 +164,7 @@ public class InfoPopUp {
    * Updates the text fields' text.
    */
   private void updateText() {
-    infoText.setText(titleField.getText(), authorField.getText(), descriptionField.getText());
+    infoText.setText(titleField.getText(), authorField.getText(), descriptionField.getText(), "");
   }
 
   /**
@@ -164,6 +184,48 @@ public class InfoPopUp {
   public void changeStyleSheet(String stylesheet) {
     dialog.getDialogPane().getStylesheets().clear();
     dialog.getDialogPane().getStylesheets().add(stylesheet);
+  }
+
+  public void setVals(int val) {
+    maxRadius = val;
+    slider.setMax(maxRadius);
+    slider.setValue(DEFAULT_RADIUS);
+    policySelector.setValue(DEFAULT_POLICY);
+
+  }
+
+  private ComboBox<String> makeNeighborPolicyComboBox() {
+    String[] options = settings.getString("NeighborPolicies").split(",");
+    ComboBox<String> comboBox = new ComboBox<>();
+    comboBox.getItems().addAll(options);
+    comboBox.setValue(DEFAULT_POLICY);
+    comboBox.setId("PolicySelector");
+    comboBox.setOnAction(event -> {
+      controller.setGridPolicy(comboBox.getValue());
+    });
+    inputFactory.attachTooltip("PolicySelectorTooltip", comboBox);
+    return comboBox;
+  }
+
+  private VBox makeRadiusSliderBox() {
+    int defaultVal = Integer.parseInt(settings.getString("DefaultRadius"));
+    slider = new Slider(MIN_RADIUS, defaultVal, maxRadius);
+    TextField label = new TextField(Long.toString(Math.round(slider.getValue())));
+    label.setId("RadiusSliderLabel");
+    label.setDisable(true);
+    label.getStyleClass().add("slider-text-field");
+    slider.valueProperty()
+        .addListener((obs, oldVal, newVal) -> setRadius(slider, newVal.intValue(), label));
+    inputFactory.attachTooltip("RadiusSliderTooltip", slider);
+    VBox box = new VBox(slider, label);
+    box.setAlignment(Pos.CENTER);
+    return box;
+  }
+
+  private void setRadius(Slider s, int val, TextField label) {
+    s.setValue(val);
+    controller.setRadius(val);
+    label.setText(Integer.toString(val));
   }
 }
 

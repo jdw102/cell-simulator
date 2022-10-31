@@ -46,7 +46,13 @@ public class SimParser extends FileParser {
     String title = properties.getProperty(SimFileKeys.TITLE.getSimFileKeyName());
     String author = properties.getProperty(SimFileKeys.AUTHOR.getSimFileKeyName());
     String description = properties.getProperty(SimFileKeys.DESCRIPTION.getSimFileKeyName());
-    return new GameDisplayInfo(type, title, author, description);
+    String colorString = properties.getProperty(SimFileKeys.STATECOLORS.getSimFileKeyName());
+    String[] colors = new String[0];
+    if (colorString != null) {
+      colorString.replaceAll("\\s", "");
+      colors = colorString.split(",");
+    }
+    return new GameDisplayInfo(type, title, author, description, colors);
   }
 
   /**

@@ -1,26 +1,18 @@
 package cellsociety.view;
 
-import cellsociety.Coordinate;
-import cellsociety.controller.Controller;
-import java.util.ResourceBundle;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 /**
  * A class that contains the array of CellView objects.
  */
-public class GridView {
+public class GridView extends DataView {
 
-  private final String DEFAULT_COLORS_PACKAGE = "cellsociety.sim_colors.";
   private final GridPane grid;
-  private CellView[][] cells;
   private int numRows;
   private int numCols;
-  private double gridWidth;
-  private double gridHeight;
   private double cellWidth;
   private double cellHeight;
-  private StateColors stateColors;
-  private Controller controller;
 
   /**
    * Create a new view for the grid of cell.
@@ -29,31 +21,25 @@ public class GridView {
    * @param height the height of the grid
    */
   public GridView(double width, double height) {
-    gridWidth = width;
-    gridHeight = height;
+    super(width, height);
     grid = new GridPane();
     grid.getStyleClass().add("cell-grid-pane");
   }
 
-  public GridPane getGrid() {
-    return grid;
-  }
 
   /**
    * A method to resize each pane in the grid pane to fit the new window dimensions.
    */
-  public void resizeGrid(double width, double height) {
-    if (cells != null) {
-      gridWidth = width;
-      gridHeight = height;
-      cellWidth = gridWidth / numCols;
-      cellHeight = gridHeight / numRows;
-      for (CellView[] row : cells) {
-        for (CellView c : row) {
-          c.setDimensions(cellWidth, cellHeight);
-        }
-      }
+  @Override
+  public void resize(double width, double height) {
+    super.resize(width, height);
+    cellWidth = getWidth() / numCols;
+    cellHeight = getHeight() / numRows;
+    while (hasNext()) {
+      CellView c = next();
+      c.setDimensions(cellWidth, cellHeight);
     }
+    this.resetIterator();
   }
 
   /**
@@ -61,11 +47,10 @@ public class GridView {
    * of each individual cell, and instantiate the cell array.
    */
   public void setDimensions(int rows, int cols) {
-    cellWidth = gridWidth / cols;
-    cellHeight = gridHeight / rows;
+    cellWidth = getWidth() / cols;
+    cellHeight = getHeight() / rows;
     numCols = cols;
     numRows = rows;
-    cells = new CellView[rows][cols];
   }
 
   /**
@@ -76,52 +61,32 @@ public class GridView {
    * @param rowIdx   the column index
    * @param colIdx   the row index
    */
+  @Override
   public void addCell(CellView cellView, int rowIdx, int colIdx) {
+    super.addCell(cellView, rowIdx, colIdx);
     cellView.setDimensions(cellWidth, cellHeight);
-    cellView.setStateColors(stateColors);
-    cellView.getCellPane()
-        .setOnMouseClicked(event -> controller.changeCellState(new Coordinate(colIdx, rowIdx)));
-    cellView.getRectangle()
-        .setId("CellView" + "[" + rowIdx + "]" + "[" + colIdx + "]");
-    cells[rowIdx][colIdx] = cellView;
     grid.add(cellView.getCellPane(), colIdx, rowIdx);
-  }
-
-  /**
-   * Sets the color resource bundle that will be passed to each cell view.
-   *
-   * @param type the type of simulation used to retrieve the correct property file
-   */
-  public void setSimType(String type) {
-    stateColors = new StateColors(ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + type));
   }
 
   /**
    * Clears the panes on the grid
    */
-  public void clearGrid() {
+  @Override
+  public void clear() {
+    super.clear();
     grid.getChildren().removeAll(grid.getChildren());
   }
 
-  public StateColors getStateColors() {
-    return stateColors;
+  public int getNumCols() {
+    return numCols;
   }
 
-  /**
-   * Updates all the cells to their correct colors.
-   */
-  public void updateCellColors() {
-    for (CellView[] row : cells) {
-      for (CellView c : row) {
-        c.update();
-      }
-    }
+  public int getNumRows() {
+    return numRows;
   }
 
-  /**
-   * Sets the controller of the grid view.
-   */
-  public void setController(Controller contr) {
-    controller = contr;
+  @Override
+  public Node getNode() {
+    return grid;
   }
 }

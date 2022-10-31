@@ -1,9 +1,13 @@
 package cellsociety.controller;
 
+import static cellsociety.Main.DEFAULT_COLORS_PACKAGE;
+
 import cellsociety.Coordinate;
 import cellsociety.model.statehandlers.StateHandler;
-import cellsociety.view.GridView;
+import cellsociety.view.DisplayView;
+import cellsociety.view.StateColors;
 import java.io.File;
+import java.util.ResourceBundle;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,13 +18,18 @@ class CellSpawnerTest {
   static TestUtility myUtilities;
 
   static String[] validSimTypes;
+
   @BeforeAll
   static void setUp() {
     myUtilities = new TestUtility();
-    validSimTypes = myUtilities.getValidSimTypes();;
+    validSimTypes = myUtilities.getValidSimTypes();
+    ;
 
   }
 
+  static String[] getSimTypes() {
+    return validSimTypes;
+  }
 
   @ParameterizedTest
   @MethodSource("getSimTypes")
@@ -32,11 +41,11 @@ class CellSpawnerTest {
 
     try {
       myStateHandler = myLoader.getStateHandler(simType);
-    } catch(Exception e) {
+    } catch (Exception e) {
       // do nothing
     }
 
-    for(int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
 
       File myFile = myUtilities.getTestFile(simType, i);
 
@@ -47,38 +56,39 @@ class CellSpawnerTest {
       } catch (Exception e) {
         //do nothing
       }
+      DisplayView view = new DisplayView("English", null);
+      StateColors stateColors = new StateColors(
+          ResourceBundle.getBundle(DEFAULT_COLORS_PACKAGE + simType));
 
-      int width = myInitialStateReader.getNumCols();
-      int height = myInitialStateReader.getNumRows();
-
-      GridView myGridView = new GridView(width, height);
-
-      myGridView.setSimType(simType);
+      view.getGridView().setStateColors(stateColors);
 
       CellSpawner myCellSpawnerTester = null;
 
       try {
-        myCellSpawnerTester = new CellSpawner(myGridView, myInitialStateReader);
-      } catch(Exception e) {
+        myCellSpawnerTester = new CellSpawner(view,
+            myInitialStateReader);
+      } catch (Exception e) {
 
       }
 
-      myGridView.setSimType(simType);
+      view.getGridView().setStateColors(stateColors);
 
-      for(int j = 0; j < height; j ++) {
-        for (int k = 0; k < width; k++) {
-          String modelOutput = String.format("CellModel[%d][%d] in %s simulation test %d instantiated\n", j,k,simType,i);
-          String viewOutput = String.format("CellView[%d][%d] in %s simulation test %d instantiated\n", j,k,simType,i);
+      for (int j = 0; j < myCellSpawnerTester.getNumRows(); j++) {
+        for (int k = 0; k < myCellSpawnerTester.getNumCols(); k++) {
+          String modelOutput = String.format(
+              "CellModel[%d][%d] in %s simulation test %d instantiated\n", j, k, simType, i);
+          String viewOutput = String.format(
+              "CellView[%d][%d] in %s simulation test %d instantiated\n", j, k, simType, i);
           String actualModelOutput = modelOutput;
           String actualViewOutput = viewOutput;
 
-          Coordinate myCoord = new Coordinate(j,k);
+          Coordinate myCoord = new Coordinate(j, k);
 
-          if(myCellSpawnerTester.getCell(myCoord) == null) {
+          if (myCellSpawnerTester.getCell(myCoord) == null) {
             actualModelOutput = null;
           }
 
-          if(myCellSpawnerTester.getCellView(myCoord) == null) {
+          if (myCellSpawnerTester.getCellView(myCoord) == null) {
             actualViewOutput = null;
           }
           Assertions.assertEquals(modelOutput, actualModelOutput);
@@ -87,10 +97,6 @@ class CellSpawnerTest {
       }
 
     }
-  }
-
-  static String[] getSimTypes() {
-    return validSimTypes;
   }
 
 }
