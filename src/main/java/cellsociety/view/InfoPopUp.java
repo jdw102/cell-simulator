@@ -19,6 +19,8 @@ import javafx.util.Callback;
 
 /**
  * A class that contains a dialog with editable components relating to the simulation information.
+ *
+ * @author Jerry Worthy
  */
 public class InfoPopUp {
 
@@ -63,9 +65,12 @@ public class InfoPopUp {
     dialog.getDialogPane().setId("InfoPane");
   }
 
+
   /**
    * Creates the call back that is triggered when the dialog is closed. If save is clicked, the
    * InfoText record is updated. Else nothing is saved, either way the fields are disabled.
+   *
+   * @return Callback to be triggered when dialog closes
    */
   private Callback<ButtonType, InfoText> createDialogCallback() {
     Callback<ButtonType, InfoText> cb = new Callback<ButtonType, InfoText>() {

@@ -44,6 +44,8 @@ import javafx.stage.Stage;
 
 /**
  * A class that contains all the view and UI components.
+ *
+ * @author Jerry Worthy
  */
 public class DisplayView {
 

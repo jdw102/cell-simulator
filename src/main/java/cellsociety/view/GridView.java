@@ -5,6 +5,8 @@ import javafx.scene.layout.GridPane;
 
 /**
  * A class that contains the array of CellView objects.
+ *
+ * @author Jerry Worthy
  */
 public class GridView extends DataView {
 
