@@ -58,7 +58,7 @@ class CellSpawnerTest {
       CellSpawner myCellSpawnerTester = null;
 
       try {
-        myCellSpawnerTester = new CellSpawner(myGridView, myInitialStateReader);
+        myCellSpawnerTester = new CellSpawner(myInitialStateReader);
       } catch(Exception e) {
 
       }
