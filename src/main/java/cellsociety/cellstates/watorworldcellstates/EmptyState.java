@@ -1,10 +1,10 @@
-package cellsociety.cellstates.predatorpreycellstates;
+package cellsociety.cellstates.watorworldcellstates;
 
 import cellsociety.State;
 
 public class EmptyState implements State {
   @Override
   public Enum getStateEnum() {
-    return PredatorPreyCellState.EMPTY;
+    return WatorWorldCellState.EMPTY;
   }
 }

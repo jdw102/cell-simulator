@@ -1,4 +1,4 @@
-package cellsociety.cellstates.predatorpreycellstates;
+package cellsociety.cellstates.watorworldcellstates;
 
 public class Animal {
   private int reproductionCounter = 0;

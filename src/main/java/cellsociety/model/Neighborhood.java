@@ -1,6 +1,10 @@
 package cellsociety.model;
 
 import cellsociety.State;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class Neighborhood {
 
@@ -22,8 +26,47 @@ public class Neighborhood {
     return retCounter;
   }
 
+  public int countNextState(Enum targetState) {
+    int retCounter = 0;
+    for (CellModel cellModel : myNeighboringCells) {
+      if (sameState(targetState, cellModel.getNextStateEnum())) {
+        retCounter += 1;
+      }
+    }
+    return retCounter;
+  }
+
+//  private int count(Enum targetState, <CellModel> predicate) {
+//    int retCounter = 0;
+//    for (CellModel cellModel : myNeighboringCells) {
+//      if (sameState(targetState, predicate.test(cellModel))) {
+//        retCounter += 1;
+//      }
+//    }
+//    return retCounter;
+//  }
+
   public boolean contains(Enum targetState) {
     return count(targetState) >= 1;
+  }
+
+  public boolean setNextStateOfRandomNeighborWithNextState(Enum targetNextStateEnum, State state) {
+    List<CellModel> cellModels = new ArrayList<>();
+    for (CellModel cellModel : myNeighboringCells) {
+      if (cellModel.getNextStateEnum().equals(targetNextStateEnum)) {
+        cellModels.add(cellModel);
+      }
+    }
+
+    if (cellModels.size() == 0) {
+      return false;
+    }
+    else {
+      Random rand = new Random();
+      CellModel target = cellModels.get(rand.nextInt(0, cellModels.size()));
+      target.setNextState(state);
+      return true;
+    }
   }
 
   private boolean sameState(Enum state1, Enum state2) {

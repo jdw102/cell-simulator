@@ -1,4 +1,4 @@
-package cellsociety.cellstates.predatorpreycellstates;
+package cellsociety.cellstates.watorworldcellstates;
 
 import cellsociety.State;
 
@@ -8,7 +8,7 @@ public class SharkState extends Animal implements State {
 
   @Override
   public Enum getStateEnum() {
-    return PredatorPreyCellState.SHARK;
+    return WatorWorldCellState.SHARK;
   }
 
   public int getEnergyCounter() {
