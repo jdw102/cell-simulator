@@ -7,18 +7,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Defines the logic for the spreading fire simulation
+ *
+ * @author Daniel Feinblatt
+ * @author Mazen Selim
+ */
 public class FireStateHandler extends StateHandler {
 
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.firecellstates.";
-  private static final String HANDLER_NAME = "FireStateHandler";
-
-  private static final double PROBABILITY_FIRE = 0.1;
-  private static final double PROBABILITY_TREE = 0.02;
+  private static final String SIM_TYPE = "Fire";
+  private static final double probFire = 0.5;
+  private double probTree;
 
   private Map<FireCellState, Function<Neighborhood, State>> nextStateMap;
 
-  public FireStateHandler() throws RuntimeException {
-    super(FireCellState.class, HANDLER_NAME, STATES_PACKAGE);
+  /**
+   * Populates a map, mapping the potential cell states to the logic to determine the next cell
+   * state
+   *
+   * @throws RuntimeException
+   */
+  public FireStateHandler() {
+    super(FireCellState.class, SIM_TYPE);
     nextStateMap = new HashMap<>();
     populateNextStateMap();
   }
@@ -30,21 +40,37 @@ public class FireStateHandler extends StateHandler {
   }
 
   private State chooseStateAfterEmpty() {
-    if (Math.random() < PROBABILITY_TREE) {
+    if (Math.random() < probTree) {
       return getStateInstance(FireCellState.TREE);
     }
     return getStateInstance(FireCellState.EMPTY);
   }
 
   private State chooseStateAfterTree(Neighborhood neighborhood) {
-    if (neighborhood.contains(FireCellState.FIRE) || Math.random() < PROBABILITY_FIRE) {
+    if (neighborhood.contains(FireCellState.FIRE) || Math.random() < probFire) {
       return getStateInstance(FireCellState.FIRE);
     }
     return getStateInstance(FireCellState.TREE);
   }
 
+  /**
+   * Determines the next state of the cell whose neighborhood is specified
+   *
+   * @param currNeighborhood The current neighborhood being examined to determine next state of
+   * @return The next state of the cell
+   */
   public State figureOutNextState(Neighborhood currNeighborhood) {
+    updateParameters();
     Enum currState = currNeighborhood.getStateEnum();
     return nextStateMap.get(currState).apply(currNeighborhood);
+  }
+
+  private void updateParameters() {
+    double parameterRatio = getParameter();
+    probTree = probFire*parameterRatio;
+  }
+  @Override
+  public void setParameter(double parameter) {
+    overwriteParameter(parameter);
   }
 }

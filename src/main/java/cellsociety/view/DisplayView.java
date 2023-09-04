@@ -15,7 +15,7 @@ import static cellsociety.Main.PROPERTIES_PACKAGE;
 import static cellsociety.Main.STATE_HANDLER_TAG;
 import static cellsociety.Main.STYLESHEET_TAG;
 import static cellsociety.Main.TITLE;
-import static cellsociety.Main.settings;
+import static cellsociety.Main.SETTINGS;
 
 import cellsociety.GameDisplayInfo;
 import cellsociety.controller.Controller;
@@ -44,6 +44,8 @@ import javafx.stage.Stage;
 
 /**
  * A class that contains all the view and UI components.
+ *
+ * @author Jerry Worthy
  */
 public class DisplayView {
 
@@ -83,7 +85,7 @@ public class DisplayView {
    */
   public DisplayView(String language, Stage stage) {
     currLanguage = language;
-    currentSimType = settings.getString("DefaultSim");
+    currentSimType = SETTINGS.getString("DefaultSim");
     simStates = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + PROPERTIES_PACKAGE + currentSimType + STATE_HANDLER_TAG);
     STAGE = stage;
@@ -103,7 +105,7 @@ public class DisplayView {
 
   public void setController(Controller controller) {
     this.controller = controller;
-    gridInputs = new GridInputs(inputFactory, controller, settings);
+    gridInputs = new GridInputs(inputFactory, controller, SETTINGS);
   }
 
   /**
@@ -181,7 +183,7 @@ public class DisplayView {
     typeSelector.setValue(currentSimType);
     themeSelector = makeComboBoxFromFolder("ThemeSelector", DEFAULT_STYLESHEET_FOLDER,
         event -> changeStyleSheet(themeSelector.getValue()));
-    themeSelector.setValue(settings.getString("DefaultTheme"));
+    themeSelector.setValue(SETTINGS.getString("DefaultTheme"));
     attachTooltip(typeSelector);
     attachTooltip(themeSelector);
     Button saveButton = inputFactory.makeButton("SaveButton", event -> saveFile());
@@ -279,7 +281,7 @@ public class DisplayView {
     }
     readStateColors(info.colors(), info.title());
     infoText.setText(info.title(), info.author(),
-        info.description(), "");
+        info.description(), info.params());
     infoPopUp.changeInfoText(infoText);
   }
 

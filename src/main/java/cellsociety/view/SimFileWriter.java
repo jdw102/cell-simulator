@@ -10,6 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Takes the current state of a simulation and writes it to a sim file to save on the user's
+ * computer
+ *
+ * @author Jerry Worthy
+ */
 public class SimFileWriter {
 
   private final String currentSimType;
@@ -22,6 +28,14 @@ public class SimFileWriter {
     stateColors = colors;
   }
 
+  /**
+   * Generates the sim file from the current state of the simulation
+   *
+   * @param f        File created from the save dialog
+   * @param infoText the displayed information to be saved into the sim file
+   * @param cellGrid the current cell grid to be saved as the initial state of the sim file
+   * @throws FileNotFoundException
+   */
   public void createSim(File f, InfoText infoText, GridView cellGrid) throws FileNotFoundException {
     String folder = f.getParent();
     String name = f.getName().substring(0, f.getName().indexOf('.'));
@@ -33,6 +47,7 @@ public class SimFileWriter {
     String title = String.format("Title=%s", infoText.getTitle());
     String author = String.format("Author=%s", infoText.getAuthor());
     String description = String.format("Description=%s", infoText.getDescription());
+    String param = infoText.getParam();
     List<String> list = new ArrayList<>(
         Arrays.asList(type, initialStates, title, author, description));
     PrintWriter printWriter = new PrintWriter(f);
@@ -44,6 +59,9 @@ public class SimFileWriter {
       String s = stateColors.getColor(stateColors.next()).toString();
       String fin = s.substring(s.indexOf('x') + 1, s.length() - 2).toUpperCase();
       colors.add(fin);
+    }
+    if(param != null && param.length() > 0) {
+      printWriter.println(String.format("Parameters=%s", param));
     }
     stateColors.resetIterator();
     String colorString = String.join(",", colors);

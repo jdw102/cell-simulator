@@ -34,7 +34,7 @@ class InitialStateReaderTest {
     StateHandlerLoader stateHandlerLoaderTester = new StateHandlerLoader();
     StateHandler stateHandlerTester = null;
     try {
-      stateHandlerTester = stateHandlerLoaderTester.getStateHandler(mySimType);
+      stateHandlerTester = stateHandlerLoaderTester.getStateHandler(mySimType, "");
     } catch (Exception e) {
       // do nothing
     }

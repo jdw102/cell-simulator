@@ -5,6 +5,8 @@ import cellsociety.GameDisplayInfo;
 import cellsociety.model.DefaultNeighborhoodsLoader;
 import cellsociety.model.GridModel;
 import cellsociety.model.UnrecognizedEdgeRuleException;
+import cellsociety.model.statehandlers.InvalidParameterException;
+import cellsociety.model.statehandlers.MissingParameterException;
 import cellsociety.model.statehandlers.StateHandler;
 import cellsociety.view.DisplayView;
 import com.opencsv.exceptions.CsvValidationException;
@@ -12,7 +14,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Daniel Feinblatt Controller class in the Model-View-Controller design
+ * The main controller in the MVC design pattern
+ *
+ * @author Daniel Feinblatt
+ * @author Ryan Wolfram
  */
 public class Controller {
 
@@ -53,11 +58,10 @@ public class Controller {
       // Give the view the info about the game
       GameDisplayInfo gameDisplayInfo = simParser.getGameDisplayInfo();
       displayView.setInfoText(gameDisplayInfo);
-
       File initStateCsv = simParser.getInitStateCsv();
       // Instantiate a CellSpawner
       StateHandler stateHandler = stateHandlerLoader.getStateHandler(
-          gameDisplayInfo.type());
+          gameDisplayInfo.type(), simParser.getParams());
       InitialStateReader initialStateReader = new InitialStateReader(stateHandler, initStateCsv);
       CellSpawner cellSpawner = new CellSpawner(displayView, initialStateReader);
       neighborhoodsLoader = new DefaultNeighborhoodsLoader(
@@ -65,7 +69,8 @@ public class Controller {
       gridModel = gridModelLoader.getGridModel(gameDisplayInfo.type(), neighborhoodsLoader,
           stateHandler);
     } catch (IOException | CsvValidationException | WrongFileTypeException |
-             IncorrectInputException e) {
+             IncorrectInputException |
+             InvalidParameterException | MissingParameterException e) {
       displayView.showMessage(e);
     }
   }

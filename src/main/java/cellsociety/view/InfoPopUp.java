@@ -1,6 +1,6 @@
 package cellsociety.view;
 
-import static cellsociety.Main.settings;
+import static cellsociety.Main.SETTINGS;
 
 import cellsociety.controller.Controller;
 import javafx.geometry.Pos;
@@ -19,6 +19,8 @@ import javafx.util.Callback;
 
 /**
  * A class that contains a dialog with editable components relating to the simulation information.
+ *
+ * @author Jerry Worthy
  */
 public class InfoPopUp {
 
@@ -46,8 +48,8 @@ public class InfoPopUp {
    */
   public InfoPopUp(InfoText text, String title, String styleSheet, InputFactory utils,
       Controller controller) {
-    DEFAULT_POLICY = settings.getString("DefaultPolicy");
-    DEFAULT_RADIUS = Integer.parseInt(settings.getString("DefaultRadius"));
+    DEFAULT_POLICY = SETTINGS.getString("DefaultPolicy");
+    DEFAULT_RADIUS = Integer.parseInt(SETTINGS.getString("DefaultRadius"));
     this.controller = controller;
     inputFactory = utils;
     infoText = text;
@@ -63,9 +65,12 @@ public class InfoPopUp {
     dialog.getDialogPane().setId("InfoPane");
   }
 
+
   /**
    * Creates the call back that is triggered when the dialog is closed. If save is clicked, the
    * InfoText record is updated. Else nothing is saved, either way the fields are disabled.
+   *
+   * @return Callback to be triggered when dialog closes
    */
   private Callback<ButtonType, InfoText> createDialogCallback() {
     Callback<ButtonType, InfoText> cb = new Callback<ButtonType, InfoText>() {
@@ -195,7 +200,7 @@ public class InfoPopUp {
   }
 
   private ComboBox<String> makeNeighborPolicyComboBox() {
-    String[] options = settings.getString("NeighborPolicies").split(",");
+    String[] options = SETTINGS.getString("NeighborPolicies").split(",");
     ComboBox<String> comboBox = new ComboBox<>();
     comboBox.getItems().addAll(options);
     comboBox.setValue(DEFAULT_POLICY);
@@ -208,7 +213,7 @@ public class InfoPopUp {
   }
 
   private VBox makeRadiusSliderBox() {
-    int defaultVal = Integer.parseInt(settings.getString("DefaultRadius"));
+    int defaultVal = Integer.parseInt(SETTINGS.getString("DefaultRadius"));
     slider = new Slider(MIN_RADIUS, defaultVal, maxRadius);
     TextField label = new TextField(Long.toString(Math.round(slider.getValue())));
     label.setId("RadiusSliderLabel");

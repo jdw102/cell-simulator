@@ -10,6 +10,8 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * A view class that observes the cell model and changes color based on the state of the model.
+ *
+ * @author Jerry Worthy
  */
 public class CellView implements Observer {
 
@@ -23,6 +25,8 @@ public class CellView implements Observer {
 
   /**
    * Create a new instance of a cell view.
+   *
+   * @param cellModel The associated cell model that holds state information for this view
    */
   public CellView(CellModel cellModel) {
     model = cellModel;
@@ -31,16 +35,25 @@ public class CellView implements Observer {
     cellPane.getStyleClass().add("cell-pane");
   }
 
+  /**
+   * Updates the colors of the cell view
+   */
   @Override
   public void update() {
     stateName = model.getCurrentStateEnum().toString();
     rectangle.setFill(stateColors.getColor(stateName));
+
   }
 
   public Pane getCellPane() {
     return cellPane;
   }
 
+  /**
+   * Link an event handler to the cell view to be run when the cell view is clicked
+   *
+   * @param handler
+   */
   public void attachOnClick(EventHandler<MouseEvent> handler) {
     rectangle.setOnMouseClicked(handler);
   }
@@ -79,10 +92,21 @@ public class CellView implements Observer {
     return stateName;
   }
 
+  /**
+   * Called in the simFileWriter in order to know where to write this cell's state value to the CSV
+   *
+   * @return The location coordinate of the cell
+   */
   public Coordinate getCoordinate() {
     return coordinate;
   }
 
+  /**
+   * Used to assign the coordinate location for this cell view so that it can correspond with its
+   * model state
+   *
+   * @param coord
+   */
   public void setCoordinate(Coordinate coord) {
     coordinate = coord;
   }

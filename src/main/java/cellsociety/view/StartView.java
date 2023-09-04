@@ -18,6 +18,8 @@ import javafx.scene.layout.VBox;
 
 /**
  * Creates starting view from which the language is selected and the app is started.
+ *
+ * @author Jerry Worthy
  */
 public class StartView {
 

@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 /**
  * Data class to hold a string representing the state name of a cell and the color associated with
  * it.
+ *
+ * @author Jerry Worthy
  */
 public class StateColors implements Iterator {
 

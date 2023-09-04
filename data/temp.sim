@@ -1,6 +1,6 @@
-Type=Percolation
+Type=GameOfLife
 InitialStates=data/temp.csv
-Title=Volcano
-Author=Former Student
-Description=An erupting volcano
-StateColors=A9A9A9,FF0000,654321
+Title=Blank Simulation
+Author=Enter Name
+Description=A blank simulation... Feel free to change!
+StateColors=00FFFF,FFFFFF

@@ -9,6 +9,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * View for the histogram that shows cell states as simulation runs
+ *
+ * @author Jerry Worthy
+ */
 public class BarView extends DataView {
 
   private final double BUFFER = 50;
@@ -40,6 +45,9 @@ public class BarView extends DataView {
     total++;
   }
 
+  /**
+   * Clear everything in the bar view
+   */
   @Override
   public void clear() {
     super.clear();
@@ -49,6 +57,12 @@ public class BarView extends DataView {
     total = 0;
   }
 
+  /**
+   * Adjusts sizing on window resize
+   *
+   * @param width  Width of the window
+   * @param height Height of the window
+   */
   @Override
   public void resize(double width, double height) {
     super.resize(width, height);
@@ -58,6 +72,9 @@ public class BarView extends DataView {
     }
   }
 
+  /**
+   * Creates the bars shown in the histogram
+   */
   public void makeHistogramBars() {
     StateColors colors = super.getStateColors();
     calculateCount();
@@ -89,6 +106,9 @@ public class BarView extends DataView {
     super.resetIterator();
   }
 
+  /**
+   * Used to dynamically update the histogram as the simulation progresses
+   */
   public void updateHistogram() {
     calculateCount();
     for (String s : rectangleMap.keySet()) {
@@ -106,6 +126,9 @@ public class BarView extends DataView {
     r.setHeight(height);
   }
 
+  /**
+   * Updates the colors in the simulation dynamically when a user changes the colors
+   */
   public void updateColors() {
     while (getStateColors().hasNext()) {
       String state = getStateColors().next();

@@ -2,6 +2,8 @@ package cellsociety.view;
 
 /**
  * A view class that contains the title, author, and description of the simulation
+ *
+ * @author Jerry Worthy
  */
 public class InfoText {
 
@@ -34,5 +36,9 @@ public class InfoText {
 
   public String getDescription() {
     return description;
+  }
+
+  public String getParam() {
+    return param;
   }
 }

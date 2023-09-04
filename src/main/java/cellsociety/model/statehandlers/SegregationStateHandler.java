@@ -6,27 +6,32 @@ import cellsociety.model.Neighborhood;
 
 /**
  * StateHandler that implements the transition function rules for the Segregation simulation
+ *
+ * @author Ryan Wolfram
  */
 public class SegregationStateHandler extends StateHandler {
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.segregationcellstates.";
-  private static final String HANDLER_NAME = "SegregationStateHandler";
-  public static final double THRESHOLD = 0.3;   // TODO: Read this in from SIM params!
+
+  private static final String SIM_TYPE = "Segregation";
+  private double THRESHOLD;
 
   /**
    * Get a new SegregationStateHandler
+   *
    * @throws RuntimeException
    */
-  public SegregationStateHandler() throws RuntimeException {
-    super(SegregationCellState.class, HANDLER_NAME, STATES_PACKAGE);
+  public SegregationStateHandler()  {
+    super(SegregationCellState.class, SIM_TYPE);
   }
 
   /**
    * Return the next state of this neighborhood
+   *
    * @param neighborhood The current neighborhood being examined to determine next state of
    * @return
    */
   @Override
   public State figureOutNextState(Neighborhood neighborhood) {
+    updateParameters();
     // return EMPTY if already EMPTY
     Enum currStateEnum = neighborhood.getStateEnum();
     if (currStateEnum.equals(SegregationCellState.EMPTY)) {
@@ -38,8 +43,7 @@ public class SegregationStateHandler extends StateHandler {
 
     if (total == 0 || (double) numCurrStateEnum / total >= THRESHOLD) {
       return getStateInstance(currStateEnum);
-    }
-    else {
+    } else {
       return getStateInstance(SegregationCellState.EMPTY);
     }
   }
@@ -53,5 +57,15 @@ public class SegregationStateHandler extends StateHandler {
       }
     }
     return count;
+  }
+
+  private void updateParameters() {
+    double parameterRatio = getParameter();
+    THRESHOLD= parameterRatio;
+  }
+
+  @Override
+  public void setParameter(double parameter) {
+    overwriteParameter(parameter);
   }
 }

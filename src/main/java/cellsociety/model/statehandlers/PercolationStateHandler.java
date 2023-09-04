@@ -6,16 +6,21 @@ import cellsociety.model.Neighborhood;
 
 /**
  * StateHandler that implements the transition function rules for the percolation simulation
+ * @author Mazen Selim
  */
 public class PercolationStateHandler extends StateHandler {
 
-  private static final String STATES_PACKAGE = "cellsociety.cellstates.percolationcellstates.";
-  private static final String HANDLER_NAME = "PercolationStateHandler";
+  private static final String SIM_TYPE = "Percolation";
 
-  public PercolationStateHandler() throws RuntimeException {
-    super(PercolationCellState.class, HANDLER_NAME, STATES_PACKAGE);
+  public PercolationStateHandler()  {
+    super(PercolationCellState.class, SIM_TYPE);
   }
 
+  /**
+   * Logic for percolation simulation to determine next state depending on current state
+   * @param currNeighborhood The current neighborhood being examined to determine next state of
+   * @return The next state the cell at the center of the neighborhood should update to
+   */
   public State figureOutNextState(Neighborhood currNeighborhood) {
     Enum currState = currNeighborhood.getStateEnum();
     if (currState.equals(PercolationCellState.OPEN) && currNeighborhood.contains(
